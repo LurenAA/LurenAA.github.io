@@ -4,8 +4,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>lurenaaのblog</title>
+  <title>libuv源码分析（5）uv_fs_* | lurenaaのblog</title>
   
+  
+  <meta name="description" content="讲讲uv_fs_*的调用过程">
   
 
   
@@ -44,7 +46,7 @@
   
   
   <div class="cover-wrapper">
-    <cover class='cover list half'>
+    <cover class='cover post half'>
       
         
   <h1 class='title'>lurenaa的博客</h1>
@@ -276,41 +278,253 @@
 
   <div class="l_body">
     <div class='body-wrapper'>
-      
-<div class='l_main'>
+      <div class='l_main'>
   
-    <section class="post-list">
+
+  <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+    
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
       
+        
+  
+    <h1 class="title">
+      <a href="/2019/11/26/libuv5/">
+        libuv源码分析（5）uv_fs_*
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
         
           
         
           
+            
+  <div class='new-meta-item author'>
+    
+      <a href="http://yoursite.com" rel="nofollow">
         
+          <i class="fas fa-user" aria-hidden="true"></i>
+        
+        <p>两天宇宙人</p>
+      </a>
+    
+  </div>
+
+
           
         
           
-        
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2019-11-26</p>
+  </a>
+</div>
+
           
         
           
+            
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+    <section class="article typo">
+      <div class="article-entry" itemprop="articleBody">
+        <h4 id="uv-fs"><a href="#uv-fs" class="headerlink" title="uv_fs_*"></a>uv_fs_*</h4><p>&emsp;&emsp;uv_fs_*这一系列的函数基本是一致的，它们的逻辑大概是如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//x代表一种操作open、write等</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">uv_fs_x</span><span class="params">(...<span class="keyword">uv_fs_t</span>* req...)</span> </span>&#123;</span><br><span class="line">  INIT(x); <span class="comment">//uv_fs_t和其基类uv_req_t的基本初始化</span></span><br><span class="line">  ... <span class="comment">//这里是每个操作各自不同对于req的初始化</span></span><br><span class="line">  POST; <span class="comment">//提交这个任务</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="INIT"><a href="#INIT" class="headerlink" title="INIT"></a>INIT</h4><p>&emsp;&emsp;INIT这个宏定义函数没有特别的地方，就是把req初始化，该置0的置0。</p>
+<h4 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h4><p>&emsp;&emsp;其实现如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> POST                          </span></span><br><span class="line">  <span class="keyword">do</span> &#123;   <span class="comment">//dowhile包裹作用域          </span></span><br><span class="line">    <span class="keyword">if</span> (cb != <span class="literal">NULL</span>) &#123;                 </span><br><span class="line">      uv__req_register(loop, req);    </span><br><span class="line">      uv__work_submit(loop,           </span><br><span class="line">      &amp;req-&gt;work_req,                 </span><br><span class="line">      UV__WORK_FAST_IO,               </span><br><span class="line">      uv__fs_work,                    </span><br><span class="line">      uv__fs_done);                   </span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;                       </span><br><span class="line">    &#125;                                 </span><br><span class="line">    <span class="keyword">else</span> &#123;                            </span><br><span class="line">      uv__fs_work(&amp;req-&gt;work_req);    </span><br><span class="line">      <span class="keyword">return</span> req-&gt;result;             </span><br><span class="line">    &#125;                                 </span><br><span class="line">  &#125;                                   </span><br><span class="line">  <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;这里通过有无回调函数来决定调用同步版本还是异步版本。</p>
+<blockquote>
+<p><a href="http://docs.libuv.org/en/v1.x/fs.html" target="_blank" rel="noopener">http://docs.libuv.org/en/v1.x/fs.html</a><br>libuv provides a wide variety of cross-platform sync and async file system operations. All functions defined in this document take a callback, which is allowed to be NULL. If the callback is NULL the request is completed synchronously, otherwise it will be performed asynchronously.</p>
+</blockquote>
+<p>&emsp;&emsp;uv__fs_work这个函数就是<strong>文件操作的封装</strong>，所有的文件操作都通过这个函数来完成，即使是异步，最终也要在别的线程中同步执行这个函数。 <br><br>&emsp;&emsp;uv__fs_done这个函数会调用用户给的回调函数，这个函数会在uv_run中的is_poll函数中得到执行。</p>
+<p>&emsp;&emsp;uv__work_submit函数的实现是这样的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">uv__work_submit</span><span class="params">(<span class="keyword">uv_loop_t</span>* loop,struct uv__work* w,</span></span></span><br><span class="line"><span class="function"><span class="params"><span class="keyword">enum</span> uv__work_kind kind, <span class="keyword">void</span> (*work)(struct uv__work* w),</span></span></span><br><span class="line"><span class="function"><span class="params"><span class="keyword">void</span> (*done)(struct uv__work* w, <span class="keyword">int</span> status))</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  uv_once(&amp;once, init_once);</span><br><span class="line">  w-&gt;loop = loop;</span><br><span class="line">  w-&gt;work = work;</span><br><span class="line">  w-&gt;done = done;</span><br><span class="line">  post(&amp;w-&gt;wq, kind);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;uv_once(&amp;once, init_once);是初始化多个线程，我在<a href="https://lurenaa.github.io/2019/11/18/libuv3/" target="_blank" rel="noopener">我的第三篇文章</a>中有介绍。不过当时对于子线程运行的worker函数没有提及，work函数大概是这样的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">worker</span><span class="params">(<span class="keyword">void</span>* arg)</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  uv_mutex_lock(&amp;mutex);</span><br><span class="line">  <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">    <span class="keyword">while</span> (QUEUE_EMPTY(&amp;wq)...) &#123;</span><br><span class="line">      idle_threads += <span class="number">1</span>;</span><br><span class="line">      uv_cond_wait(&amp;cond, &amp;mutex);</span><br><span class="line">      idle_threads -= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    q = QUEUE_HEAD(&amp;wq);</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    QUEUE_REMOVE(q);</span><br><span class="line">    QUEUE_INIT(q);  </span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    w = QUEUE_DATA(q, struct uv__work, wq);</span><br><span class="line">    w-&gt;work(w);</span><br><span class="line"></span><br><span class="line">    uv_mutex_lock(&amp;w-&gt;loop-&gt;wq_mutex);</span><br><span class="line">    w-&gt;work = <span class="literal">NULL</span>;  </span><br><span class="line">    QUEUE_INSERT_TAIL(&amp;w-&gt;loop-&gt;wq, &amp;w-&gt;wq);</span><br><span class="line">    uv_async_send(&amp;w-&gt;loop-&gt;wq_async);</span><br><span class="line">    uv_mutex_unlock(&amp;w-&gt;loop-&gt;wq_mutex);</span><br><span class="line"></span><br><span class="line">    uv_mutex_lock(&amp;mutex);</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;我去掉了对于slow_io的处理，大致是这样一个过程。</p>
+<p>&emsp;&emsp;一开始线程会卡在uv_cond_wait这里，直到被uv_cond_signal唤醒，如果唤醒时wq队列中有任务，它就会执行任务，w-&gt;work(w)也就是调用uv__fs_work。然后把w放入loop-&gt;wq（为了uv__fs_done的执行）。</p>
+<p>&emsp;&emsp;uv_async_send调用让loop-&gt;wq_async可读，主线程就从uv_run中的uv__io_poll的epoll_pwait中醒来，wq_async的回调函数会遍历loop-&gt;wq执行w-&gt;done。（<a href="https://lurenaa.github.io/2019/11/25/libuv4/" target="_blank" rel="noopener">我的第四篇文章</a>有讲这一部分的详细内容）</p>
+<h4 id="谁来触发uv-cond-signal唤醒子线程呢？"><a href="#谁来触发uv-cond-signal唤醒子线程呢？" class="headerlink" title="谁来触发uv_cond_signal唤醒子线程呢？"></a>谁来触发uv_cond_signal唤醒子线程呢？</h4><p>🥣uv__work_submit中的post函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">uv_mutex_lock(&amp;mutex);</span><br><span class="line">...</span><br><span class="line">QUEUE_INSERT_TAIL(&amp;wq, q);</span><br><span class="line"><span class="keyword">if</span> (idle_threads &gt; <span class="number">0</span>)</span><br><span class="line">  uv_cond_signal(&amp;cond);</span><br><span class="line">uv_mutex_unlock(&amp;mutex);</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;我再次省略了slow_io的部分，因为它们只是特殊处理。</p>
+<p>&emsp;&emsp;该函数有空闲的线程就唤醒，不然就阻塞该线程。</p>
+
+      </div>
+      
+        <br>
+        
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-11-26T03:41:02+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>更新于 2019年11月26日</p>
+  </a>
+</div>
+
         
       
-      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/libuv/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>libuv</p></a></div>
+
+
         
       
         
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
       
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2019/11/26/libuv5/&title=libuv源码分析（5）uv_fs_* | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2019/11/26/libuv5/&title=libuv源码分析（5）uv_fs_* | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2019/11/26/libuv5/&title=libuv源码分析（5）uv_fs_* | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
         
       
-        
+    </div>
+  </section>
+
+
       
-        
       
-        
+          <div class="prev-next">
+              
+              
+                  <section class="next">
+                      <span class="art-item-right" aria-hidden="true">
+                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                          <h4>
+                              <a href="/2019/11/25/libuv4/" rel="prev" title="libuv源码分析（4）async">
+                                  
+                                      libuv源码分析（4）async
+                                  
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/libuv/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> libuv</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
+              
+          </div>
       
     </section>
-    
+  </article>
+
+
+
+  <!-- 显示推荐文章和评论 -->
+
+
+
   
+
+
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'libuv源码分析（5）uv_fs_*',
+      tools: true
+    }
+  </script>
+
+
 </div>
 <aside class='l_side'>
   
@@ -398,63 +612,39 @@
         
           
           
-        
-          
-          
-        
-          
-          
-        
-          
-          
-        
-          
-          
-        
-          
-          
             
-              <section class='widget list'>
-  
+              
+  <section class='widget toc-wrapper'>
+    
 <header class='pure'>
-  <div><i class="fas fa-thumbs-up fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;强烈推荐</div>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer noopener" href="javascript:void(0)" target="_blank"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
   
 </header>
 
-  <div class='content pure'>
-    <ul class="entry">
-      
-        <li><a class="flat-box" title="https://yasuotu.com" href="https://yasuotu.com"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;图片在线压缩
-          </div>
-          
-        </a></li>
-      
-        <li><a class="flat-box" title="https://realfavicongenerator.net" href="https://realfavicongenerator.net"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;生成Favicon
-          </div>
-          
-        </a></li>
-      
-    </ul>
-  </div>
-</section>
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#uv-fs"><span class="toc-text">uv_fs_*</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#INIT"><span class="toc-text">INIT</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#POST"><span class="toc-text">POST</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#谁来触发uv-cond-signal唤醒子线程呢？"><span class="toc-text">谁来触发uv_cond_signal唤醒子线程呢？</span></a></li></ol>
+    </div>
+  </section>
+
 
             
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
           
         
       
@@ -634,6 +824,95 @@
 
 
             
+          
+        
+          
+          
+        
+          
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+            
+              <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-thumbs-up fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;强烈推荐</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" title="https://yasuotu.com" href="https://yasuotu.com"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;图片在线压缩
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" title="https://realfavicongenerator.net" href="https://realfavicongenerator.net"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;生成Favicon
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+            
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
           
         
           

@@ -371,7 +371,7 @@
       <div class="article-entry" itemprop="articleBody">
         <h4 id="uv-async-init"><a href="#uv-async-init" class="headerlink" title="uv_async_init"></a>uv_async_init</h4><p>&emsp;&emsp;libuv中async的开端在uv_loop_init函数中：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//前面省略</span></span><br><span class="line">err = uv_async_init(loop, &amp;loop-&gt;wq_async, uv__work_done);</span><br><span class="line"><span class="keyword">if</span> (err)</span><br><span class="line">  <span class="keyword">goto</span> fail_async_init;</span><br><span class="line"></span><br><span class="line">uv__handle_unref(&amp;loop-&gt;wq_async);</span><br><span class="line">loop-&gt;wq_async.flags |= UV_HANDLE_INTERNAL;</span><br><span class="line"><span class="comment">//后面省略</span></span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;loop-&gt;wq_async是个uv_async_t类型，它用于线程work函数调用最后处理loop-&gt;wq中的回调，暂时不用管。<br/><br>&emsp;&emsp;我们来看uv_async_init内部：</p>
+<p>&emsp;&emsp;loop-&gt;wq_async是个uv_async_t类型，它用于线程work函数调用最后处理loop-&gt;wq中的回调，暂时不用管,我在<a href="https://lurenaa.github.io/2019/11/26/libuv5/" target="_blank" rel="noopener">我的第五篇文章</a>会讲到它的用途。<br/><br>&emsp;&emsp;我们来看uv_async_init内部：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> err;</span><br><span class="line">err = uv__async_start(loop);</span><br><span class="line"><span class="keyword">if</span> (err)</span><br><span class="line">  <span class="keyword">return</span> err;</span><br><span class="line"></span><br><span class="line">uv__handle_init(loop, (<span class="keyword">uv_handle_t</span>*)handle, UV_ASYNC);</span><br><span class="line">handle-&gt;async_cb = async_cb;</span><br><span class="line">handle-&gt;pending = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">QUEUE_INSERT_TAIL(&amp;loop-&gt;async_handles, &amp;handle-&gt;<span class="built_in">queue</span>);</span><br><span class="line">uv__handle_start(handle);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
 <p>&emsp;&emsp;第五行以后的操作就是初始化基类uv_handle_t以及子类uv_async_t，然后将这个handle放入loop-&gt;queue(放uv_handle_t的队列)以及放入loop-&gt;async_handles（放uv_async_t的队列）中，然后uv__handle_start中将loop-&gt;active_handles加一。<br/><br>&emsp;&emsp;总而言之，第五行以后的内容就是初始化uv_async_t，可以理解成<strong>uv_async_t的构造函数</strong>。<br/><br>&emsp;&emsp;uv__async_start则不一样，它是初始化函数，它<strong>只会调用一次</strong>（一般情况是在uv_loop_init中调用），我们先看下它的实现：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">uv__async_start</span><span class="params">(<span class="keyword">uv_loop_t</span>* loop)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> pipefd[<span class="number">2</span>];</span><br><span class="line">  <span class="keyword">int</span> err;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (loop-&gt;async_io_watcher.fd != <span class="number">-1</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  err = uv__async_eventfd();</span><br><span class="line">  <span class="keyword">if</span> (err &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    pipefd[<span class="number">0</span>] = err;</span><br><span class="line">    pipefd[<span class="number">1</span>] = <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//中间省略</span></span><br><span class="line"></span><br><span class="line">  uv__io_init(&amp;loop-&gt;async_io_watcher, uv__async_io, pipefd[<span class="number">0</span>]);</span><br><span class="line">  uv__io_start(loop, &amp;loop-&gt;async_io_watcher, POLLIN);</span><br><span class="line">  loop-&gt;async_wfd = pipefd[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -398,10 +398,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-11-25T03:32:35+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-11-26T03:24:48+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2019年11月25日</p>
+    <p>更新于 2019年11月26日</p>
   </a>
 </div>
 
@@ -470,6 +470,25 @@
       
       
           <div class="prev-next">
+              
+                  <section class="prev">
+                      <span class="art-item-left">
+                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                          <h4>
+                              <a href="/2019/11/26/libuv5/" rel="prev" title="libuv源码分析（5）uv_fs_*">
+                                
+                                    libuv源码分析（5）uv_fs_*
+                                
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/libuv/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> libuv</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
               
               
                   <section class="next">
