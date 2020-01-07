@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>alg1</title>
+      <link href="/2020/01/07/alg1/"/>
+      <url>/2020/01/07/alg1/</url>
+      
+        <content type="html"><![CDATA[<h4 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><p>logN</p><h4 id="二分查找的实现可以分为两种，一种是递归式的、另一种是循环式的"><a href="#二分查找的实现可以分为两种，一种是递归式的、另一种是循环式的" class="headerlink" title="二分查找的实现可以分为两种，一种是递归式的、另一种是循环式的"></a>二分查找的实现可以分为两种，一种是递归式的、另一种是循环式的</h4><p>😜递归式</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">int BinarySearch(vector&lt;int&gt;&amp; a,int lo,int ho, int key) &#123;</span><br><span class="line">  // if(lo &gt; ho) return -1;</span><br><span class="line">  // int mid = (lo + ho) / 2;</span><br><span class="line">  // if(a[mid] &gt; key) return BinarySearch(a, lo, mid - 1, key);</span><br><span class="line">  // else if(a[mid] &lt; key) BinarySearch(a, mid + 1, ho, key);</span><br><span class="line">  // else return mid;</span><br><span class="line">  if(lo &gt;= ho) return -1;</span><br><span class="line">  int mid = (lo + ho) / 2;</span><br><span class="line">  if(a[mid] &gt; key) return BinarySearch(a, lo, mid, key);</span><br><span class="line">  else if(a[mid] &lt; key) BinarySearch(a, mid + 1, ho, key);</span><br><span class="line">  else return mid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>&emsp;&emsp;区间的开闭自由选取，主要是要<strong>统一</strong>，如果要求传入左闭右开区间，那么在函数内部的处理也要保持左闭右开。</p><p>🈶非递归式</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">int BinarySearch(vector&lt;int&gt;&amp; a, int key) &#123;</span><br><span class="line">  int lo = 0,</span><br><span class="line">    ho = a.size(),</span><br><span class="line">  mid;</span><br><span class="line">  while(lo &lt; ho) &#123;</span><br><span class="line">    mid = (lo + ho) / 2;</span><br><span class="line">    if(a[mid] &gt; key) ho = mid;</span><br><span class="line">    else if(a[mid] &lt; key) lo = mid + 1;</span><br><span class="line">    else return mid;</span><br><span class="line">  &#125;</span><br><span class="line">  return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>递归要满足三个原则：</p><ol><li>递归总有一个最简单的情况—方法的第一句总是一个包含return的条件语句。</li><li>递归调用总要尝试取解决一个<strong>规模更小</strong>的子问题。</li><li>递归调用的父问题和子问题之间不应该有<strong>交集</strong>。</li></ol>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>libuv源码分析（6）uv_queue_work</title>
       <link href="/2019/11/26/libuv6/"/>
       <url>/2019/11/26/libuv6/</url>

@@ -4,11 +4,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>ssh: connect to host github.com port 22: Connection refused | lurenaaのblog</title>
+  <title>alg1 | lurenaaのblog</title>
   
   
-  <meta name="description" content="git push时出现ssh: connect to host github.com port 22: Connection refused fatal: Could not read from remote repository.
-Please make sure you have the correct access rights and the repository exists.">
+  <meta name="description" content="二分查找">
   
 
   
@@ -294,8 +293,8 @@ Please make sure you have the correct access rights and the repository exists.">
         
   
     <h1 class="title">
-      <a href="/2019/11/24/problems1/">
-        ssh: connect to host github.com port 22: Connection refused
+      <a href="/2020/01/07/alg1/">
+        alg1
       </a>
     </h1>
   
@@ -326,7 +325,7 @@ Please make sure you have the correct access rights and the repository exists.">
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2019-11-24</p>
+    <p>2020-01-07</p>
   </a>
 </div>
 
@@ -370,15 +369,18 @@ Please make sure you have the correct access rights and the repository exists.">
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> </span><br><span class="line">vim .ssh/config</span><br></pre></td></tr></table></figure>
-<p>你会发现这是一个新文件，在其中添加以下文字：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">User 你的用户名（例如97860xx@qq.com）</span><br><span class="line">Hostname ssh.github.com</span><br><span class="line">PreferredAuthentications publickey</span><br><span class="line">IdentityFile ~/.ssh/id_rsa</span><br><span class="line">Port 443</span><br></pre></td></tr></table></figure>
-<p>然后保存退出（代码如下）。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:wq</span><br></pre></td></tr></table></figure>
-
-<p>接下来测试一下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
-<p>出现下面的画面：<br><img src="../assets/ssh-connect.PNG" alt=""><br>在图片倒数第五行的地方会询问是否建立连接，输入yes即可。</p>
+        <h4 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><p>logN</p>
+<h4 id="二分查找的实现可以分为两种，一种是递归式的、另一种是循环式的"><a href="#二分查找的实现可以分为两种，一种是递归式的、另一种是循环式的" class="headerlink" title="二分查找的实现可以分为两种，一种是递归式的、另一种是循环式的"></a>二分查找的实现可以分为两种，一种是递归式的、另一种是循环式的</h4><p>😜递归式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">int BinarySearch(vector&lt;int&gt;&amp; a,int lo,int ho, int key) &#123;</span><br><span class="line">  // if(lo &gt; ho) return -1;</span><br><span class="line">  // int mid = (lo + ho) / 2;</span><br><span class="line">  // if(a[mid] &gt; key) return BinarySearch(a, lo, mid - 1, key);</span><br><span class="line">  // else if(a[mid] &lt; key) BinarySearch(a, mid + 1, ho, key);</span><br><span class="line">  // else return mid;</span><br><span class="line">  if(lo &gt;= ho) return -1;</span><br><span class="line">  int mid = (lo + ho) / 2;</span><br><span class="line">  if(a[mid] &gt; key) return BinarySearch(a, lo, mid, key);</span><br><span class="line">  else if(a[mid] &lt; key) BinarySearch(a, mid + 1, ho, key);</span><br><span class="line">  else return mid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;区间的开闭自由选取，主要是要<strong>统一</strong>，如果要求传入左闭右开区间，那么在函数内部的处理也要保持左闭右开。</p>
+<p>🈶非递归式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">int BinarySearch(vector&lt;int&gt;&amp; a, int key) &#123;</span><br><span class="line">  int lo = 0,</span><br><span class="line">    ho = a.size(),</span><br><span class="line">  mid;</span><br><span class="line">  while(lo &lt; ho) &#123;</span><br><span class="line">    mid = (lo + ho) / 2;</span><br><span class="line">    if(a[mid] &gt; key) ho = mid;</span><br><span class="line">    else if(a[mid] &lt; key) lo = mid + 1;</span><br><span class="line">    else return mid;</span><br><span class="line">  &#125;</span><br><span class="line">  return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>递归要满足三个原则：</p>
+<ol>
+<li>递归总有一个最简单的情况—方法的第一句总是一个包含return的条件语句。</li>
+<li>递归调用总要尝试取解决一个<strong>规模更小</strong>的子问题。</li>
+<li>递归调用的父问题和子问题之间不应该有<strong>交集</strong>。</li>
+</ol>
 
       </div>
       
@@ -390,10 +392,10 @@ Please make sure you have the correct access rights and the repository exists.">
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-11-24T23:54:24+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-08T00:19:48+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2019年11月24日</p>
+    <p>更新于 2020年1月8日</p>
   </a>
 </div>
 
@@ -402,7 +404,7 @@ Please make sure you have the correct access rights and the repository exists.">
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>遇见的问题</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E7%AE%97%E6%B3%95/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>算法</p></a></div>
 
 
         
@@ -415,7 +417,7 @@ Please make sure you have the correct access rights and the repository exists.">
       
         <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2019/11/24/problems1/&title=ssh: connect to host github.com port 22: Connection refused | lurenaaのblog&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/07/alg1/&title=alg1 | lurenaaのblog&summary="
           
           >
           
@@ -427,7 +429,7 @@ Please make sure you have the correct access rights and the repository exists.">
       
         <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2019/11/24/problems1/&title=ssh: connect to host github.com port 22: Connection refused | lurenaaのblog&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/07/alg1/&title=alg1 | lurenaaのblog&summary="
           
           >
           
@@ -439,7 +441,7 @@ Please make sure you have the correct access rights and the repository exists.">
       
         <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2019/11/24/problems1/&title=ssh: connect to host github.com port 22: Connection refused | lurenaaのblog&summary="
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/07/alg1/&title=alg1 | lurenaaのblog&summary="
           
           >
           
@@ -463,33 +465,14 @@ Please make sure you have the correct access rights and the repository exists.">
       
           <div class="prev-next">
               
-                  <section class="prev">
-                      <span class="art-item-left">
-                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
-                          <h4>
-                              <a href="/2019/11/25/libuv4/" rel="prev" title="libuv源码分析（4）async">
-                                
-                                    libuv源码分析（4）async
-                                
-                              </a>
-                          </h4>
-                          
-                              
-                              <h6 class="tags">
-                                  <a class="tag" href="/tags/libuv/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> libuv</a>
-                              </h6>
-                          
-                      </span>
-                  </section>
-              
               
                   <section class="next">
                       <span class="art-item-right" aria-hidden="true">
                           <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                           <h4>
-                              <a href="/2019/11/18/libuv3/" rel="prev" title="libuv源码分析（3）init_threads">
+                              <a href="/2019/11/26/libuv6/" rel="prev" title="libuv源码分析（6）uv_queue_work">
                                   
-                                      libuv源码分析（3）init_threads
+                                      libuv源码分析（6）uv_queue_work
                                   
                               </a>
                           </h4>
@@ -526,7 +509,7 @@ Please make sure you have the correct access rights and the repository exists.">
 
   <script>
     window.subData = {
-      title: 'ssh: connect to host github.com port 22: Connection refused',
+      title: 'alg1',
       tools: true
     }
   </script>
@@ -621,6 +604,20 @@ Please make sure you have the correct access rights and the repository exists.">
           
             
               
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer noopener" href="javascript:void(0)" target="_blank"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#时间复杂度"><span class="toc-text">时间复杂度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二分查找的实现可以分为两种，一种是递归式的、另一种是循环式的"><span class="toc-text">二分查找的实现可以分为两种，一种是递归式的、另一种是循环式的</span></a></li></ol>
+    </div>
+  </section>
+
 
             
           
