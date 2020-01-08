@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>为甚么异或能够确定两个数的符号是否相同？</title>
+      <link href="/2020/01/08/problems2/"/>
+      <url>/2020/01/08/problems2/</url>
+      
+        <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">unsigned int a  = -1;</span><br><span class="line">printf(&quot;%d,%u,%x&quot;,a,a,a);</span><br></pre></td></tr></table></figure><p>-1,4294967295,ffffffff<br><br>从结果上来说,验证了C++中使用的是<strong>补码</strong>。</p><h4 id="🍠现在说一说为什么异或能够确定两个数的符号是否相同？"><a href="#🍠现在说一说为什么异或能够确定两个数的符号是否相同？" class="headerlink" title="🍠现在说一说为什么异或能够确定两个数的符号是否相同？"></a>🍠现在说一说为什么异或能够确定两个数的符号是否相同？</h4><p>&emsp;&emsp;这里还有一个前提，两个数都是int类型，因为补码的原因，如果两个数的正负不同，那么它们的第一位就不同，因为int的第一位是正负的标志位。<br>通过异或，那么正数的第一位为0，负数的第一位为1，异或后第一位就为1，所以可以得到计算出的值为负值。相反如果两者符号相同，那么通过异或后，第一位就为0，所以为正数。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 遇见的问题 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>二分查找</title>
       <link href="/2020/01/07/alg1/"/>
       <url>/2020/01/07/alg1/</url>
