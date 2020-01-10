@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>堆排序</title>
+      <link href="/2020/01/10/alg4/"/>
+      <url>/2020/01/10/alg4/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😘代码实现"><a href="#😘代码实现" class="headerlink" title="😘代码实现"></a>😘代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">#pragma once</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &quot;Common.hpp&quot;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">/**</span><br><span class="line"> * 堆排序</span><br><span class="line"> **/</span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">class HeapSort &#123;</span><br><span class="line">  public:</span><br><span class="line">    static void sort(vector&lt;T&gt;&amp;);</span><br><span class="line">  private:</span><br><span class="line">    static void sink(vector&lt;T&gt;&amp; a, int k, int N);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">void HeapSort&lt;T&gt;::sort(vector&lt;T&gt;&amp; a) &#123;</span><br><span class="line">  int N = a.size() - 1;</span><br><span class="line">  for(int i = N / 2; i &gt;= 1; --i)</span><br><span class="line">    sink(a, i, N);</span><br><span class="line">  while(N &gt; 1) &#123;</span><br><span class="line">    swap(a[1], a[N--]);</span><br><span class="line">    sink(a, 1, N);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">void HeapSort&lt;T&gt;::sink(vector&lt;T&gt;&amp; a, int k, int N) &#123;</span><br><span class="line">  int j;</span><br><span class="line">  while(k &lt;= N / 2) &#123;</span><br><span class="line">    j = 2 * k;</span><br><span class="line">    if(j &lt; N &amp;&amp; a[j] &lt; a[j + 1]) ++j;</span><br><span class="line">    if(a[k] &gt;= a[j]) break;</span><br><span class="line">    swap(a[k], a[j]);</span><br><span class="line">    k = j;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="👿注意"><a href="#👿注意" class="headerlink" title="👿注意"></a>👿注意</h4><ul><li>要注意父节点只有一个子节点时的情况，在sink函数中（if(j &lt; N &amp;&amp; a[j] &lt; a[j + 1]) ++j;）一定要注意j&lt;N，不能超出范围</li><li>构造最大堆时，for循环从i = N / 2开始的原因是：sink中有限制条件while(k &lt;= N / 2)，所以N/2&lt;i&lt;N部分无法进入sink的while循环，是没有意义的，徒增N/2次比较</li><li>递增排序使用最大堆，递减排序使用最小堆</li><li>vector的第一个值（下标为0）不使用</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>索引优先队列</title>
       <link href="/2020/01/10/alg3/"/>
       <url>/2020/01/10/alg3/</url>

@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>索引优先队列 | lurenaaのblog</title>
+  <title>堆排序 | lurenaaのblog</title>
   
   
-  <meta name="description" content="索引优先队列学习总结">
+  <meta name="description" content="堆排序队列学习总结">
   
 
   
@@ -293,8 +293,8 @@
         
   
     <h1 class="title">
-      <a href="/2020/01/10/alg3/">
-        索引优先队列
+      <a href="/2020/01/10/alg4/">
+        堆排序
       </a>
     </h1>
   
@@ -369,17 +369,15 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <h4 id="🥛分析"><a href="#🥛分析" class="headerlink" title="🥛分析"></a>🥛分析</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class IndexMaxPQ...&#123;</span><br><span class="line">    private int maxN;        // maximum number of elements on PQ</span><br><span class="line">    private int n;           // number of elements on PQ</span><br><span class="line">    private int[] pq;        // binary heap using 1-based indexing</span><br><span class="line">    private int[] qp;        // inverse of pq - qp[pq[i]] = pq[qp[i]] = i</span><br><span class="line">    private Key[] keys;      // keys[i] = priority of i</span><br><span class="line"></span><br><span class="line">//中间省略...</span><br><span class="line">public void insert(int i, Key key) &#123;</span><br><span class="line">        ...</span><br><span class="line">        n++;</span><br><span class="line">        qp[i] = n;</span><br><span class="line">        pq[n] = i;</span><br><span class="line">        keys[i] = key;</span><br><span class="line">        swim(n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;根据《算法4》给出的代码，分析这两段代码我们可以看出来：</p>
-<ul>
-<li>在定义处可知pq是<strong>二叉堆的数组</strong></li>
-<li>由qp[i] = n;<pre><code>pq[n] = i;可以看出来，qp这个数组的用处就是为了记录**pq中值为i的下标是多少**，这样当我们要改下标为i的元素的值时，我们就不用遍历pq来获得位置了，**用空间来换取时间**</code></pre></li>
-<li>并且这个索引i仅仅为了找到元素对象key，并没实际的意义。n才是对应二叉堆的位置。<br>
+        <h4 id="😘代码实现"><a href="#😘代码实现" class="headerlink" title="😘代码实现"></a>😘代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">#pragma once</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &quot;Common.hpp&quot;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">/**</span><br><span class="line"> * 堆排序</span><br><span class="line"> **/</span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">class HeapSort &#123;</span><br><span class="line">  public:</span><br><span class="line">    static void sort(vector&lt;T&gt;&amp;);</span><br><span class="line">  private:</span><br><span class="line">    static void sink(vector&lt;T&gt;&amp; a, int k, int N);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">void HeapSort&lt;T&gt;::sort(vector&lt;T&gt;&amp; a) &#123;</span><br><span class="line">  int N = a.size() - 1;</span><br><span class="line">  for(int i = N / 2; i &gt;= 1; --i)</span><br><span class="line">    sink(a, i, N);</span><br><span class="line">  while(N &gt; 1) &#123;</span><br><span class="line">    swap(a[1], a[N--]);</span><br><span class="line">    sink(a, 1, N);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">void HeapSort&lt;T&gt;::sink(vector&lt;T&gt;&amp; a, int k, int N) &#123;</span><br><span class="line">  int j;</span><br><span class="line">  while(k &lt;= N / 2) &#123;</span><br><span class="line">    j = 2 * k;</span><br><span class="line">    if(j &lt; N &amp;&amp; a[j] &lt; a[j + 1]) ++j;</span><br><span class="line">    if(a[k] &gt;= a[j]) break;</span><br><span class="line">    swap(a[k], a[j]);</span><br><span class="line">    k = j;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-</li>
+<h4 id="👿注意"><a href="#👿注意" class="headerlink" title="👿注意"></a>👿注意</h4><ul>
+<li>要注意父节点只有一个子节点时的情况，在sink函数中（if(j &lt; N &amp;&amp; a[j] &lt; a[j + 1]) ++j;）一定要注意j&lt;N，不能超出范围</li>
+<li>构造最大堆时，for循环从i = N / 2开始的原因是：sink中有限制条件while(k &lt;= N / 2)，所以N/2&lt;i&lt;N部分无法进入sink的while循环，是没有意义的，徒增N/2次比较</li>
+<li>递增排序使用最大堆，递减排序使用最小堆</li>
+<li>vector的第一个值（下标为0）不使用</li>
 </ul>
-<h4 id="😍代码实现"><a href="#😍代码实现" class="headerlink" title="😍代码实现"></a>😍代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">#include  &lt;functional&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &quot;Common.hpp&quot;</span><br><span class="line">#include &lt;limits&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 索引最小优先队列</span><br><span class="line"> **/ </span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">class IndexMinPQ &#123;</span><br><span class="line">  public:</span><br><span class="line">    IndexMinPQ(int max);</span><br><span class="line">    void show() const;</span><br><span class="line">    int size() const &#123;return N;&#125;</span><br><span class="line">    int capacity() const &#123;return _capacity;&#125;</span><br><span class="line">    void insert(int k, T item);</span><br><span class="line">    void change(int k, T item);</span><br><span class="line">    bool contain(int k) const &#123;return qp[k] != -1;&#125;;</span><br><span class="line">    int delMin();</span><br><span class="line">  private:</span><br><span class="line">    void sink(int i);</span><br><span class="line">    void swim(int i);</span><br><span class="line">    T* element; //元素</span><br><span class="line">    int* pq; //二叉堆</span><br><span class="line">    int *qp; //index</span><br><span class="line">    int N;</span><br><span class="line">    int _capacity;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">IndexMinPQ&lt;T&gt;::IndexMinPQ(int max) :</span><br><span class="line">  element(new T[max + 1]), pq(new int[max + 1])</span><br><span class="line">  , qp(new int[max + 1]), N(0), _capacity(max) </span><br><span class="line">&#123;</span><br><span class="line">  for(int i = 0; i &lt; max + 1; ++i)</span><br><span class="line">    qp[i] = -1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">void IndexMinPQ&lt;T&gt;::sink(int n)&#123;</span><br><span class="line">  while(n &lt; N) &#123;</span><br><span class="line">    int m = n * 2;</span><br><span class="line">    if(element[pq[m]] &gt; element[pq[m + 1]]) ++m;</span><br><span class="line">    if(element[pq[m]] &lt; element[pq[n]]) break;</span><br><span class="line">    swap(pq[m], pq[n]);</span><br><span class="line">    swap(qp[pq[m]], qp[pq[n]]);</span><br><span class="line">    n = m;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">void IndexMinPQ&lt;T&gt;::swim(int n) &#123;</span><br><span class="line">  while(n &gt; 1) &#123;</span><br><span class="line">    int m = n / 2;</span><br><span class="line">    if(element[pq[m]] &lt;= element[pq[n]]) break;</span><br><span class="line">    swap(pq[m], pq[n]);</span><br><span class="line">    swap(qp[pq[m]], qp[pq[n]]);</span><br><span class="line">    n = m; </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">void IndexMinPQ&lt;T&gt;::insert(int k, T item) &#123;</span><br><span class="line">  // cout &lt;&lt; &quot;insert &quot; &lt;&lt; k &lt;&lt; &quot; &quot; &lt;&lt; item &lt;&lt; endl;</span><br><span class="line">  if(capacity() == size())&#123;</span><br><span class="line">    cout &lt;&lt; &quot;out of size&quot; &lt;&lt; endl;</span><br><span class="line">    return ;</span><br><span class="line">  &#125;</span><br><span class="line">  pq[++N] = k;</span><br><span class="line">  element[k] = item;</span><br><span class="line">  qp[k] = N;</span><br><span class="line">  swim(N);</span><br><span class="line">  // show();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">void IndexMinPQ&lt;T&gt;::show() const</span><br><span class="line">&#123;</span><br><span class="line">  cout &lt;&lt; &quot;pq: &quot;;</span><br><span class="line">  for(int i = 1; i &lt;= capacity(); ++i) </span><br><span class="line">    cout &lt;&lt; pq[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">  cout &lt;&lt; endl;</span><br><span class="line">  cout &lt;&lt; &quot;qp: &quot;;</span><br><span class="line">  for(int i = 1; i &lt;= capacity(); ++i) </span><br><span class="line">    cout &lt;&lt; qp[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">  cout &lt;&lt; endl;</span><br><span class="line">  cout &lt;&lt; &quot;element: &quot;;</span><br><span class="line">  for(int i = 1; i &lt;= capacity(); ++i) </span><br><span class="line">    cout &lt;&lt; element[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">  cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">void IndexMinPQ&lt;T&gt;::change(int k, T item) &#123;</span><br><span class="line">  if(!contain(k)) &#123;</span><br><span class="line">    cout &lt;&lt; &quot;change not contain&quot; &lt;&lt; endl;</span><br><span class="line">    return ;   </span><br><span class="line">  &#125;</span><br><span class="line">  T old_one = element[k];</span><br><span class="line">  element[k] = item;</span><br><span class="line">  if(item &gt; old_one) </span><br><span class="line">    sink(qp[k]);</span><br><span class="line">  else if(item &lt; old_one)</span><br><span class="line">    swim(qp[k]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">int IndexMinPQ&lt;T&gt;::delMin() &#123;</span><br><span class="line">  int max = pq[1];</span><br><span class="line">  swap(pq[1], pq[N]);</span><br><span class="line">  swap(qp[pq[1]], qp[pq[N]]);</span><br><span class="line">  --N;</span><br><span class="line">  show();</span><br><span class="line">  sink(1);</span><br><span class="line">  show();</span><br><span class="line">  qp[max] = -1;</span><br><span class="line">  element[max] = -1;</span><br><span class="line">  pq[N + 1] = -1;</span><br><span class="line">  return max;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char** argv) &#123;</span><br><span class="line">  IndexMinPQ&lt;int&gt; pq(6);</span><br><span class="line">  vector&lt;int&gt; v = Common::getInstance()-&gt;getRandomVector(6);</span><br><span class="line">  for(size_t i = 0; i &lt; v.size(); ++i) &#123;</span><br><span class="line">    pq.insert(i + 1, v[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  pq.show();</span><br><span class="line">  pq.delMin();</span><br><span class="line">  pq.show();</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="🍠参考资料：链接"><a href="#🍠参考资料：链接" class="headerlink" title="🍠参考资料：链接"></a>🍠参考资料：<a href="https://www.cnblogs.com/nullzx/p/6624731.html" target="_blank" rel="noopener">链接</a></h4>
+
       </div>
       
         <br>
@@ -390,7 +388,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-10T22:28:54+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-10T23:32:32+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
     <p>更新于 2020年1月10日</p>
@@ -415,7 +413,7 @@
       
         <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/10/alg3/&title=索引优先队列 | lurenaaのblog&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/10/alg4/&title=堆排序 | lurenaaのblog&summary="
           
           >
           
@@ -427,7 +425,7 @@
       
         <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/10/alg3/&title=索引优先队列 | lurenaaのblog&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/10/alg4/&title=堆排序 | lurenaaのblog&summary="
           
           >
           
@@ -439,7 +437,7 @@
       
         <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/10/alg3/&title=索引优先队列 | lurenaaのblog&summary="
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/10/alg4/&title=堆排序 | lurenaaのblog&summary="
           
           >
           
@@ -463,33 +461,14 @@
       
           <div class="prev-next">
               
-                  <section class="prev">
-                      <span class="art-item-left">
-                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
-                          <h4>
-                              <a href="/2020/01/10/alg4/" rel="prev" title="堆排序">
-                                
-                                    堆排序
-                                
-                              </a>
-                          </h4>
-                          
-                              
-                              <h6 class="tags">
-                                  <a class="tag" href="/tags/%E7%AE%97%E6%B3%95/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 算法</a>
-                              </h6>
-                          
-                      </span>
-                  </section>
-              
               
                   <section class="next">
                       <span class="art-item-right" aria-hidden="true">
                           <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                           <h4>
-                              <a href="/2020/01/10/alg2/" rel="prev" title="优先队列">
+                              <a href="/2020/01/10/alg3/" rel="prev" title="索引优先队列">
                                   
-                                      优先队列
+                                      索引优先队列
                                   
                               </a>
                           </h4>
@@ -526,7 +505,7 @@
 
   <script>
     window.subData = {
-      title: '索引优先队列',
+      title: '堆排序',
       tools: true
     }
   </script>
@@ -631,7 +610,7 @@
 </header>
 
     <div class='content pure'>
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🥛分析"><span class="toc-text">🥛分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#😍代码实现"><span class="toc-text">😍代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🍠参考资料：链接"><span class="toc-text">🍠参考资料：链接</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#😘代码实现"><span class="toc-text">😘代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#👿注意"><span class="toc-text">👿注意</span></a></li></ol>
     </div>
   </section>
 
