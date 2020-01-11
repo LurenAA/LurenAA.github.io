@@ -372,6 +372,11 @@
 <blockquote>
 <p>Accepted <br><br>22/22 cases passed (100 ms) <br><br>Your runtime beats 6.64 % of cpp submissions <br><br>Your memory usage beats 13.73 % of cpp submissions (9.7 MB) <br></p>
 </blockquote>
+<h4 id="🏆改进版"><a href="#🏆改进版" class="headerlink" title="🏆改进版"></a>🏆改进版</h4><p>&emsp;&emsp;对于插入排序来说，我们没有必要记录那么多前置节点的位置，<strong>我们只要保证ptr左边的序列有序即可</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* insertionSortList(ListNode* head) &#123;</span><br><span class="line">        if(!head || !head-&gt;next) </span><br><span class="line">            return head;</span><br><span class="line">        ListNode* ptr = head, *nex,*ptr2, </span><br><span class="line">        npre = ListNode(INT_MIN);</span><br><span class="line">        while(ptr) &#123;</span><br><span class="line">            nex = ptr-&gt;next;</span><br><span class="line">            ptr2 = &amp;npre;</span><br><span class="line">            while(ptr2-&gt;next &amp;&amp; ptr2-&gt;next-&gt;val &lt; ptr-&gt;val)</span><br><span class="line">                ptr2 = ptr2-&gt;next;</span><br><span class="line">            ptr-&gt;next = ptr2-&gt;next;</span><br><span class="line">            ptr2-&gt;next = ptr;</span><br><span class="line">            // for(auto x = &amp;npre; x != NULL; x = x-&gt;next) &#123;</span><br><span class="line">            //     cout &lt;&lt; x-&gt;val &lt;&lt; &quot; &quot;;</span><br><span class="line">            // &#125;</span><br><span class="line">            // cout &lt;&lt; &quot; cur: &quot; &lt;&lt; ptr-&gt;val  &lt;&lt; endl;</span><br><span class="line">            ptr = nex;</span><br><span class="line">        &#125;</span><br><span class="line">        return npre.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Accepted<br><br>22/22 cases passed (48 ms)<br><br>Your runtime beats 73.88 % of cpp submissions <br><br>Your memory usage beats 15.9 % of cpp submissions (9.7 MB)</p>
+</blockquote>
 
       </div>
       
@@ -383,7 +388,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-11T16:15:21+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-11T19:51:35+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
     <p>更新于 2020年1月11日</p>
@@ -455,6 +460,25 @@
       
       
           <div class="prev-next">
+              
+                  <section class="prev">
+                      <span class="art-item-left">
+                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                          <h4>
+                              <a href="/2020/01/11/leetcode179/" rel="prev" title="179.最大数">
+                                
+                                    179.最大数
+                                
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/LeetCode/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> LeetCode</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
               
               
                   <section class="next">
@@ -605,7 +629,7 @@
 </header>
 
     <div class='content pure'>
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🥧模仿数组的实现"><span class="toc-text">🥧模仿数组的实现</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🥧模仿数组的实现"><span class="toc-text">🥧模仿数组的实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🏆改进版"><span class="toc-text">🏆改进版</span></a></li></ol>
     </div>
   </section>
 
@@ -799,7 +823,7 @@
 </header>
 
     <div class='content pure'>
-      <a href="/tags/LeetCode/" style="font-size: 21.5px; color: #666">LeetCode</a> <a href="/tags/libuv/" style="font-size: 24px; color: #555">libuv</a> <a href="/tags/rax%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" style="font-size: 16.5px; color: #888">rax源码阅读</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 19px; color: #777">算法</a> <a href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/" style="font-size: 14px; color: #999">遇见的问题</a>
+      <a href="/tags/LeetCode/" style="font-size: 24px; color: #555">LeetCode</a> <a href="/tags/libuv/" style="font-size: 24px; color: #555">libuv</a> <a href="/tags/rax%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" style="font-size: 17.33px; color: #828282">rax源码阅读</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20.67px; color: #6c6c6c">算法</a> <a href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/" style="font-size: 14px; color: #999">遇见的问题</a>
     </div>
   </section>
 
