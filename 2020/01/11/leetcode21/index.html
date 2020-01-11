@@ -4,10 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>堆排序 | lurenaaのblog</title>
+  <title>21.合并两个有序链表 | lurenaaのblog</title>
   
-  
-  <meta name="description" content="堆排序队列学习总结">
   
 
   
@@ -293,8 +291,8 @@
         
   
     <h1 class="title">
-      <a href="/2020/01/10/alg4/">
-        堆排序
+      <a href="/2020/01/11/leetcode21/">
+        21.合并两个有序链表
       </a>
     </h1>
   
@@ -325,7 +323,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-01-10</p>
+    <p>2020-01-11</p>
   </a>
 </div>
 
@@ -369,14 +367,15 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <h4 id="😘代码实现"><a href="#😘代码实现" class="headerlink" title="😘代码实现"></a>😘代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">#pragma once</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &quot;Common.hpp&quot;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">/**</span><br><span class="line"> * 堆排序</span><br><span class="line"> **/</span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">class HeapSort &#123;</span><br><span class="line">  public:</span><br><span class="line">    static void sort(vector&lt;T&gt;&amp;);</span><br><span class="line">  private:</span><br><span class="line">    static void sink(vector&lt;T&gt;&amp; a, int k, int N);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">void HeapSort&lt;T&gt;::sort(vector&lt;T&gt;&amp; a) &#123;</span><br><span class="line">  int N = a.size() - 1;</span><br><span class="line">  for(int i = N / 2; i &gt;= 1; --i)</span><br><span class="line">    sink(a, i, N);</span><br><span class="line">  while(N &gt; 1) &#123;</span><br><span class="line">    swap(a[1], a[N--]);</span><br><span class="line">    sink(a, 1, N);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">void HeapSort&lt;T&gt;::sink(vector&lt;T&gt;&amp; a, int k, int N) &#123;</span><br><span class="line">  int j;</span><br><span class="line">  while(k &lt;= N / 2) &#123;</span><br><span class="line">    j = 2 * k;</span><br><span class="line">    if(j &lt; N &amp;&amp; a[j] &lt; a[j + 1]) ++j;</span><br><span class="line">    if(a[k] &gt;= a[j]) break;</span><br><span class="line">    swap(a[k], a[j]);</span><br><span class="line">    k = j;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="👿注意"><a href="#👿注意" class="headerlink" title="👿注意"></a>👿注意</h4><ul>
-<li>要注意父节点只有一个子节点时的情况，在sink函数中（if(j &lt; N &amp;&amp; a[j] &lt; a[j + 1]) ++j;）一定要注意j&lt;N，不能超出范围</li>
-<li>构造最大堆时，for循环从i = N / 2开始的原因是：sink中有限制条件while(k &lt;= N / 2)，所以N/2&lt;i&lt;N部分无法进入sink的while循环，是没有意义的，徒增N/2次比较</li>
-<li>递增排序使用最大堆，递减排序使用最小堆</li>
-<li>vector的第一个值（下标为0）不使用</li>
-</ul>
+        <h4 id="🥛迭代"><a href="#🥛迭代" class="headerlink" title="🥛迭代"></a>🥛迭代</h4><p>&emsp;&emsp;类似与归并排序的合并函数，实际还要更简单一些，没有长度的限制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) &#123;</span><br><span class="line">        ListNode nd(0), *pre = &amp;nd;</span><br><span class="line">        while(l1 || l2) &#123;</span><br><span class="line">            if(!l1) &#123;</span><br><span class="line">                pre-&gt;next = l2;</span><br><span class="line">                l2 = l2-&gt;next;</span><br><span class="line">            &#125; else if(!l2) &#123;</span><br><span class="line">                pre-&gt;next = l1;</span><br><span class="line">                l1 = l1-&gt;next;</span><br><span class="line">            &#125; else if(l1-&gt;val &lt; l2-&gt;val) &#123;</span><br><span class="line">                pre-&gt;next = l1;</span><br><span class="line">                l1 = l1-&gt;next;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                pre-&gt;next = l2;</span><br><span class="line">                l2 = l2-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            pre = pre-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        return nd.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Accepted<br><br>208/208 cases passed (8 ms)<br><br>Your runtime beats 93.28 % of cpp submissions<br><br>Your memory usage beats 76.07 % of cpp submissions (9 MB)<br></p>
+</blockquote>
+<h4 id="🥛递归"><a href="#🥛递归" class="headerlink" title="🥛递归"></a>🥛递归</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) &#123;</span><br><span class="line">        if(!l1)</span><br><span class="line">            return l2;</span><br><span class="line">        else if(!l2) </span><br><span class="line">            return l1;</span><br><span class="line">        else if(l2-&gt;val &lt; l1-&gt;val) &#123;</span><br><span class="line">            l2-&gt;next = mergeTwoLists(l2-&gt;next, l1);</span><br><span class="line">            return l2;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            l1-&gt;next = mergeTwoLists(l1-&gt;next, l2);</span><br><span class="line">            return l1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Accepted<br><br>208/208 cases passed (8 ms) <br><br>Your runtime beats 93.28 % of cpp submissions<br><br>Your memory usage beats 75.58 % of cpp submissions (9 MB) <br></p>
+</blockquote>
 
       </div>
       
@@ -388,10 +387,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-10T23:32:32+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-11T11:29:41+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2020年1月10日</p>
+    <p>更新于 2020年1月11日</p>
   </a>
 </div>
 
@@ -400,7 +399,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E7%AE%97%E6%B3%95/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>算法</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/LeetCode/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>LeetCode</p></a></div>
 
 
         
@@ -413,7 +412,7 @@
       
         <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/10/alg4/&title=堆排序 | lurenaaのblog&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/11/leetcode21/&title=21.合并两个有序链表 | lurenaaのblog&summary="
           
           >
           
@@ -425,7 +424,7 @@
       
         <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/10/alg4/&title=堆排序 | lurenaaのblog&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/11/leetcode21/&title=21.合并两个有序链表 | lurenaaのblog&summary="
           
           >
           
@@ -437,7 +436,7 @@
       
         <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/10/alg4/&title=堆排序 | lurenaaのblog&summary="
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/11/leetcode21/&title=21.合并两个有序链表 | lurenaaのblog&summary="
           
           >
           
@@ -465,9 +464,9 @@
                       <span class="art-item-left">
                           <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
                           <h4>
-                              <a href="/2020/01/11/leetcode148/" rel="prev" title="148. 排序链表">
+                              <a href="/2020/01/11/leetcode75/" rel="prev" title="75.颜色分类">
                                 
-                                    148. 排序链表
+                                    75.颜色分类
                                 
                               </a>
                           </h4>
@@ -485,16 +484,16 @@
                       <span class="art-item-right" aria-hidden="true">
                           <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                           <h4>
-                              <a href="/2020/01/10/alg3/" rel="prev" title="索引优先队列">
+                              <a href="/2020/01/11/leetcode148/" rel="prev" title="148. 排序链表">
                                   
-                                      索引优先队列
+                                      148. 排序链表
                                   
                               </a>
                           </h4>
                           
                               
                               <h6 class="tags">
-                                  <a class="tag" href="/tags/%E7%AE%97%E6%B3%95/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 算法</a>
+                                  <a class="tag" href="/tags/LeetCode/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> LeetCode</a>
                               </h6>
                           
                       </span>
@@ -524,7 +523,7 @@
 
   <script>
     window.subData = {
-      title: '堆排序',
+      title: '21.合并两个有序链表',
       tools: true
     }
   </script>
@@ -629,7 +628,7 @@
 </header>
 
     <div class='content pure'>
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#😘代码实现"><span class="toc-text">😘代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#👿注意"><span class="toc-text">👿注意</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🥛迭代"><span class="toc-text">🥛迭代</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🥛递归"><span class="toc-text">🥛递归</span></a></li></ol>
     </div>
   </section>
 
