@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>179.最大数 | lurenaaのblog</title>
+  <title>如何创建数组的共享指针 | lurenaaのblog</title>
   
   
 
@@ -291,8 +291,8 @@
         
   
     <h1 class="title">
-      <a href="/2020/01/11/leetcode179/">
-        179.最大数
+      <a href="/2020/01/12/problems3/">
+        如何创建数组的共享指针
       </a>
     </h1>
   
@@ -323,7 +323,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-01-11</p>
+    <p>2020-01-12</p>
   </a>
 </div>
 
@@ -367,13 +367,9 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <h4 id="🥩堆排序"><a href="#🥩堆排序" class="headerlink" title="🥩堆排序"></a>🥩堆排序</h4><p>&emsp;&emsp;堆排序，然后将数字拼接成字符串，但是两个数字之间的比较并不能直接用&gt;&lt;来进行。我的方法是定义compare函数，进行比较。compare比较两个数的方法是：比如121，12，那么就比较121|12和12|121的大小</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    string largestNumber(vector&lt;int&gt;&amp; a) &#123;</span><br><span class="line">        if(!a.size())</span><br><span class="line">          return &quot;&quot;;</span><br><span class="line">        string s;</span><br><span class="line"></span><br><span class="line">        //堆排序</span><br><span class="line">        a.insert(a.begin(), -1);</span><br><span class="line">        int n = a.size() - 1;</span><br><span class="line">        for(int i = 2; i &lt;= n; ++i) &#123;</span><br><span class="line">          swim(a, i, n);</span><br><span class="line">        &#125;</span><br><span class="line">        // for(auto x : a) &#123;</span><br><span class="line">        //   cout &lt;&lt; x &lt;&lt; &quot; &quot;;</span><br><span class="line">        // &#125;</span><br><span class="line">        // cout &lt;&lt; endl;</span><br><span class="line">        while(n &gt; 1) &#123;</span><br><span class="line">          swap(a[1], a[n--]);</span><br><span class="line">          sink(a, 1, n);</span><br><span class="line">        &#125;</span><br><span class="line">        // for(auto x : a) &#123;</span><br><span class="line">        //   cout &lt;&lt; x &lt;&lt; &quot; &quot;;</span><br><span class="line">        // &#125;</span><br><span class="line">        for(int i = 1; i &lt; a.size(); ++i) </span><br><span class="line">          s += to_string(a[i]);</span><br><span class="line">        int ct = 0;</span><br><span class="line">        for(int i = 0; i &lt; s.size() &amp;&amp; s[i] == &apos;0&apos;; ++i) &#123;</span><br><span class="line">          ++ct;</span><br><span class="line">        &#125;</span><br><span class="line">        if(ct == s.size()) return &quot;0&quot;;</span><br><span class="line">        return s.substr(ct);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    void swim(vector&lt;int&gt;&amp; a, int k, int n) &#123;</span><br><span class="line">      cout &lt;&lt; &quot;swim&quot; &lt;&lt; endl;</span><br><span class="line">      int j;</span><br><span class="line">      while(k &gt; 1) &#123;</span><br><span class="line">        j = k /2;</span><br><span class="line">        if(j &gt;= 1 &amp;&amp; compare(a[j],a[k]) != 1) break;</span><br><span class="line">        swap(a[j], a[k]);</span><br><span class="line">        k = j;</span><br><span class="line">      &#125; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    void sink(vector&lt;int&gt;&amp; a, int k, int n) &#123;</span><br><span class="line">      int j ;</span><br><span class="line">      while(k &lt;= n / 2) &#123;</span><br><span class="line">        j = 2 * k;</span><br><span class="line">        if(j + 1 &lt;= n &amp;&amp; compare(a[j + 1], a[j]) == -1) ++j;</span><br><span class="line">        if(compare(a[j], a[k]) != -1) break;</span><br><span class="line">        swap(a[j], a[k]);</span><br><span class="line">        k = j;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int compare(int i, int j) &#123;</span><br><span class="line">      if(i == j) </span><br><span class="line">        return 0;</span><br><span class="line">      int com = 0, ix = 0, jx = 0, ii = i, jj = j;</span><br><span class="line">      while(ii / 10 &gt; 0) &#123;</span><br><span class="line">        ix++;</span><br><span class="line">        ii /=  10;</span><br><span class="line">      &#125;</span><br><span class="line">      while(jj / 10 &gt; 0) &#123;</span><br><span class="line">        jx++;</span><br><span class="line">        jj /= 10;</span><br><span class="line">      &#125;</span><br><span class="line">      long long ir ,jr;</span><br><span class="line">      jr = j * pow(10, ix + 1) + i;</span><br><span class="line">      ir = i * pow(10, jx + 1) + j;</span><br><span class="line">      // cout &lt;&lt; &quot;i, j: &quot; &lt;&lt; ir &lt;&lt; &quot; &quot; &lt;&lt; jr &lt;&lt; endl;</span><br><span class="line">      if(ir &gt; jr) return 1;</span><br><span class="line">      else if(jr &gt; ir) return -1;</span><br><span class="line">      else return 0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Accepted<br><br>222/222 cases passed (8 ms) <br><br>Your runtime beats 91.43 % of cpp submissions <br><br>Your memory usage beats 79.45 % of cpp submissions (9.1 MB) <br></p>
-</blockquote>
-<h4 id="🈶改进"><a href="#🈶改进" class="headerlink" title="🈶改进"></a>🈶改进</h4><p>&emsp;&emsp;相比与我将两个数拼在一起比较，更加好的方法是<strong>转化为字符串比较</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    string largestNumber(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        if (all_of(nums.begin(), nums.end(), [](int x) &#123; return x == 0; &#125;)) &#123;</span><br><span class="line">            return string(&quot;0&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        vector&lt;string&gt; strNums(nums.size());</span><br><span class="line">        std::transform(nums.begin(), nums.end(), strNums.begin(), [](int x) &#123;</span><br><span class="line">            return std::to_string(x);</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        std::sort(strNums.begin(), strNums.end(), [](const string&amp; x, const string&amp; y) &#123;</span><br><span class="line">            /* x为后面元素，y为前面元素，return true则将x移动到前面 */</span><br><span class="line">            return x + y &gt; y + x;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        return std::accumulate(strNums.begin(), strNums.end(), string());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+        <p>C++11在shared_ptr是没有shared_ptr&lt;int []&gt;这样的东西的，<br>但是std::unique_ptr&lt;int[]&gt;是有的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;int[]&gt; a(new int[10]()); // 错误，c++17前不能传递数组类型作为shared_ptr的模板参数</span><br><span class="line">std::unique_ptr&lt;int[]&gt; b(new int[10]()); // ok, unique_ptr对此做了特化</span><br><span class="line"></span><br><span class="line">std::shared_ptr&lt;int&gt; c(new int[10]()); // 错误，可以编译，但会产生未定义行为，请不要这么做</span><br><span class="line">std::shared_ptr&lt;int&gt; sp3(new int[10](), std::default_delete&lt;int[]&gt;()); //正确做法</span><br></pre></td></tr></table></figure>
+
       </div>
       
         <br>
@@ -384,10 +380,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-11T21:53:52+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-12T10:58:59+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2020年1月11日</p>
+    <p>更新于 2020年1月12日</p>
   </a>
 </div>
 
@@ -396,7 +392,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/LeetCode/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>LeetCode</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>遇见的问题</p></a></div>
 
 
         
@@ -409,7 +405,7 @@
       
         <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/11/leetcode179/&title=179.最大数 | lurenaaのblog&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/12/problems3/&title=如何创建数组的共享指针 | lurenaaのblog&summary="
           
           >
           
@@ -421,7 +417,7 @@
       
         <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/11/leetcode179/&title=179.最大数 | lurenaaのblog&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/12/problems3/&title=如何创建数组的共享指针 | lurenaaのblog&summary="
           
           >
           
@@ -433,7 +429,7 @@
       
         <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/11/leetcode179/&title=179.最大数 | lurenaaのblog&summary="
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/12/problems3/&title=如何创建数组的共享指针 | lurenaaのblog&summary="
           
           >
           
@@ -457,40 +453,21 @@
       
           <div class="prev-next">
               
-                  <section class="prev">
-                      <span class="art-item-left">
-                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+              
+                  <section class="next">
+                      <span class="art-item-right" aria-hidden="true">
+                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                           <h4>
                               <a href="/2020/01/12/alg5/" rel="prev" title="字典">
-                                
-                                    字典
-                                
+                                  
+                                      字典
+                                  
                               </a>
                           </h4>
                           
                               
                               <h6 class="tags">
                                   <a class="tag" href="/tags/%E7%AE%97%E6%B3%95/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 算法</a>
-                              </h6>
-                          
-                      </span>
-                  </section>
-              
-              
-                  <section class="next">
-                      <span class="art-item-right" aria-hidden="true">
-                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
-                          <h4>
-                              <a href="/2020/01/11/leetcode147/" rel="prev" title="147.对链表进行插入排序">
-                                  
-                                      147.对链表进行插入排序
-                                  
-                              </a>
-                          </h4>
-                          
-                              
-                              <h6 class="tags">
-                                  <a class="tag" href="/tags/LeetCode/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> LeetCode</a>
                               </h6>
                           
                       </span>
@@ -520,7 +497,7 @@
 
   <script>
     window.subData = {
-      title: '179.最大数',
+      title: '如何创建数组的共享指针',
       tools: true
     }
   </script>
@@ -615,20 +592,6 @@
           
             
               
-  <section class='widget toc-wrapper'>
-    
-<header class='pure'>
-  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
-  
-    <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer noopener" href="javascript:void(0)" target="_blank"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
-  
-</header>
-
-    <div class='content pure'>
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🥩堆排序"><span class="toc-text">🥩堆排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🈶改进"><span class="toc-text">🈶改进</span></a></li></ol>
-    </div>
-  </section>
-
 
             
           
