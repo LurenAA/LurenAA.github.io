@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>friends | lurenaaのblog</title>
+  <title>在C++中是否有替代INT_MIN这些宏定义的功能？ | lurenaaのblog</title>
   
   
 
@@ -44,7 +44,7 @@
   
   
   <div class="cover-wrapper">
-    <cover class='cover link half'>
+    <cover class='cover post half'>
       
         
   <h1 class='title'>lurenaa的博客</h1>
@@ -279,7 +279,7 @@
       <div class='l_main'>
   
 
-  <article id="link" class="post white-box article-type-link" itemscope itemprop="blogPost">
+  <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
     
 
 
@@ -291,8 +291,8 @@
         
   
     <h1 class="title">
-      <a href="/friends/index.html">
-        friends
+      <a href="/2020/01/13/problems4/">
+        在C++中是否有替代INT_MIN这些宏定义的功能？
       </a>
     </h1>
   
@@ -323,7 +323,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2019-11-22</p>
+    <p>2020-01-13</p>
   </a>
 </div>
 
@@ -367,9 +367,113 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        
+        <p>📣在C++中我们依然可以包含 <cstdint>头文件，然后去使用INT_MIN这些宏定义,但是其实在C++中是存在更加优雅的方式的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;limits&gt;</span><br><span class="line">std::numeric_limits&lt;int&gt;::min() //INT_MIN</span><br><span class="line">std::numeric_limits&lt;int&gt;::max() //INT_MAX</span><br></pre></td></tr></table></figure>
+
       </div>
       
+        <br>
+        
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-13T01:13:48+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>更新于 2020年1月13日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>遇见的问题</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/13/problems4/&title=在C++中是否有替代INT_MIN这些宏定义的功能？ | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/13/problems4/&title=在C++中是否有替代INT_MIN这些宏定义的功能？ | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/13/problems4/&title=在C++中是否有替代INT_MIN这些宏定义的功能？ | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+      
+      
+          <div class="prev-next">
+              
+              
+                  <section class="next">
+                      <span class="art-item-right" aria-hidden="true">
+                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                          <h4>
+                              <a href="/2020/01/12/problems3/" rel="prev" title="如何创建数组的共享指针">
+                                  
+                                      如何创建数组的共享指针
+                                  
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 遇见的问题</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
+              
+          </div>
       
     </section>
   </article>
@@ -390,6 +494,13 @@
 <!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
 
 
+
+  <script>
+    window.subData = {
+      title: '在C++中是否有替代INT_MIN这些宏定义的功能？',
+      tools: true
+    }
+  </script>
 
 
 </div>
