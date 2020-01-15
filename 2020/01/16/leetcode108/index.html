@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>148. 排序链表 | lurenaaのblog</title>
+  <title>108.将有序数组转换为二叉搜索树 | lurenaaのblog</title>
   
   
 
@@ -291,8 +291,8 @@
         
   
     <h1 class="title">
-      <a href="/2020/01/11/leetcode148/">
-        148. 排序链表
+      <a href="/2020/01/16/leetcode108/">
+        108.将有序数组转换为二叉搜索树
       </a>
     </h1>
   
@@ -323,7 +323,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-01-11</p>
+    <p>2020-01-16</p>
   </a>
 </div>
 
@@ -367,26 +367,8 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <h4 id="🥩自顶向下归并排序"><a href="#🥩自顶向下归并排序" class="headerlink" title="🥩自顶向下归并排序"></a>🥩自顶向下归并排序</h4><p>&emsp;&emsp;基础版，根据算法4中的数组的归并算法改得</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* sortList(ListNode* head) &#123;</span><br><span class="line">        if(!head) return head; </span><br><span class="line">        n = 1;</span><br><span class="line">         ListNode* h = head;</span><br><span class="line">        while(h-&gt;next != NULL) &#123;</span><br><span class="line">            h = h-&gt;next;</span><br><span class="line">            ++n;</span><br><span class="line">        &#125;</span><br><span class="line">        //cout &lt;&lt; &quot;count : &quot; &lt;&lt; n  &lt;&lt; endl;</span><br><span class="line">        aux = new int[n]();</span><br><span class="line">        sortList(head, 0, n - 1);</span><br><span class="line">        return head;</span><br><span class="line">    &#125;</span><br><span class="line">    void sortList(ListNode* head, int i, int j) &#123;</span><br><span class="line">        if(i &gt;= j) return ;</span><br><span class="line">        int mid = i + (j - i) / 2; </span><br><span class="line">        sortList(head, i, mid);</span><br><span class="line">        sortList(head, mid + 1, j);</span><br><span class="line">        merge(head, i, mid, j);</span><br><span class="line">    &#125;</span><br><span class="line">    void merge(ListNode* head, int i,int mid, int j) &#123;</span><br><span class="line">        //cout &lt;&lt; &quot;i,m.j : &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; mid &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; endl;</span><br><span class="line">        ListNode* inode = at(head, i),* inode2 = inode;</span><br><span class="line">        //cout &lt;&lt; &quot;inode-&gt;val: &quot; &lt;&lt;  inode2-&gt;val &lt;&lt; endl;</span><br><span class="line">        int lo = i - i, hi = mid + 1 - i;</span><br><span class="line">        for(int k = 0; k &lt;= j - i; ++k , inode = inode-&gt;next)</span><br><span class="line">            aux[k + i] = inode-&gt;val;</span><br><span class="line">        // for(int k = i; k &lt;= j; ++k) &#123;</span><br><span class="line">            //cout &lt;&lt; aux[k] &lt;&lt; &quot; &quot;;</span><br><span class="line">        // &#125;</span><br><span class="line">        //cout &lt;&lt; endl;</span><br><span class="line">        for(int k = 0; k &lt;= j - i; ++k) &#123;</span><br><span class="line">            if(lo &gt; mid - i)&#123; </span><br><span class="line">                inode2-&gt;val = aux[hi + i];</span><br><span class="line">                ++hi;</span><br><span class="line">            &#125;</span><br><span class="line">            else if (hi &gt; j - i) &#123;</span><br><span class="line">                inode2-&gt;val = aux[lo + i];</span><br><span class="line">                ++lo;</span><br><span class="line">            &#125;</span><br><span class="line">            else if (aux[lo + i] &gt; aux[hi + i]) &#123;</span><br><span class="line">                inode2-&gt;val = aux[hi + i];</span><br><span class="line">                ++hi;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                inode2-&gt;val = aux[lo + i];</span><br><span class="line">                ++lo;</span><br><span class="line">            &#125;</span><br><span class="line">            //cout &lt;&lt; &quot;lo, hi : &quot; &lt;&lt; lo &lt;&lt;  &quot; &quot; &lt;&lt; hi &lt;&lt; endl;</span><br><span class="line">            inode2 = inode2-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ListNode* at(ListNode* head, int n) &#123;</span><br><span class="line">        while(n--)</span><br><span class="line">            head = head-&gt;next;</span><br><span class="line">        return head;</span><br><span class="line">    &#125; </span><br><span class="line">    int* aux;</span><br><span class="line">    int n;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Accepted<br><br>16/16 cases passed (1108 ms) <br><br>Your runtime beats 5.09 % of cpp submissions<br><br>Your memory usage beats 62.56 % of cpp submissions (12.3 MB)</p>
-</blockquote>
-<h4 id="🥧自顶向下归并排序2"><a href="#🥧自顶向下归并排序2" class="headerlink" title="🥧自顶向下归并排序2"></a>🥧自顶向下归并排序2</h4><p>&emsp;&emsp;学习自<a href="https://leetcode-cn.com/problems/sort-list/solution/sort-list-gui-bing-pai-xu-lian-biao-by-jyd/" target="_blank" rel="noopener">链接</a>,以一种链表得方式来做，而不是以数组得方式来思考</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* sortList(ListNode* head) &#123;</span><br><span class="line">        if(!head || !head-&gt;next)</span><br><span class="line">            return head;</span><br><span class="line">        ListNode* slow = head, </span><br><span class="line">            * fast = head-&gt;next;</span><br><span class="line">        while(fast &amp;&amp; fast-&gt;next) &#123;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">            fast = fast-&gt;next-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode* tmp = slow-&gt;next;</span><br><span class="line">        slow-&gt;next = nullptr;</span><br><span class="line">        ListNode* left = sortList(head);</span><br><span class="line">        ListNode* right = sortList(tmp);</span><br><span class="line">        ListNode thead = ListNode(-1), *thd = &amp;thead;</span><br><span class="line">        while(left || right) &#123;</span><br><span class="line">            if(!left) &#123;</span><br><span class="line">                thd-&gt;next = right;</span><br><span class="line">                right = right-&gt;next;</span><br><span class="line">            &#125; else if(!right) &#123;</span><br><span class="line">                thd-&gt;next = left;</span><br><span class="line">                left = left-&gt;next;</span><br><span class="line">            &#125; else if (right-&gt;val &gt; left-&gt;val) &#123;</span><br><span class="line">                thd-&gt;next = left;</span><br><span class="line">                left = left-&gt;next;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                thd-&gt;next = right;</span><br><span class="line">                right = right-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            thd = thd-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        return thead.next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Accepted <br><br>16/16 cases passed (24 ms)<br><br>Your runtime beats 100 % of cpp submissions<br><br>Your memory usage beats 72.66 % of cpp submissions (11.9 MB)</p>
-</blockquote>
-<h4 id="🥣自底向上归并排序"><a href="#🥣自底向上归并排序" class="headerlink" title="🥣自底向上归并排序"></a>🥣自底向上归并排序</h4><p>&emsp;&emsp;学习自<a href="https://leetcode-cn.com/problems/sort-list/solution/java-zi-di-xiang-shang-gui-bing-by-lava-4/" target="_blank" rel="noopener">链接</a>，自底向上得链表，有几个难点:</p>
-<ul>
-<li>如何每次merge后与后面得链表接上</li>
-<li>如何串联成一个长得链表最后返回<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* sortList(ListNode* head) &#123;</span><br><span class="line">        if(!head || !head-&gt;next)</span><br><span class="line">            return head;</span><br><span class="line">        ListNode* preNode = new ListNode(0), *pre = preNode;</span><br><span class="line">        pre-&gt;next = head;</span><br><span class="line">        int count = 0;</span><br><span class="line">        while((pre = pre-&gt;next) &amp;&amp; ++count) ;</span><br><span class="line">        // cout &lt;&lt; &quot;count : &quot; &lt;&lt; count &lt;&lt; endl;</span><br><span class="line">        pre = preNode;</span><br><span class="line">        for(int sz = 1; sz &lt; count; sz *=2) &#123;</span><br><span class="line">            while(pre = sortList(pre, sz)) ;</span><br><span class="line">            pre = preNode;</span><br><span class="line">        &#125;</span><br><span class="line">        return preNode-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ListNode* sortList(ListNode* pre, int sz) &#123;</span><br><span class="line">        ListNode* fl = pre-&gt;next, </span><br><span class="line">            *ll = pre-&gt;next;</span><br><span class="line">        for(int i = 0; i &lt; sz ; ++i) &#123;</span><br><span class="line">            if(!ll) </span><br><span class="line">                return nullptr;</span><br><span class="line">            ll =ll-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        int lc = 0, fc = 0;</span><br><span class="line">        while(fc &lt; sz) &#123;</span><br><span class="line">            if(lc == sz || ll == nullptr || ll-&gt;val &gt; fl-&gt;val) &#123;</span><br><span class="line">                ++fc;</span><br><span class="line">                pre-&gt;next = fl;</span><br><span class="line">                fl = fl-&gt;next;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                ++lc;</span><br><span class="line">                pre-&gt;next = ll;</span><br><span class="line">                ll = ll-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            pre = pre-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        while(lc &lt; sz &amp;&amp; ll) &#123;</span><br><span class="line">            ++lc;</span><br><span class="line">            pre-&gt;next = ll;</span><br><span class="line">            ll = ll-&gt;next;</span><br><span class="line">            pre=pre-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        pre-&gt;next = ll;</span><br><span class="line">        return pre;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Accepted<br><br>16/16 cases passed (24 ms)<br><br>Your runtime beats 100 % of cpp submissions<br><br>Your memory usage beats 93.48 % of cpp submissions (11.5 MB)<br></p>
-</blockquote>
-</li>
-</ul>
-
+        <h4 id="🥛中序构造"><a href="#🥛中序构造" class="headerlink" title="🥛中序构造"></a>🥛中序构造</h4><p>&emsp;&emsp;不用担心mid+1超出范围，因为nums[mid]是存在的，所以在构造r时，nums.begin() + mid + 1极限时就是与nums.end()相等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    TreeNode* sortedArrayToBST(vector&lt;int&gt;&amp; nums)&#123;</span><br><span class="line">        if(!nums.size())</span><br><span class="line">            return nullptr;</span><br><span class="line">        int mid = nums.size() / 2;</span><br><span class="line">        TreeNode* root = new TreeNode(nums[mid]);</span><br><span class="line"></span><br><span class="line">        vector&lt;int&gt; l(nums.begin(), nums.begin() + mid);</span><br><span class="line">        vector&lt;int&gt; r(nums.begin() + mid + 1, nums.end());</span><br><span class="line">        root-&gt;left = sortedArrayToBST(l);</span><br><span class="line">        root-&gt;right =  sortedArrayToBST(r);</span><br><span class="line">        return root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
       </div>
       
         <br>
@@ -397,10 +379,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-11T14:27:48+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-16T02:50:54+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2020年1月11日</p>
+    <p>更新于 2020年1月16日</p>
   </a>
 </div>
 
@@ -422,7 +404,7 @@
       
         <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/11/leetcode148/&title=148. 排序链表 | lurenaaのblog&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/16/leetcode108/&title=108.将有序数组转换为二叉搜索树 | lurenaaのblog&summary="
           
           >
           
@@ -434,7 +416,7 @@
       
         <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/11/leetcode148/&title=148. 排序链表 | lurenaaのblog&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/16/leetcode108/&title=108.将有序数组转换为二叉搜索树 | lurenaaのblog&summary="
           
           >
           
@@ -446,7 +428,7 @@
       
         <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/11/leetcode148/&title=148. 排序链表 | lurenaaのblog&summary="
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/16/leetcode108/&title=108.将有序数组转换为二叉搜索树 | lurenaaのblog&summary="
           
           >
           
@@ -470,40 +452,21 @@
       
           <div class="prev-next">
               
-                  <section class="prev">
-                      <span class="art-item-left">
-                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
-                          <h4>
-                              <a href="/2020/01/11/leetcode21/" rel="prev" title="21.合并两个有序链表">
-                                
-                                    21.合并两个有序链表
-                                
-                              </a>
-                          </h4>
-                          
-                              
-                              <h6 class="tags">
-                                  <a class="tag" href="/tags/LeetCode/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> LeetCode</a>
-                              </h6>
-                          
-                      </span>
-                  </section>
-              
               
                   <section class="next">
                       <span class="art-item-right" aria-hidden="true">
                           <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                           <h4>
-                              <a href="/2020/01/10/alg4/" rel="prev" title="堆排序">
+                              <a href="/2020/01/13/problems4/" rel="prev" title="在C++中是否有替代INT_MIN这些宏定义的功能？">
                                   
-                                      堆排序
+                                      在C++中是否有替代INT_MIN这些宏定义的功能？
                                   
                               </a>
                           </h4>
                           
                               
                               <h6 class="tags">
-                                  <a class="tag" href="/tags/%E7%AE%97%E6%B3%95/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 算法</a>
+                                  <a class="tag" href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 遇见的问题</a>
                               </h6>
                           
                       </span>
@@ -533,7 +496,7 @@
 
   <script>
     window.subData = {
-      title: '148. 排序链表',
+      title: '108.将有序数组转换为二叉搜索树',
       tools: true
     }
   </script>
@@ -638,7 +601,7 @@
 </header>
 
     <div class='content pure'>
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🥩自顶向下归并排序"><span class="toc-text">🥩自顶向下归并排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🥧自顶向下归并排序2"><span class="toc-text">🥧自顶向下归并排序2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🥣自底向上归并排序"><span class="toc-text">🥣自底向上归并排序</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🥛中序构造"><span class="toc-text">🥛中序构造</span></a></li></ol>
     </div>
   </section>
 
