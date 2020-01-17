@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>Archives: 2020/1 | lurenaaのblog</title>
+  <title>leetcode315 | lurenaaのblog</title>
   
   
 
@@ -44,7 +44,7 @@
   
   
   <div class="cover-wrapper">
-    <cover class='cover  half'>
+    <cover class='cover post half'>
       
         
   <h1 class='title'>lurenaa的博客</h1>
@@ -277,16 +277,10 @@
   <div class="l_body">
     <div class='body-wrapper'>
       <div class='l_main'>
-	
-		
-  <section class="post-list">
-    
-    
-      
-        
-          <div class='post-wrapper'>
-            <article class="post reveal ">
   
+
+  <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+    
 
 
   <section class='meta'>
@@ -295,11 +289,13 @@
     <div class="meta" id="header-meta">
       
         
-  <h2 class="title">
-    <a href="/2020/01/11/leetcode56/">
-      56.合并区间
-    </a>
-  </h2>
+  
+    <h1 class="title">
+      <a href="/2020/01/17/leetcode315/">
+        leetcode315
+      </a>
+    </h1>
+  
 
 
       
@@ -327,7 +323,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-01-11</p>
+    <p>2020-01-17</p>
   </a>
 </div>
 
@@ -335,6 +331,24 @@
         
           
             
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
 
           
         
@@ -351,805 +365,152 @@
   </section>
 
 
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-        <div class="readmore">
-          <a href="/2020/01/11/leetcode56/" class="flat-box">
-            <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-            阅读全文
-          </a>
-        </div>
-      
-    </div>
-    
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/LeetCode/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> LeetCode</a>
-        
+    <section class="article typo">
+      <div class="article-entry" itemprop="articleBody">
+        <hr>
+<p>title: 315.计算右侧小于当前元素的个数<br>date: 2020-01-17 20:17:50<br>tags: [“LeetCode”]</p>
+<hr>
+<h4 id="😝二叉查找树实现"><a href="#😝二叉查找树实现" class="headerlink" title="😝二叉查找树实现"></a>😝二叉查找树实现</h4><p>&emsp;&emsp;有几个难点</p>
+<ul>
+<li>递归插入的时候要通过一个辅助变量来更新每个节点的值（low_count）</li>
+<li>处理值相同时的情况<br>因为插入是沿着一条路径下去的，所以是<strong>没有办法在插入的时候更新全部节点的</strong>。 <br><br>😳方案一是：选择单独在插入之后再来更新节点。 <br><br>😳方案二是：更新一边的节点，在这个题目中，我们的选择就是只更新左边的节点，这时Node-&gt;low_count代表的就不是全体中比它小的节点数量，而是<strong>当前根节点下比它小的数量</strong>，而向右移动就是切换根节点。<br><br>因为我们是<strong>以根节点标准</strong>开始进行比较，所以我们用辅助变量更新节点是更新不到起点以外的地方的。</li>
+</ul>
+<p>🥦方案二：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    struct Node &#123;</span><br><span class="line">        int low_count;  //统计比它小的节点</span><br><span class="line">        int val;</span><br><span class="line">        shared_ptr&lt;Node&gt; left, right;</span><br><span class="line">        Node(int val, int count) : </span><br><span class="line">        low_count(count), val(val), left(nullptr), right(nullptr) &#123;&#125;</span><br><span class="line">        int compareTo(int k) &#123;</span><br><span class="line">            if(val &lt; k) </span><br><span class="line">                return -1;</span><br><span class="line">            else if (val &gt; k) </span><br><span class="line">                return 1;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    int low_c = 0;</span><br><span class="line">    shared_ptr&lt;Node&gt; insert(shared_ptr&lt;Node&gt; h, int val) &#123;</span><br><span class="line">        if(!h) </span><br><span class="line">            return make_shared&lt;Node&gt;(val ,0);</span><br><span class="line">        int cmp = h-&gt;compareTo(val);</span><br><span class="line">        if(cmp &gt;= 0) &#123;</span><br><span class="line">            h-&gt;low_count += 1;</span><br><span class="line">            h-&gt;left = insert(h-&gt;left, val);</span><br><span class="line">        &#125; </span><br><span class="line">        else if(cmp &lt; 0) &#123;</span><br><span class="line">            low_c += h-&gt;low_count + 1;</span><br><span class="line">            h-&gt;right = insert(h-&gt;right, val);</span><br><span class="line">        &#125; </span><br><span class="line">        return h;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    vector&lt;int&gt; countSmaller(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        vector&lt;int&gt; counts(nums.size());</span><br><span class="line">        if(!nums.size())</span><br><span class="line">            return counts;</span><br><span class="line">        counts[0] = 0;</span><br><span class="line">        if(nums.size() == 1) &#123;</span><br><span class="line">            return counts;</span><br><span class="line">        &#125;</span><br><span class="line">        shared_ptr&lt;Node&gt; head = make_shared&lt;Node&gt;(nums.back(), 0);</span><br><span class="line">        for(int i = nums.size() - 2; i &gt;=0 ; -- i)&#123;</span><br><span class="line">            low_c = 0;</span><br><span class="line">            head = insert(head, nums[i]);</span><br><span class="line">            counts[i] = low_c;</span><br><span class="line">        &#125;</span><br><span class="line">        return counts;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Accepted<br><br>16/16 cases passed (64 ms) <br><br>Your runtime beats 55.66 % of cpp submissions <br><br>Your memory usage beats 10.86 % of cpp submissions (29.7 MB)<br></p>
+</blockquote>
+<p>🍅方案一：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    struct Node &#123;</span><br><span class="line">        int low_count;</span><br><span class="line">        int val;</span><br><span class="line">        shared_ptr&lt;Node&gt; left, right;</span><br><span class="line">        Node(int val, int count) : </span><br><span class="line">        low_count(count), val(val), left(nullptr), right(nullptr) &#123;&#125;</span><br><span class="line">        int compareTo(int k) &#123;</span><br><span class="line">            if(val &lt; k) </span><br><span class="line">                return -1;</span><br><span class="line">            else if (val &gt; k) </span><br><span class="line">                return 1;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    int Nsize( shared_ptr&lt;Node&gt; h) &#123;</span><br><span class="line">        if(h)</span><br><span class="line">            return h-&gt;low_count;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125; </span><br><span class="line">    shared_ptr&lt;Node&gt; insert(shared_ptr&lt;Node&gt; h, int val) &#123;</span><br><span class="line">        if(!h) </span><br><span class="line">            return make_shared&lt;Node&gt;(val ,0);</span><br><span class="line">        int cmp = h-&gt;compareTo(val);</span><br><span class="line">        if(cmp &gt;= 0) &#123;</span><br><span class="line">            h-&gt;left = insert(h-&gt;left, val);</span><br><span class="line">        &#125; </span><br><span class="line">        else if(cmp &lt; 0) &#123;</span><br><span class="line">            h-&gt;right = insert(h-&gt;right, val);</span><br><span class="line">        &#125; </span><br><span class="line">        return h;</span><br><span class="line">    &#125;</span><br><span class="line">    int g = 0;</span><br><span class="line">    void rank(shared_ptr&lt;Node&gt; h) &#123;</span><br><span class="line">        if(!h)</span><br><span class="line">            return ;</span><br><span class="line">        if(h-&gt;left) </span><br><span class="line">            rank(h-&gt;left);</span><br><span class="line">        h-&gt;low_count = g;</span><br><span class="line">        g += 1;</span><br><span class="line">        if(h-&gt;right)</span><br><span class="line">            rank(h-&gt;right);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int xx(shared_ptr&lt;Node&gt; h,int val) &#123;</span><br><span class="line">        if(!h)</span><br><span class="line">            return 0;</span><br><span class="line">        while(h) &#123;</span><br><span class="line">            int cmp = h-&gt;compareTo(val);</span><br><span class="line">            if(cmp &lt; 0 )</span><br><span class="line">                h = h-&gt;right;</span><br><span class="line">            else if(cmp &gt; 0)</span><br><span class="line">                h = h-&gt;left;</span><br><span class="line">            else if(cmp == 0 &amp;&amp; !h-&gt;left)</span><br><span class="line">                break;</span><br><span class="line">            else </span><br><span class="line">                h = h-&gt;left;</span><br><span class="line">        &#125;</span><br><span class="line">        return h-&gt;low_count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    vector&lt;int&gt; countSmaller(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        vector&lt;int&gt; counts(nums.size());</span><br><span class="line">        if(!nums.size())</span><br><span class="line">            return counts;</span><br><span class="line">        counts[0] = 0;</span><br><span class="line">        if(nums.size() == 1) &#123;</span><br><span class="line">            return counts;</span><br><span class="line">        &#125;</span><br><span class="line">        shared_ptr&lt;Node&gt; head = make_shared&lt;Node&gt;(nums.back(), 0);</span><br><span class="line">        for(int i = nums.size() - 2; i &gt;=0 ; -- i)&#123;</span><br><span class="line">            head = insert(head, nums[i]);</span><br><span class="line">            g = 0;</span><br><span class="line">            rank(head);</span><br><span class="line">            counts[i] = xx(head, nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        return counts;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Time Limit Exceeded <br><br>15/16 cases passed (N/A) <br><br>Testcase<br>[5183,2271,3067,539,8939,2999,9264,737,3974,5846,-210,9278,5800,2675,6608,1133,-1,6018,9672,5179,9842,7424,-209,2988,2757,5984,1107,2644,-499,7234,7539,6525,347,5718,-742,1797,5292,976,8752,8297,1312,3385,5924,2882,6091,-282,2595,96,1906,8014,7667,5895,7283,7974,-167,7068,3946,6223,189,1589,2058,9277,-302,8157,8256,5261,8067,1071,9470,2682,8197,5632,753,3179,8187,9042,8167,4657,7080,7801,5627,7917,8085,928,-892,-427,3685,4676,2431,8064,8537,343,505,4352,2108,4399,66,2086,1922,9126,9460,393,443,5689,7595,850,8493,2866,732,3738,7933,3666,2370,5804,4045,7903,8009,5387,5542,7593,6862,1547,6934,-160,9693,4560,7429,9989,7232,-594,587,6476,9277,4471,5979,6268,2419,6706,-727,1927,7361,9684,5519,2703,1723…..</p>
+</blockquote>
+
       </div>
-    
-  </section>
-</article>
-
-          </div>
+      
+        <br>
         
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
       
         
-          <div class='post-wrapper'>
-            <article class="post reveal ">
-  
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-17T20:41:55+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>更新于 2020年1月17日</p>
+  </a>
+</div>
 
-
-  <section class='meta'>
-    
-    
-    <div class="meta" id="header-meta">
-      
         
-  <h2 class="title">
-    <a href="/2020/01/11/leetcode75/">
-      75.颜色分类
-    </a>
-  </h2>
-
-
       
-      <div class='new-meta-box'>
         
           
+
+        
+      
         
           
-            
-  <div class='new-meta-item author'>
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
     
-      <a href="http://yoursite.com" rel="nofollow">
-        
-          <i class="fas fa-user" aria-hidden="true"></i>
-        
-        <p>两天宇宙人</p>
-      </a>
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/17/leetcode315/&title=leetcode315 | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/17/leetcode315/&title=leetcode315 | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/17/leetcode315/&title=leetcode315 | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
     
   </div>
-
-
-          
-        
-          
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-01-11</p>
-  </a>
 </div>
 
-          
-        
-          
-            
 
-          
-        
-          
-            
 
-          
         
-      </div>
-      
-        <hr>
       
     </div>
   </section>
 
 
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
       
       
-        <div class="readmore">
-          <a href="/2020/01/11/leetcode75/" class="flat-box">
-            <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-            阅读全文
-          </a>
-        </div>
-      
-    </div>
-    
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/LeetCode/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> LeetCode</a>
-        
-      </div>
-    
-  </section>
-</article>
-
+          <div class="prev-next">
+              
+              
+                  <section class="next">
+                      <span class="art-item-right" aria-hidden="true">
+                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                          <h4>
+                              <a href="/2020/01/17/leetcode449/" rel="prev" title="leetcode449">
+                                  
+                                      leetcode449
+                                  
+                              </a>
+                          </h4>
+                          
+                      </span>
+                  </section>
+              
           </div>
-        
       
-        
-          <div class='post-wrapper'>
-            <article class="post reveal ">
-  
+    </section>
+  </article>
 
 
-  <section class='meta'>
-    
-    
-    <div class="meta" id="header-meta">
-      
-        
-  <h2 class="title">
-    <a href="/2020/01/11/leetcode21/">
-      21.合并两个有序链表
-    </a>
-  </h2>
 
+  <!-- 显示推荐文章和评论 -->
 
-      
-      <div class='new-meta-box'>
-        
-          
-        
-          
-            
-  <div class='new-meta-item author'>
-    
-      <a href="http://yoursite.com" rel="nofollow">
-        
-          <i class="fas fa-user" aria-hidden="true"></i>
-        
-        <p>两天宇宙人</p>
-      </a>
-    
-  </div>
 
-
-          
-        
-          
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-01-11</p>
-  </a>
-</div>
-
-          
-        
-          
-            
-
-          
-        
-          
-            
-
-          
-        
-      </div>
-      
-        <hr>
-      
-    </div>
-  </section>
-
-
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-        <div class="readmore">
-          <a href="/2020/01/11/leetcode21/" class="flat-box">
-            <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-            阅读全文
-          </a>
-        </div>
-      
-    </div>
-    
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/LeetCode/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> LeetCode</a>
-        
-      </div>
-    
-  </section>
-</article>
-
-          </div>
-        
-      
-        
-          <div class='post-wrapper'>
-            <article class="post reveal ">
-  
-
-
-  <section class='meta'>
-    
-    
-    <div class="meta" id="header-meta">
-      
-        
-  <h2 class="title">
-    <a href="/2020/01/11/leetcode148/">
-      148. 排序链表
-    </a>
-  </h2>
-
-
-      
-      <div class='new-meta-box'>
-        
-          
-        
-          
-            
-  <div class='new-meta-item author'>
-    
-      <a href="http://yoursite.com" rel="nofollow">
-        
-          <i class="fas fa-user" aria-hidden="true"></i>
-        
-        <p>两天宇宙人</p>
-      </a>
-    
-  </div>
-
-
-          
-        
-          
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-01-11</p>
-  </a>
-</div>
-
-          
-        
-          
-            
-
-          
-        
-          
-            
-
-          
-        
-      </div>
-      
-        <hr>
-      
-    </div>
-  </section>
-
-
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-        <div class="readmore">
-          <a href="/2020/01/11/leetcode148/" class="flat-box">
-            <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-            阅读全文
-          </a>
-        </div>
-      
-    </div>
-    
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/LeetCode/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> LeetCode</a>
-        
-      </div>
-    
-  </section>
-</article>
-
-          </div>
-        
-      
-        
-          <div class='post-wrapper'>
-            <article class="post reveal ">
-  
-
-
-  <section class='meta'>
-    
-    
-    <div class="meta" id="header-meta">
-      
-        
-  <h2 class="title">
-    <a href="/2020/01/10/alg4/">
-      堆排序
-    </a>
-  </h2>
-
-
-      
-      <div class='new-meta-box'>
-        
-          
-        
-          
-            
-  <div class='new-meta-item author'>
-    
-      <a href="http://yoursite.com" rel="nofollow">
-        
-          <i class="fas fa-user" aria-hidden="true"></i>
-        
-        <p>两天宇宙人</p>
-      </a>
-    
-  </div>
-
-
-          
-        
-          
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-01-10</p>
-  </a>
-</div>
-
-          
-        
-          
-            
-
-          
-        
-          
-            
-
-          
-        
-      </div>
-      
-        <hr>
-      
-    </div>
-  </section>
-
-
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      堆排序队列学习总结
-      
-        <div class="readmore">
-          <a href="/2020/01/10/alg4/" class="flat-box">
-            <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-            阅读全文
-          </a>
-        </div>
-      
-    </div>
-    
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/%E7%AE%97%E6%B3%95/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> 算法</a>
-        
-      </div>
-    
-  </section>
-</article>
-
-          </div>
-        
-      
-        
-          <div class='post-wrapper'>
-            <article class="post reveal ">
-  
-
-
-  <section class='meta'>
-    
-    
-    <div class="meta" id="header-meta">
-      
-        
-  <h2 class="title">
-    <a href="/2020/01/10/alg3/">
-      索引优先队列
-    </a>
-  </h2>
-
-
-      
-      <div class='new-meta-box'>
-        
-          
-        
-          
-            
-  <div class='new-meta-item author'>
-    
-      <a href="http://yoursite.com" rel="nofollow">
-        
-          <i class="fas fa-user" aria-hidden="true"></i>
-        
-        <p>两天宇宙人</p>
-      </a>
-    
-  </div>
-
-
-          
-        
-          
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-01-10</p>
-  </a>
-</div>
-
-          
-        
-          
-            
-
-          
-        
-          
-            
-
-          
-        
-      </div>
-      
-        <hr>
-      
-    </div>
-  </section>
-
-
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      索引优先队列学习总结
-      
-        <div class="readmore">
-          <a href="/2020/01/10/alg3/" class="flat-box">
-            <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-            阅读全文
-          </a>
-        </div>
-      
-    </div>
-    
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/%E7%AE%97%E6%B3%95/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> 算法</a>
-        
-      </div>
-    
-  </section>
-</article>
-
-          </div>
-        
-      
-        
-          <div class='post-wrapper'>
-            <article class="post reveal ">
-  
-
-
-  <section class='meta'>
-    
-    
-    <div class="meta" id="header-meta">
-      
-        
-  <h2 class="title">
-    <a href="/2020/01/10/alg2/">
-      优先队列
-    </a>
-  </h2>
-
-
-      
-      <div class='new-meta-box'>
-        
-          
-        
-          
-            
-  <div class='new-meta-item author'>
-    
-      <a href="http://yoursite.com" rel="nofollow">
-        
-          <i class="fas fa-user" aria-hidden="true"></i>
-        
-        <p>两天宇宙人</p>
-      </a>
-    
-  </div>
-
-
-          
-        
-          
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-01-10</p>
-  </a>
-</div>
-
-          
-        
-          
-            
-
-          
-        
-          
-            
-
-          
-        
-      </div>
-      
-        <hr>
-      
-    </div>
-  </section>
-
-
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      优先队列学习总结
-      
-        <div class="readmore">
-          <a href="/2020/01/10/alg2/" class="flat-box">
-            <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-            阅读全文
-          </a>
-        </div>
-      
-    </div>
-    
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/%E7%AE%97%E6%B3%95/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> 算法</a>
-        
-      </div>
-    
-  </section>
-</article>
-
-          </div>
-        
-      
-        
-          <div class='post-wrapper'>
-            <article class="post reveal ">
-  
-
-
-  <section class='meta'>
-    
-    
-    <div class="meta" id="header-meta">
-      
-        
-  <h2 class="title">
-    <a href="/2020/01/08/problems2/">
-      为甚么异或能够确定两个数的符号是否相同？
-    </a>
-  </h2>
-
-
-      
-      <div class='new-meta-box'>
-        
-          
-        
-          
-            
-  <div class='new-meta-item author'>
-    
-      <a href="http://yoursite.com" rel="nofollow">
-        
-          <i class="fas fa-user" aria-hidden="true"></i>
-        
-        <p>两天宇宙人</p>
-      </a>
-    
-  </div>
-
-
-          
-        
-          
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-01-08</p>
-  </a>
-</div>
-
-          
-        
-          
-            
-
-          
-        
-          
-            
-
-          
-        
-      </div>
-      
-        <hr>
-      
-    </div>
-  </section>
-
-
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-        <div class="readmore">
-          <a href="/2020/01/08/problems2/" class="flat-box">
-            <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-            阅读全文
-          </a>
-        </div>
-      
-    </div>
-    
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> 遇见的问题</a>
-        
-      </div>
-    
-  </section>
-</article>
-
-          </div>
-        
-      
-        
-          <div class='post-wrapper'>
-            <article class="post reveal ">
-  
-
-
-  <section class='meta'>
-    
-    
-    <div class="meta" id="header-meta">
-      
-        
-  <h2 class="title">
-    <a href="/2020/01/07/alg1/">
-      二分查找
-    </a>
-  </h2>
-
-
-      
-      <div class='new-meta-box'>
-        
-          
-        
-          
-            
-  <div class='new-meta-item author'>
-    
-      <a href="http://yoursite.com" rel="nofollow">
-        
-          <i class="fas fa-user" aria-hidden="true"></i>
-        
-        <p>两天宇宙人</p>
-      </a>
-    
-  </div>
-
-
-          
-        
-          
-            <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-01-07</p>
-  </a>
-</div>
-
-          
-        
-          
-            
-
-          
-        
-          
-            
-
-          
-        
-      </div>
-      
-        <hr>
-      
-    </div>
-  </section>
-
-
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      二分查找学习总结
-      
-        <div class="readmore">
-          <a href="/2020/01/07/alg1/" class="flat-box">
-            <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-            阅读全文
-          </a>
-        </div>
-      
-    </div>
-    
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/%E7%AE%97%E6%B3%95/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> 算法</a>
-        
-      </div>
-    
-  </section>
-</article>
-
-          </div>
-        
-      
-    
-  </section>
-  
-    
-      <br>
-      <div class="prev-next">
-        <div class="prev-next">
-          
-            <a class="prev" rel="prev" href="/archives/2020/01/">
-              <section class="post prev" >
-                <i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页&nbsp;
-              </section>
-            </a>
-          
-          <p class="current">
-            2 / 2
-          </p>
-          
-        </div>
-      </div>
-
-    
-    <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
-    
-    
 
   
 
 
-	
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'leetcode315',
+      tools: true
+    }
+  </script>
+
+
 </div>
 <aside class='l_side'>
   
@@ -1237,63 +598,39 @@
         
           
           
-        
-          
-          
-        
-          
-          
-        
-          
-          
-        
-          
-          
-        
-          
-          
             
-              <section class='widget list'>
-  
+              
+  <section class='widget toc-wrapper'>
+    
 <header class='pure'>
-  <div><i class="fas fa-thumbs-up fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;强烈推荐</div>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer noopener" href="javascript:void(0)" target="_blank"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
   
 </header>
 
-  <div class='content pure'>
-    <ul class="entry">
-      
-        <li><a class="flat-box" title="https://yasuotu.com" href="https://yasuotu.com"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;图片在线压缩
-          </div>
-          
-        </a></li>
-      
-        <li><a class="flat-box" title="https://realfavicongenerator.net" href="https://realfavicongenerator.net"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;生成Favicon
-          </div>
-          
-        </a></li>
-      
-    </ul>
-  </div>
-</section>
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#😝二叉查找树实现"><span class="toc-text">😝二叉查找树实现</span></a></li></ol>
+    </div>
+  </section>
+
 
             
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
           
         
       
@@ -1482,6 +819,95 @@
           
         
       
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+            
+              <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-thumbs-up fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;强烈推荐</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" title="https://yasuotu.com" href="https://yasuotu.com"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;图片在线压缩
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" title="https://realfavicongenerator.net" href="https://realfavicongenerator.net"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;生成Favicon
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+            
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+      
     
 
   
@@ -1543,14 +969,6 @@
   </div>
 </footer>
 <script>setLoadingBarProgress(80);</script>
-
-
-
-
-	<!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
-	
-
-	
 
 
       <script>setLoadingBarProgress(60);</script>
