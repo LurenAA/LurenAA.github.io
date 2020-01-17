@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>leetcode449 | lurenaaのblog</title>
+  <title>449.序列化和反序列化二叉搜索树 | lurenaaのblog</title>
   
   
 
@@ -292,7 +292,7 @@
   
     <h1 class="title">
       <a href="/2020/01/17/leetcode449/">
-        leetcode449
+        449.序列化和反序列化二叉搜索树
       </a>
     </h1>
   
@@ -367,10 +367,7 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <hr>
-<p>title: 449.序列化和反序列化二叉搜索树<br>date: 2020-01-17 15:16:05<br>tags: [“LeetCode”]</p>
-<hr>
-<h4 id="递归实现"><a href="#递归实现" class="headerlink" title="递归实现"></a>递归实现</h4><p>&emsp;&emsp;先序遍历，类似于数组表示二叉树</p>
+        <h4 id="递归实现"><a href="#递归实现" class="headerlink" title="递归实现"></a>递归实现</h4><p>&emsp;&emsp;先序遍历，类似于数组表示二叉树</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">class Codec &#123;</span><br><span class="line">public:</span><br><span class="line">    void se_helper(TreeNode* root, string&amp; str) &#123;</span><br><span class="line">        if(!root) &#123; </span><br><span class="line">            str += &quot;x#&quot;;</span><br><span class="line">            return ;</span><br><span class="line">        &#125;</span><br><span class="line">        str += to_string(root-&gt;val) + &apos;#&apos;;</span><br><span class="line">        se_helper(root-&gt;left, str);</span><br><span class="line">        se_helper(root-&gt;right, str);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Encodes a tree to a single string.</span><br><span class="line">    string serialize(TreeNode* root) &#123;</span><br><span class="line">        string s;</span><br><span class="line">        se_helper(root, s);</span><br><span class="line">        // cout &lt;&lt;s &lt;&lt; endl;</span><br><span class="line">        return s;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Decodes your encoded data to tree.</span><br><span class="line">    TreeNode* deserialize(string data) &#123;</span><br><span class="line">        if(data == &quot;x#&quot;)</span><br><span class="line">            return nullptr;</span><br><span class="line">        auto iter = data.begin();</span><br><span class="line">        return deserialize1(iter, data.end());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    TreeNode* deserialize1(string::iterator&amp; iter, string::iterator end) </span><br><span class="line">    &#123;</span><br><span class="line">        if(iter == end) </span><br><span class="line">            return nullptr;</span><br><span class="line">        string s;</span><br><span class="line">        while(*iter != &apos;#&apos;) &#123;</span><br><span class="line">            s += *iter++;</span><br><span class="line">        &#125;    </span><br><span class="line">        ++iter;</span><br><span class="line">        if(s == &quot;x&quot;) </span><br><span class="line">            return nullptr;</span><br><span class="line">        int val = atoi(s.c_str());</span><br><span class="line">        TreeNode* newOne = new TreeNode(val);</span><br><span class="line">        newOne-&gt;left = deserialize1(iter, end);</span><br><span class="line">        newOne-&gt;right = deserialize1(iter, end);</span><br><span class="line">        return newOne;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>Accepted <br><br>62/62 cases passed (32 ms) <br><br>Your runtime beats 87.21 % of cpp submissions <br><br>Your memory usage beats 43.82 % of cpp submissions (24.2 MB) <br></p>
@@ -386,7 +383,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-17T15:18:42+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-17T20:46:06+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
     <p>更新于 2020年1月17日</p>
@@ -397,6 +394,9 @@
       
         
           
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/LeetCode/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>LeetCode</p></a></div>
+
 
         
       
@@ -408,7 +408,7 @@
       
         <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/17/leetcode449/&title=leetcode449 | lurenaaのblog&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/17/leetcode449/&title=449.序列化和反序列化二叉搜索树 | lurenaaのblog&summary="
           
           >
           
@@ -420,7 +420,7 @@
       
         <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/17/leetcode449/&title=leetcode449 | lurenaaのblog&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/17/leetcode449/&title=449.序列化和反序列化二叉搜索树 | lurenaaのblog&summary="
           
           >
           
@@ -432,7 +432,7 @@
       
         <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/17/leetcode449/&title=leetcode449 | lurenaaのblog&summary="
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/17/leetcode449/&title=449.序列化和反序列化二叉搜索树 | lurenaaのblog&summary="
           
           >
           
@@ -460,12 +460,17 @@
                       <span class="art-item-left">
                           <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
                           <h4>
-                              <a href="/2020/01/17/leetcode315/" rel="prev" title="leetcode315">
+                              <a href="/2020/01/17/leetcode315/" rel="prev" title="315.计算右侧小于当前元素的个数">
                                 
-                                    leetcode315
+                                    315.计算右侧小于当前元素的个数
                                 
                               </a>
                           </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/LeetCode/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> LeetCode</a>
+                              </h6>
                           
                       </span>
                   </section>
@@ -475,12 +480,17 @@
                       <span class="art-item-right" aria-hidden="true">
                           <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                           <h4>
-                              <a href="/2020/01/17/leetcode538/" rel="prev" title="leetcode538">
+                              <a href="/2020/01/17/leetcode538/" rel="prev" title="538.把二叉搜索树转换为累加树">
                                   
-                                      leetcode538
+                                      538.把二叉搜索树转换为累加树
                                   
                               </a>
                           </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/LeetCode/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> LeetCode</a>
+                              </h6>
                           
                       </span>
                   </section>
@@ -509,7 +519,7 @@
 
   <script>
     window.subData = {
-      title: 'leetcode449',
+      title: '449.序列化和反序列化二叉搜索树',
       tools: true
     }
   </script>
