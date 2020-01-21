@@ -4,6 +4,44 @@
   
     
     <entry>
+      <title>96.不同的二叉搜索树</title>
+      <link href="/2020/01/21/leetcode96/"/>
+      <url>/2020/01/21/leetcode96/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🥧动态规划"><a href="#🥧动态规划" class="headerlink" title="🥧动态规划"></a>🥧动态规划</h4><p>&emsp;&emsp;</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int numTrees(int n) &#123;</span><br><span class="line">        int tr[n + 1] = &#123;0&#125;;</span><br><span class="line">        tr[0] = 1;</span><br><span class="line">        tr[1] = 1;</span><br><span class="line">        for(int i = 2; i &lt;= n; ++i)</span><br><span class="line">            for(int j = 1; j &lt;= i; ++j)</span><br><span class="line">            &#123;</span><br><span class="line">                tr[i] += tr[j - 1] * tr[i - j];</span><br><span class="line">            &#125; </span><br><span class="line">        return tr[n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>19/19 cases passed (0 ms) <br><br>Your runtime beats 100 % of cpp submissions <br><br>Your memory usage beats 32.61 % of cpp submissions (8.3 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>95.不同的二叉搜索树 II</title>
+      <link href="/2020/01/21/leetcode95/"/>
+      <url>/2020/01/21/leetcode95/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🥧递归"><a href="#🥧递归" class="headerlink" title="🥧递归"></a>🥧递归</h4><p>&emsp;&emsp;写递归最重要的点在于：<br> 不要在乎递归是如何运行的，你要在乎的是，通过设计什么样的递归公式，递归出口，就一定可以通过递归获得最终的值。而不是去考虑递归在计算机中以什么样的形式和流程去执行的。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;TreeNode*&gt; generateTrees(int n) &#123;</span><br><span class="line">        if(!n)</span><br><span class="line">            return vector&lt;TreeNode*&gt;();</span><br><span class="line">        return helper(1, n);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    vector&lt;TreeNode*&gt; helper(int start, int end) &#123;</span><br><span class="line">        vector&lt;TreeNode*&gt; ret;</span><br><span class="line">        if(start &gt; end) &#123;</span><br><span class="line">            ret.push_back(nullptr);</span><br><span class="line">            return ret;</span><br><span class="line">        &#125;</span><br><span class="line">        for(int i = start; i &lt;= end; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            auto leftList = helper(start, i - 1);</span><br><span class="line">            auto rightList = helper(i + 1, end);</span><br><span class="line">            for(auto l : leftList) </span><br><span class="line">                for(auto r: rightList) </span><br><span class="line">                &#123;</span><br><span class="line">                    auto newOne = new TreeNode(i);</span><br><span class="line">                    newOne-&gt;left = l;</span><br><span class="line">                    newOne-&gt;right = r;</span><br><span class="line">                    ret.push_back(newOne);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>9/9 cases passed (12 ms) <br><br>Your runtime beats 99.22 % of cpp submissions <br><br>Your memory usage beats 8.96 % of cpp submissions (17.6 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>315.计算右侧小于当前元素的个数</title>
       <link href="/2020/01/17/leetcode315/"/>
       <url>/2020/01/17/leetcode315/</url>
