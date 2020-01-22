@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>第一章 概述</title>
+      <link href="/2020/01/22/TIV1/"/>
+      <url>/2020/01/22/TIV1/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🐘关键词汇"><a href="#🐘关键词汇" class="headerlink" title="🐘关键词汇"></a>🐘关键词汇</h4><p><strong>协议族</strong>： 一系列相关协议的集合。 <br><br><strong>网关</strong>：又称路由器。 <br><br><strong>虚电路</strong>：表现出很多电路行为，但是不依赖于物理的交换机，而通过顶层的<strong>面向连接的分组</strong>来实现 <br><br><strong>数据报</strong>：一个特定类型的分组，包含所有来源地和目的地的所有识别信息。 <br><br><strong>消息边界</strong>：假设发送3个数据报，接收时必须是3个数据报，那么这就是有消息边界的；如果可以自己选择接收次数，一次接收3个数据报，或者2次，这就是没有消息边界。</p><h4 id="🐳关键概念"><a href="#🐳关键概念" class="headerlink" title="🐳关键概念"></a>🐳关键概念</h4><p>TCP/IP是一个实现Internet体系结构的协议族。 <br></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 《TCP/IP详解》读书笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>散列表</title>
       <link href="/2020/01/22/alg6/"/>
       <url>/2020/01/22/alg6/</url>
