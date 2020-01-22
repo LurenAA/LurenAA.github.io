@@ -4,8 +4,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>redis基数树rax源码分析(2.5) | lurenaaのblog</title>
+  <title>散列表 | lurenaaのblog</title>
   
+  
+  <meta name="description" content="散列表的学习总结">
   
 
   
@@ -291,8 +293,8 @@
         
   
     <h1 class="title">
-      <a href="/2019/08/14/rax3/">
-        redis基数树rax源码分析(2.5)
+      <a href="/2020/01/22/alg6/">
+        散列表
       </a>
     </h1>
   
@@ -323,7 +325,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2019-08-14</p>
+    <p>2020-01-22</p>
   </a>
 </div>
 
@@ -367,47 +369,12 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <h5 id="点点废话"><a href="#点点废话" class="headerlink" title="点点废话"></a>点点废话</h5><p>&emsp;&emsp;最近没有再将rax的源码往下看，rax对于一个新手来说还是体量过大，在尝试自己写写，在写的时候遇到了一些坑，也体会到了rax的一些写法的精妙之处，记录一下。</p>
-<hr>
-<h5 id="宏定义函数的注意点："><a href="#宏定义函数的注意点：" class="headerlink" title="宏定义函数的注意点："></a>宏定义函数的注意点：</h5><p>&emsp;&emsp;我定义了这样一个宏定义函数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#define radixNthChild(h, n) \</span><br><span class="line">  (radix_node**)((char*)&amp;h-&gt;data + h-&gt;size + padding(h-&gt;size) + n * sizeof(void*))</span><br></pre></td></tr></table></figure>
-<p>我这样调用这个函数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">radixNthChild(new_cur, new_cur-&gt;size - 1)</span><br></pre></td></tr></table></figure>
-<p>这样一个调用大家觉得有问题吗？嗯，肯定是有问题的，不然我说啥?。</p>
-<p>这里，按照我们一般的调用函数的思路，这样一个调用的运行过程是这样的：</p>
-<ol>
-<li>计算出new_cur-&gt;size - 1</li>
-<li>带入radixNthChild函数</li>
-</ol>
-<p>实际上恰恰相反，<strong>宏定义的处理在预编译时（g++ -E）</strong>，宏定义是将对于的定义替换掉，所以在<br>预编译后的结果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 363 &quot;radix_tree.c&quot;</span><br><span class="line">    memcpy((radix_node**)((char*)&amp;new_cur-&gt;data + new_cur-&gt;size + ((sizeof(void*) - (sizeof(radix_node) + new_cur-&gt;size) % sizeof(void*)) &amp; (sizeof(void*) - 1)) + new_cur-&gt;size - 1 * sizeof(void*)), &amp;keyOne, sizeof(void*));</span><br></pre></td></tr></table></figure>
-<p>可以看到是 ： + new_cur-&gt;size - 1 * sizeof(void<em>)<br>而不是我所想的： + （new_cur-&gt;size - 1） * sizeof(void</em>)</p>
-<p><strong>可以得出其过程其实是：</strong></p>
-<ol>
-<li>函数宏定义替换</li>
-<li>运行时计算</li>
-</ol>
-<p> <strong>结论： 在宏定义函数调用时注意括号的问题</strong>，不加括号可能会<del>由于运算符优先级而</del> 导致表达式意义与我们想的有出入?</p>
-<hr>
-<h5 id="地址运算注意点"><a href="#地址运算注意点" class="headerlink" title="地址运算注意点"></a>地址运算注意点</h5><p>先给出这样一个结构体：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">struct test &#123;</span><br><span class="line">	void* a, *b, *c;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+        <h4 id="🥣拉链法的散列表"><a href="#🥣拉链法的散列表" class="headerlink" title="🥣拉链法的散列表"></a>🥣拉链法的散列表</h4><p>&emsp;&emsp;基于<strong>链表实现的字典</strong>实现而来 <br><br>散列表的重点在于解决冲突，拉链法解决冲突的方法是通过数组＋链表的形式来实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">#pragma once</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &quot;Common.hpp&quot;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">#include &lt;memory&gt;</span><br><span class="line">#include &quot;BinarySearchST.hpp&quot;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 拉链法散列表</span><br><span class="line"> * 因为没有Java的hasCode方法，</span><br><span class="line"> * 所以这里的代码直接使用int类型</span><br><span class="line"> **/ </span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">class SeparateChainingHashST</span><br><span class="line">&#123;</span><br><span class="line">  public:</span><br><span class="line">    SeparateChainingHashST(int M);</span><br><span class="line">    ~SeparateChainingHashST();</span><br><span class="line">    Value get(int key);</span><br><span class="line">    void put(int key, Value val);</span><br><span class="line">    int size() const &#123;return this-&gt;N;&#125;</span><br><span class="line">  private:</span><br><span class="line">    int N; //键值对总数</span><br><span class="line">    int M; //散列表的大小</span><br><span class="line">    BinarySearchST&lt;int, Value&gt; *st;</span><br><span class="line"></span><br><span class="line">    int hash(int key) const;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">SeparateChainingHashST&lt;Value&gt;::SeparateChainingHashST(int M)</span><br><span class="line">  : N(0), M(M)</span><br><span class="line">&#123;</span><br><span class="line">  st = new BinarySearchST&lt;int, Value&gt;[M]();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">SeparateChainingHashST&lt;Value&gt;::~SeparateChainingHashST()</span><br><span class="line">&#123;</span><br><span class="line">  delete [] st;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">int SeparateChainingHashST&lt;Value&gt;::hash(int key) const</span><br><span class="line">&#123;</span><br><span class="line">  return (key &amp; 0x7fffffff) % M;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">Value SeparateChainingHashST&lt;Value&gt;::get(int key)</span><br><span class="line">&#123;</span><br><span class="line">  return st[hash(key)].get(key);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">void SeparateChainingHashST&lt;Value&gt;::put(int key, Value val)</span><br><span class="line">&#123;</span><br><span class="line">  st[hash(key)].put(key, val);</span><br><span class="line">  N++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<pre><code>int main(void) {
-cout &lt;&lt; sizeof(test) &lt;&lt; endl;
-test* p = new test;
-fprintf(stdout, &quot;%p:%p:%p:%p\n&quot;, p, p + 1, (char*)p + 1, (int*)p+1);
 
-return 0;
-}</code></pre><p>&emsp;&emsp;在这样一个测试代码中，大家觉得p + 1, (char<em>)p + 1, (int</em>)p+1这三个结果，相对于p的数值相差多少呢？<br><img src="https://img-blog.csdnimg.cn/20190814211800282.png" alt="在这里插入图片描述"><br>&emsp;&emsp;运行结果是这样的。类型与地址的运算是有着密切关系的。</p>
-<ul>
-<li>p + 1是一个默认情况， 这时1的意义是一个p的地址宽度</li>
-<li>(char*)p + 1，p被解释为char类型指针，指向的地址被解释为char，于是1就是一个char的地址宽度。</li>
-</ul>
-<p><strong>总结：</strong> 在计算地址时，要注意运算符左边值的类型。你加上的1可能并不是一个字节的大小。</p>
-<blockquote>
-<p>这是我边看rax边实现的一个小练习，欢迎大家指教：<a href="https://github.com/LurenAA/radix_tree" target="_blank" rel="noopener">https://github.com/LurenAA/radix_tree</a> ，好想要个star，求求了，兄弟萌:kissing_heart:</p>
-</blockquote>
-
+<h4 id="😤线性探测法的散列表"><a href="#😤线性探测法的散列表" class="headerlink" title="😤线性探测法的散列表"></a>😤线性探测法的散列表</h4><p>&emsp;&emsp;线性探测法的重点在于hash值相同时，将键值往后移，这样就共用一个数组，对于拉链法的散列表，这种方法是<strong>用时间复杂度来换取空间复杂度</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line">#pragma once</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &quot;Common.hpp&quot;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">#include &lt;memory&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 线性探测法的散列表</span><br><span class="line"> **/ </span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">class LinearProbingHashST&#123;</span><br><span class="line">  public:</span><br><span class="line">    LinearProbingHashST(int M);</span><br><span class="line">    int size() const &#123;return N;&#125;</span><br><span class="line">    void put(int key, Value val);</span><br><span class="line">    Value get(int key);</span><br><span class="line">    void delet(int key);</span><br><span class="line">    bool contain(int key) const;</span><br><span class="line">  private:</span><br><span class="line">    int M; //长度</span><br><span class="line">    int N; //键值对数量</span><br><span class="line">    int* keys;</span><br><span class="line">    Value* vals;</span><br><span class="line"></span><br><span class="line">    void resize(int sz);</span><br><span class="line">    int hash(int key) const;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">int LinearProbingHashST&lt;Value&gt;::hash(int key) const</span><br><span class="line">&#123;</span><br><span class="line">  return (key &amp; 0x7fffffff) % M;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">LinearProbingHashST&lt;Value&gt;::LinearProbingHashST(int M)</span><br><span class="line"> :M(M), N(0)</span><br><span class="line">&#123;</span><br><span class="line">  keys = new int [M]();</span><br><span class="line">  vals = new Value [M]();</span><br><span class="line">  for(int i  = 0; i &lt; M; ++i)</span><br><span class="line">    keys[i] = -1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">void </span><br><span class="line">LinearProbingHashST&lt;Value&gt;::put(int key, Value val)</span><br><span class="line">&#123;</span><br><span class="line">  if(N &gt; M / 2) &#123;</span><br><span class="line">    resize(2 * M);</span><br><span class="line">  &#125;</span><br><span class="line">  int i;</span><br><span class="line">  for(i = hash(key); keys[i] != -1; i = (i + 1) % M) &#123;</span><br><span class="line">    if(keys[i] == key) </span><br><span class="line">    &#123;</span><br><span class="line">      vals[i] = val;</span><br><span class="line">      return ;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  keys[i] = key;</span><br><span class="line">  vals[i] = val;</span><br><span class="line">  N++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">void </span><br><span class="line">LinearProbingHashST&lt;Value&gt;::resize(int sz)</span><br><span class="line">&#123;</span><br><span class="line">  int * keys1 = keys;</span><br><span class="line">  Value* vals1 = vals;</span><br><span class="line">  int M1 = M;</span><br><span class="line">  keys = new int [sz]();</span><br><span class="line">  vals = new Value [sz] ();</span><br><span class="line">  for(int i = 0; i &lt; sz; ++i) &#123;</span><br><span class="line">    keys[i] = -1;</span><br><span class="line">  &#125;</span><br><span class="line">  N = 0;</span><br><span class="line">  M = sz;</span><br><span class="line">  for(int i = 0; i &lt; M1; ++i) &#123;</span><br><span class="line">    if(keys1[i] != -1) &#123;</span><br><span class="line">      put(keys1[i], vals1[i]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  delete [] keys1;</span><br><span class="line">  delete [] vals1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">Value </span><br><span class="line">LinearProbingHashST&lt;Value&gt;::get(int key)</span><br><span class="line">&#123;</span><br><span class="line">  int i = hash(key);</span><br><span class="line">  for(; keys[i] != -1; i = (i + 1) % M) &#123;</span><br><span class="line">    if(keys[i] == key) &#123;</span><br><span class="line">      return vals[i];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return Value();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">void </span><br><span class="line">LinearProbingHashST&lt;Value&gt;::delet(int key)</span><br><span class="line">&#123;</span><br><span class="line">  if(!contain(key))</span><br><span class="line">    return ;</span><br><span class="line">  int i = hash(key);</span><br><span class="line">  for(; keys[i] != -1; i = (i + 1) % M)</span><br><span class="line">    if(keys[i] == key)</span><br><span class="line">      break;</span><br><span class="line">  keys[i] = -1;</span><br><span class="line">  vals[i] = Value();</span><br><span class="line">  i = (i + 1) % M;</span><br><span class="line">  int k;</span><br><span class="line">  Value v;</span><br><span class="line">  while(keys[i] != -1) &#123;</span><br><span class="line">    k = keys[i];</span><br><span class="line">    v = vals[i];</span><br><span class="line">    N--;</span><br><span class="line">    keys[i] = -1;</span><br><span class="line">    vals[i] = Value();</span><br><span class="line">    put(k, v);</span><br><span class="line">    i = (i + 1) % M; </span><br><span class="line">  &#125;</span><br><span class="line">  N--;</span><br><span class="line">  if(N &gt; 0 &amp;&amp; N == M/8)</span><br><span class="line">    resize(M / 2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template&lt;typename Value&gt;</span><br><span class="line">bool </span><br><span class="line">LinearProbingHashST&lt;Value&gt;::contain(int key) const</span><br><span class="line">&#123;</span><br><span class="line">  int i = hash(key);</span><br><span class="line">  for(; keys[i] != -1; i = (i + 1) % M) &#123;</span><br><span class="line">    if(keys[i] == key)</span><br><span class="line">      return true;</span><br><span class="line">  &#125;</span><br><span class="line">  return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       </div>
       
         <br>
@@ -418,10 +385,10 @@ return 0;
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-11-26T03:51:03+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-22T20:29:28+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2019年11月26日</p>
+    <p>更新于 2020年1月22日</p>
   </a>
 </div>
 
@@ -430,7 +397,7 @@ return 0;
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/rax%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>rax源码阅读</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E7%AE%97%E6%B3%95/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>算法</p></a></div>
 
 
         
@@ -443,7 +410,7 @@ return 0;
       
         <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2019/08/14/rax3/&title=redis基数树rax源码分析(2.5) | lurenaaのblog&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/22/alg6/&title=散列表 | lurenaaのblog&summary="
           
           >
           
@@ -455,7 +422,7 @@ return 0;
       
         <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2019/08/14/rax3/&title=redis基数树rax源码分析(2.5) | lurenaaのblog&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/22/alg6/&title=散列表 | lurenaaのblog&summary="
           
           >
           
@@ -467,7 +434,7 @@ return 0;
       
         <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2019/08/14/rax3/&title=redis基数树rax源码分析(2.5) | lurenaaのblog&summary="
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/22/alg6/&title=散列表 | lurenaaのblog&summary="
           
           >
           
@@ -491,40 +458,21 @@ return 0;
       
           <div class="prev-next">
               
-                  <section class="prev">
-                      <span class="art-item-left">
-                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
-                          <h4>
-                              <a href="/2019/11/16/libuv1/" rel="prev" title="libuv源码分析（1）事件循环分析">
-                                
-                                    libuv源码分析（1）事件循环分析
-                                
-                              </a>
-                          </h4>
-                          
-                              
-                              <h6 class="tags">
-                                  <a class="tag" href="/tags/libuv/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> libuv</a>
-                              </h6>
-                          
-                      </span>
-                  </section>
-              
               
                   <section class="next">
                       <span class="art-item-right" aria-hidden="true">
                           <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                           <h4>
-                              <a href="/2019/08/12/rax2/" rel="prev" title="redis基数树rax源码分析(2)">
+                              <a href="/2020/01/22/leetcode98/" rel="prev" title="98.验证二叉搜索树">
                                   
-                                      redis基数树rax源码分析(2)
+                                      98.验证二叉搜索树
                                   
                               </a>
                           </h4>
                           
                               
                               <h6 class="tags">
-                                  <a class="tag" href="/tags/rax%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> rax源码阅读</a>
+                                  <a class="tag" href="/tags/LeetCode/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> LeetCode</a>
                               </h6>
                           
                       </span>
@@ -554,7 +502,7 @@ return 0;
 
   <script>
     window.subData = {
-      title: 'redis基数树rax源码分析(2.5)',
+      title: '散列表',
       tools: true
     }
   </script>
@@ -659,7 +607,7 @@ return 0;
 </header>
 
     <div class='content pure'>
-      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#点点废话"><span class="toc-text">点点废话</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#宏定义函数的注意点："><span class="toc-text">宏定义函数的注意点：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#地址运算注意点"><span class="toc-text">地址运算注意点</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🥣拉链法的散列表"><span class="toc-text">🥣拉链法的散列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#😤线性探测法的散列表"><span class="toc-text">😤线性探测法的散列表</span></a></li></ol>
     </div>
   </section>
 
