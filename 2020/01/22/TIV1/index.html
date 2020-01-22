@@ -367,8 +367,8 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <h4 id="🐘关键词汇"><a href="#🐘关键词汇" class="headerlink" title="🐘关键词汇"></a>🐘关键词汇</h4><p><strong>协议族</strong>： 一系列相关协议的集合。 <br><br><strong>网关</strong>：又称路由器。 <br><br><strong>虚电路</strong>：表现出很多电路行为，但是不依赖于物理的交换机，而通过顶层的<strong>面向连接的分组</strong>来实现 <br><br><strong>数据报</strong>：一个特定类型的分组，包含所有来源地和目的地的所有识别信息。 <br><br><strong>消息边界</strong>：假设发送3个数据报，接收时必须是3个数据报，那么这就是有消息边界的；如果可以自己选择接收次数，一次接收3个数据报，或者2次，这就是没有消息边界。</p>
-<h4 id="🐳关键概念"><a href="#🐳关键概念" class="headerlink" title="🐳关键概念"></a>🐳关键概念</h4><p>TCP/IP是一个实现Internet体系结构的协议族。 <br></p>
+        <h4 id="🐘关键词汇"><a href="#🐘关键词汇" class="headerlink" title="🐘关键词汇"></a>🐘关键词汇</h4><p><strong>协议族</strong>： 一系列相关协议的集合。 <br><br><strong>网关</strong>：又称路由器。 <br><br><strong>虚电路</strong>：表现出很多电路行为，但是不依赖于物理的交换机，而通过顶层的<strong>面向连接的分组</strong>来实现 <br><br><strong>数据报</strong>：一个特定类型的<strong>分组</strong>，包含所有来源地和目的地的所有识别信息。 <br><br><strong>消息边界</strong>：假设发送3个数据报，接收时必须是3个数据报，那么这就是有消息边界的；如果可以自己选择接收次数，一次接收3个数据报，或者2次，这就是没有消息边界。<br><br><strong>会话层</strong>：表示运行中的应用之间的交互，会话层协议可提供例如连接初始化和重新启动、增加检查点等功能。<br><br><strong>表示层</strong>：负责信息格式转换和标准化编码。<br><br><strong>PDU</strong>：协议数据单元 <br><br><strong>转发</strong>：每个数据报的目的地址用于决定将该数据报发送到哪里，而做出此决定和发送数据报到下一跳的过程。<br><br><strong>单播</strong>：目的地是一台主机。<br><br><strong>广播</strong>：目的地是一个指定网络中的所有主机。 <br><br><strong>组播</strong>：目的地是属于一个组播组的一组主机。 <br><br><strong>ICMP</strong>: Internet控制消息协议是<strong>IP的一个辅助协议</strong>。IP层使用它与其他主机或路由器的IP层之间交换差错消息和其他重要消息。 应用：ping、traceroute。<br><br><strong>IGMP</strong>：Internet组管理协议是<strong>IPv4的另一个辅助协议</strong>。它采用组播寻址和交付来管理作为组播成员的主机。<br><br><strong>SCTP</strong>: 流控制传输协议. <br><br><strong>端口号</strong>：16位非负整数（0<del>65535），熟知端口号（0</del>1023），注册端口号（1024<del>49151），动态/私有端口号（49152</del>65535）<br><br><strong>internet</strong>：常见协议族互联的多个网络。<br><br><strong>Internet</strong>: TCP/IP通信的世界范围的主机集合。<br></p>
+<h4 id="🐳关键概念"><a href="#🐳关键概念" class="headerlink" title="🐳关键概念"></a>🐳关键概念</h4><p>&emsp;TCP/IP是一个实现Internet体系结构的<strong>协议族</strong>。 <br><br>&emsp;在<strong>尽力而为</strong>的交付中，网络不会花费很大努力来确保数据在没有差错或缺陷的情况下交付。<br><br>&emsp;在尽力而为的IP网络中，降低发送方的发送速度可通过<strong>流量控制</strong>机制实现。<br><br>&emsp;通常认为TCP/IP体系结构包含5层。<br><br>&emsp;端主机实现所有层，交换机实现到第二层，路由器实现到第三层。 <br><br>&emsp;<strong>通常不认为交换机或桥接是一个中间系统</strong>，这时由于它们没有使用互联网络协议的地址格式来编址，并在很大程度上以透明于网络层协议的方式运行。<br><br>&emsp;有多个接口的系统称为<strong>多宿主</strong> <br><br>&emsp;IP发送给<strong>链路层协议</strong>的PDU称为<strong>IP数据报</strong>，它的大小是64KB（IPv6是4GB）,我们简化称为<strong>分组</strong><br><br>&emsp;大的分组放入链路层PDU（称为<strong>帧</strong>）时需要进行缩小处理，这个过程称为<strong>分片</strong>。 <br><br>&emsp;TCP发送到IP的PDU称为<strong>TCP段</strong>。 <br><br>&emsp;用户可以通过<strong>虚拟专用网（VPN）</strong>连接到内联网。<br><br>&emsp;</p>
 
       </div>
       
@@ -380,7 +380,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-22T21:41:48+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-22T23:56:02+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
     <p>更新于 2020年1月22日</p>
