@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://lurenaa.github.io/blog/archives/index.html</loc>
+    
+    <lastmod>2020-01-22T12:41:13.672Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://lurenaa.github.io/2020/01/22/alg6/</loc>
     
     <lastmod>2020-01-22T12:29:28.412Z</lastmod>
@@ -236,13 +243,6 @@
     <loc>https://lurenaa.github.io/2019/11/16/libuv1/</loc>
     
     <lastmod>2019-11-24T15:54:06.502Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://lurenaa.github.io/blog/archives/index.html</loc>
-    
-    <lastmod>2019-11-21T20:12:46.614Z</lastmod>
     
   </url>
   
