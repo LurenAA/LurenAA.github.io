@@ -4,6 +4,44 @@
   
     
     <entry>
+      <title>leetcode98</title>
+      <link href="/2020/01/22/leetcode98/"/>
+      <url>/2020/01/22/leetcode98/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🥧中序遍历"><a href="#🥧中序遍历" class="headerlink" title="🥧中序遍历"></a>🥧中序遍历</h4><p>&emsp;&emsp;二叉搜索树的<strong>中序遍历</strong>得到的是一个递增的序列。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isValidBST(TreeNode* root) &#123;</span><br><span class="line">        if(!root)</span><br><span class="line">            return true;</span><br><span class="line">        vector&lt;int&gt; vec;</span><br><span class="line">        helper(root, vec);</span><br><span class="line">        if(vec.size() &lt;  2)</span><br><span class="line">            return true;</span><br><span class="line">        for(int i = 0; i &lt;= vec.size() - 2; ++i) &#123;</span><br><span class="line">            if(vec[i] &gt;= vec[i+1])</span><br><span class="line">                return false;</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    void helper(TreeNode* root, vector&lt;int&gt;&amp; vec) &#123;</span><br><span class="line">        if(!root)</span><br><span class="line">            return ;</span><br><span class="line">        if(root-&gt;left)</span><br><span class="line">            helper(root-&gt;left, vec);</span><br><span class="line">        vec.push_back(root-&gt;val);</span><br><span class="line">        if(root-&gt;right)</span><br><span class="line">            helper(root-&gt;right, vec);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>110.平衡二叉树</title>
+      <link href="/2020/01/22/leetcode110/"/>
+      <url>/2020/01/22/leetcode110/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🥧递归"><a href="#🥧递归" class="headerlink" title="🥧递归"></a>🥧递归</h4><p>&emsp;&emsp;和一般递归不同的地方在于，不能返回<strong>平衡因子</strong>，必须返回高度，并且设置一个-1的特殊值来作为失败的结果（用来代替bool）。<br>这里不能返回bool类型，因为bool无法传递高度值。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isBalanced(TreeNode* root) &#123;</span><br><span class="line">        return helper(root) != -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int helper(TreeNode* h) &#123;</span><br><span class="line">        if(!h)</span><br><span class="line">            return 0;</span><br><span class="line">        int lf = helper(h-&gt;left),</span><br><span class="line">            rf = helper(h-&gt;right);</span><br><span class="line">        if(lf == -1 || rf == -1)</span><br><span class="line">            return -1;</span><br><span class="line">        return abs(rf - lf) &lt;= 1 ? max(lf, rf) + 1: -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>227/227 cases passed (20 ms) <br><br>Your runtime beats 44.47 % of cpp submissions <br><br>Your memory usage beats 9.13 % of cpp submissions (17.6 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>96.不同的二叉搜索树</title>
       <link href="/2020/01/21/leetcode96/"/>
       <url>/2020/01/21/leetcode96/</url>
