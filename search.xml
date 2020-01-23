@@ -4,6 +4,234 @@
   
     
     <entry>
+      <title>652.寻找重复的子树</title>
+      <link href="/2020/01/23/leetcode652/"/>
+      <url>/2020/01/23/leetcode652/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😔失败1"><a href="#😔失败1" class="headerlink" title="😔失败1"></a>😔失败1</h4><p>&emsp;&emsp;<strong>不可以重载map的比较函数</strong>，因为map的实现是红黑树，用于红黑树排序比较。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;memory&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;map&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line"> struct TreeNode &#123;</span><br><span class="line">     int val;</span><br><span class="line">     TreeNode *left;</span><br><span class="line">     TreeNode *right;</span><br><span class="line">     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    struct Cmp &#123;</span><br><span class="line">        bool compr(const TreeNode* lhs, const TreeNode* rhs) const &#123;</span><br><span class="line">            if (!lhs &amp;&amp; !rhs)</span><br><span class="line">                return true;</span><br><span class="line">            if ((!lhs &amp;&amp; rhs) || (lhs &amp;&amp; !rhs))</span><br><span class="line">                return false;</span><br><span class="line">            bool v = lhs-&gt;val == rhs-&gt;val;</span><br><span class="line">            if (!v)</span><br><span class="line">                return false;</span><br><span class="line">            bool v1 = compr(lhs-&gt;left, rhs-&gt;left);</span><br><span class="line">            if (!v1)</span><br><span class="line">                return false;</span><br><span class="line">            bool v2 = compr(lhs-&gt;right, rhs-&gt;right);</span><br><span class="line">            if (!v2)</span><br><span class="line">                return false;</span><br><span class="line">        &#125;</span><br><span class="line">        bool operator()(const TreeNode* lhs, const TreeNode* rhs) const &#123;</span><br><span class="line">            return compr(lhs, rhs);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    vector&lt;TreeNode*&gt; findDuplicateSubtrees(TreeNode* root) &#123;</span><br><span class="line">        map&lt;TreeNode*, int, Cmp&gt; st;</span><br><span class="line">        vector&lt;TreeNode*&gt; vec;</span><br><span class="line">        dg(root, st, vec);</span><br><span class="line">        return vec;</span><br><span class="line">    &#125;</span><br><span class="line">    void dg(TreeNode* h, map&lt;TreeNode*, int, Cmp&gt;&amp; st, vector&lt;TreeNode*&gt;&amp; vec)</span><br><span class="line">    &#123;</span><br><span class="line">        if (!h)</span><br><span class="line">            return;</span><br><span class="line">        dg(h-&gt;left, st, vec);</span><br><span class="line">        dg(h-&gt;right, st, vec);</span><br><span class="line">        size_t ct = st.count(h);</span><br><span class="line">        if (ct &gt; 0) &#123;</span><br><span class="line">            if (st.at(h) == 1) &#123;</span><br><span class="line">                cout &lt;&lt; &quot;i&quot; &lt;&lt; endl;</span><br><span class="line">                vec.push_back(h);</span><br><span class="line">            &#125;</span><br><span class="line">            st.at(h) += 1;</span><br><span class="line">            cout &lt;&lt; &quot;t&quot; &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            st.insert(&#123; h, 1 &#125;);</span><br><span class="line">            cout &lt;&lt; &quot;f&quot; &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    TreeNode* root = new TreeNode(1);</span><br><span class="line">    root-&gt;left = new TreeNode(2);</span><br><span class="line">    root-&gt;right = new TreeNode(3);</span><br><span class="line">    root-&gt;left-&gt;left = new TreeNode(4);</span><br><span class="line">    root-&gt;right-&gt;left = new TreeNode(2);</span><br><span class="line">    root-&gt;right-&gt;right = new TreeNode(4);</span><br><span class="line">    root-&gt;right-&gt;left-&gt;left = new TreeNode(4);</span><br><span class="line">    Solution().findDuplicateSubtrees(root);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="😍序列化"><a href="#😍序列化" class="headerlink" title="😍序列化"></a>😍序列化</h4><p>&emsp;&emsp;序列化成字符串之后再来比较。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;TreeNode*&gt; findDuplicateSubtrees(TreeNode* root) &#123;</span><br><span class="line">        map&lt;string, int&gt; st;</span><br><span class="line">        vector&lt;TreeNode*&gt; vec;</span><br><span class="line">        string s;</span><br><span class="line">        dg(root, st, vec, s);</span><br><span class="line">        return vec;</span><br><span class="line">    &#125;</span><br><span class="line">    void dg(TreeNode* h, map&lt;string, int&gt;&amp; st, vector&lt;TreeNode*&gt;&amp; vec, string&amp; s) </span><br><span class="line">    &#123;</span><br><span class="line">        if(!h)</span><br><span class="line">            return ;</span><br><span class="line">        dg(h-&gt;left, st, vec, s);</span><br><span class="line">        dg(h-&gt;right, st, vec, s);</span><br><span class="line">        s.clear();</span><br><span class="line">        seril(h, s);</span><br><span class="line">        if(st.count(s)) &#123;</span><br><span class="line">            if(st.at(s) == 1) &#123;</span><br><span class="line">                // cout &lt;&lt; &quot;i&quot; &lt;&lt; endl;</span><br><span class="line">                vec.push_back(h);</span><br><span class="line">            &#125;</span><br><span class="line">            st.at(s) += 1;</span><br><span class="line">            // cout &lt;&lt; &quot;t&quot; &lt;&lt; endl;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            st.insert(&#123;s, 1&#125;);</span><br><span class="line">            // cout &lt;&lt; &quot;f&quot; &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    void seril(TreeNode* h,string&amp; s) </span><br><span class="line">    &#123;   </span><br><span class="line">        if(!h) &#123;</span><br><span class="line">            s += &quot;@#&quot;;</span><br><span class="line">            return ;</span><br><span class="line">        &#125;</span><br><span class="line">        s += to_string(h-&gt;val) + &apos;#&apos;;</span><br><span class="line">        seril(h-&gt;left, s);</span><br><span class="line">        seril(h-&gt;right, s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>168/168 cases passed (684 ms) <br><br>Your runtime beats 5.25 % of cpp submissions <br><br>Your memory usage beats 15.17 % of cpp submissions (54.5 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>36.有效的数独</title>
+      <link href="/2020/01/23/leetcode36/"/>
+      <url>/2020/01/23/leetcode36/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🚌"><a href="#🚌" class="headerlink" title="🚌"></a>🚌</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isValidSudoku(vector&lt;vector&lt;char&gt;&gt;&amp; board) &#123;</span><br><span class="line">        int columns[9][9] = &#123;0&#125;, </span><br><span class="line">        rows[9][9] = &#123;0&#125;, </span><br><span class="line">        boxes[9][9] = &#123;0&#125;;</span><br><span class="line">        for(int r = 0; r &lt; 9; ++r)</span><br><span class="line">            for(int c = 0; c &lt; 9; ++c)</span><br><span class="line">            &#123;</span><br><span class="line">                if(board[r][c] == &apos;.&apos;)</span><br><span class="line">                    continue;</span><br><span class="line">                int val = board[r][c] - 48 - 1;</span><br><span class="line">                // cout &lt;&lt; val &lt;&lt; endl;</span><br><span class="line">                int box_num = r / 3 * 3 + c / 3;</span><br><span class="line">                boxes[box_num][val] += 1;</span><br><span class="line">                columns[c][val] += 1;</span><br><span class="line">                rows[r][val] += 1;</span><br><span class="line">                if(boxes[box_num][val] &gt; 1 ||</span><br><span class="line">                columns[c][val] &gt; 1 || rows[r][val] &gt; 1)</span><br><span class="line">                &#123;</span><br><span class="line">                    return false;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>504/504 cases passed (16 ms) <br><br>Your runtime beats 71.31 % of cpp submissions <br><br>Your memory usage beats 63.82 % of cpp submissions (9.4 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>49.字母异位词分组</title>
+      <link href="/2020/01/23/leetcode49/"/>
+      <url>/2020/01/23/leetcode49/</url>
+      
+        <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;vector&lt;string&gt;&gt; groupAnagrams(vector&lt;string&gt;&amp; strs) </span><br><span class="line">    &#123;</span><br><span class="line">        map&lt;string, vector&lt;string&gt;&gt; mp;</span><br><span class="line">        for(auto str: strs) &#123;</span><br><span class="line">            string s = respell(str);</span><br><span class="line">            mp[s].push_back(str);</span><br><span class="line">        &#125;</span><br><span class="line">        vector&lt;vector&lt;string&gt;&gt; vs;</span><br><span class="line">        for(auto v : mp) </span><br><span class="line">            vs.push_back(v.second);</span><br><span class="line">        return vs;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    string respell(string s) &#123;</span><br><span class="line">        vector&lt;char&gt; vec;</span><br><span class="line">        for(auto i : s) &#123;</span><br><span class="line">            vec.push_back(i);</span><br><span class="line">        &#125;</span><br><span class="line">        sort(vec.begin(), vec.end());</span><br><span class="line">        string ns = &quot;&quot;;</span><br><span class="line">        for(auto x : vec) &#123;</span><br><span class="line">            ns += x;</span><br><span class="line">        &#125;</span><br><span class="line">        return ns;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>101/101 cases passed (64 ms) <br><br>Your runtime beats 47.5 % of cpp submissions <br><br>Your memory usage beats 11.54 % of cpp submissions (22.7 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>219.存在重复元素 II</title>
+      <link href="/2020/01/23/leetcode219/"/>
+      <url>/2020/01/23/leetcode219/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😝实现"><a href="#😝实现" class="headerlink" title="😝实现"></a>😝实现</h4><p>set的大小用来记录距离值K。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool containsNearbyDuplicate(vector&lt;int&gt;&amp; nums, int k) &#123;</span><br><span class="line">        set&lt;int&gt; st;</span><br><span class="line">        for(int i = 0; i &lt; nums.size(); ++i) </span><br><span class="line">        &#123;</span><br><span class="line">            if(st.count(nums[i]) == 1) </span><br><span class="line">                return true;</span><br><span class="line">            st.insert(nums[i]);</span><br><span class="line">            if(st.size() &gt; k) &#123;</span><br><span class="line">                st.erase(nums[i - k]);</span><br><span class="line">            &#125; </span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>23/23 cases passed (48 ms)<br><br>Your runtime beats 41.06 % of cpp submissions<br><br>Your memory usage beats 6.78 % of cpp submissions (15.6 MB)<br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>350.两个数组的交集 II</title>
+      <link href="/2020/01/23/leetcode350/"/>
+      <url>/2020/01/23/leetcode350/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😂代码实现"><a href="#😂代码实现" class="headerlink" title="😂代码实现"></a>😂代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">     vector&lt;int&gt; intersect(vector&lt;int&gt;&amp; nums1, vector&lt;int&gt;&amp; nums2) &#123;</span><br><span class="line">        if(!nums1.size() || !nums2.size()) </span><br><span class="line">            return vector&lt;int&gt;();</span><br><span class="line">        vector&lt;int&gt; res;</span><br><span class="line">        int lo, ho, mid;</span><br><span class="line">        sort(nums2.begin(), nums2.end());</span><br><span class="line">        for(auto x: nums1) &#123;</span><br><span class="line">            lo = 0;</span><br><span class="line">            ho = nums2.size() - 1;</span><br><span class="line">            while(lo &lt; ho) &#123;</span><br><span class="line">                mid = lo + (ho - lo) / 2;</span><br><span class="line">                if(nums2[mid] &lt; x) &#123;</span><br><span class="line">                    lo = mid + 1;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    ho = mid;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if(nums2[lo] == x) &#123;</span><br><span class="line">                res.push_back(x);</span><br><span class="line">                nums2.erase(nums2.begin() + lo);</span><br><span class="line">                if(!nums2.size())</span><br><span class="line">                    return res;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>61/61 cases passed (12 ms) <br><br>Your runtime beats 55.05 % of cpp submissions <br><br>Your memory usage beats 52.41 % of cpp submissions (9.4 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>387.字符串中的第一个唯一字符</title>
+      <link href="/2020/01/23/leetcode387/"/>
+      <url>/2020/01/23/leetcode387/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😂代码实现"><a href="#😂代码实现" class="headerlink" title="😂代码实现"></a>😂代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int firstUniqChar(string s) &#123;</span><br><span class="line">        if(!s.size())</span><br><span class="line">            return -1;</span><br><span class="line">        map&lt;char, int&gt; st;</span><br><span class="line">        for(int i = 0; i &lt; s.size(); ++i)&#123;</span><br><span class="line">            if(!st.count(s[i])) &#123;</span><br><span class="line">                st[s[i]] = i;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                st[s[i]] = INT_MAX;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if(!st.size())</span><br><span class="line">            return -1;</span><br><span class="line">        auto x = min_element(st.begin(), st.end(), [](auto&amp; a, auto&amp; b)&#123;</span><br><span class="line">            if(a.second &lt; b.second) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;);</span><br><span class="line">        if(x-&gt;second == INT_MAX)</span><br><span class="line">            return -1;</span><br><span class="line">        return x-&gt;second;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>104/104 cases passed (92 ms) <br><br>Your runtime beats 20.33 % of cpp submissions <br><br>Your memory usage beats 5.07 % of cpp submissions (13.5 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>599.两个列表的最小索引总和</title>
+      <link href="/2020/01/23/leetcode599/"/>
+      <url>/2020/01/23/leetcode599/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😂代码实现"><a href="#😂代码实现" class="headerlink" title="😂代码实现"></a>😂代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;string&gt; findRestaurant(vector&lt;string&gt;&amp; list1, vector&lt;string&gt;&amp; list2) &#123;</span><br><span class="line">        vector&lt;string&gt; vec;</span><br><span class="line">        if(!list1.size())</span><br><span class="line">            return vec;</span><br><span class="line">        map&lt;string, int&gt; st1, st2;</span><br><span class="line">        for(int i = 0; i &lt; list1.size(); ++i) </span><br><span class="line">            st1.insert(&#123;list1[i], i&#125;);</span><br><span class="line">        for(int i = 0; i &lt; list2.size(); ++i) &#123;</span><br><span class="line">            if(st1.count(list2[i]) != 0) &#123;</span><br><span class="line">                auto x = st1.at(list2[i]);</span><br><span class="line">                st2.insert(&#123;list2[i], x + i&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        int mi = INT_MAX;</span><br><span class="line">        for(auto x :st2) &#123;</span><br><span class="line">            if(mi &gt; x.second) &#123;</span><br><span class="line">                mi = x.second;</span><br><span class="line">                // ms = x.first;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        for(auto x : st2) &#123;</span><br><span class="line">            if(mi == x.second) </span><br><span class="line">                vec.push_back(x.first);</span><br><span class="line">        &#125;</span><br><span class="line">        return vec;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>133/133 cases passed (152 ms) <br><br>Your runtime beats 33.28 % of cpp submissions <br><br>Your memory usage beats 21.41 % of cpp submissions (31.6 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>205.同构字符串</title>
+      <link href="/2020/01/23/leetcode205/"/>
+      <url>/2020/01/23/leetcode205/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😂代码实现"><a href="#😂代码实现" class="headerlink" title="😂代码实现"></a>😂代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isIsomorphic(string s, string t) &#123;</span><br><span class="line">        unordered_map&lt;char, int&gt; st, tt;</span><br><span class="line">        for(int i = 0; i &lt; s.size(); ++i) &#123;</span><br><span class="line">            if(st.count(s[i]) == 1 || tt.count(t[i]) == 1) &#123;</span><br><span class="line">                if(tt.count(t[i]) != 1 || st.count(s[i]) != 1 || tt.at(t[i]) != st.at(s[i])) </span><br><span class="line">                    return false;</span><br><span class="line">            &#125; </span><br><span class="line">            st.insert(&#123;s[i], i&#125;);</span><br><span class="line">            tt.insert(&#123;t[i], i&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>30/30 cases passed (40 ms) <br><br>Your runtime beats 5.2 % of cpp submissions <br><br>Your memory usage beats 5.04 % of cpp submissions (15 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>202.快乐数</title>
+      <link href="/2020/01/23/leetcode202/"/>
+      <url>/2020/01/23/leetcode202/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🐤"><a href="#🐤" class="headerlink" title="🐤"></a>🐤</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isHappy(int n) &#123;</span><br><span class="line">        vector&lt;int&gt; res;</span><br><span class="line">        int count = 0;</span><br><span class="line">        while(n != 1 &amp;&amp; count != 10) &#123;</span><br><span class="line">            ++count;</span><br><span class="line">            helper(n, res);</span><br><span class="line">            n = 0;</span><br><span class="line">            for(auto x: res) &#123;</span><br><span class="line">                n += pow(x, 2);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if(count == 10)</span><br><span class="line">            return false;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    void helper(int n, vector&lt;int&gt;&amp; res) &#123;</span><br><span class="line">        res.clear();</span><br><span class="line">        while(n) &#123;</span><br><span class="line">            res.push_back(n % 10);</span><br><span class="line">            n /= 10;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>349.两个数组的交集</title>
+      <link href="/2020/01/23/leetcode349/"/>
+      <url>/2020/01/23/leetcode349/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🉐二分查找-and-哈希表"><a href="#🉐二分查找-and-哈希表" class="headerlink" title="🉐二分查找 and 哈希表"></a>🉐二分查找 and 哈希表</h4><p>&emsp;&emsp;一个哈希表的set来得到一个数组的唯一值，再通过二分查找来比较，得到一样的值，放入结果的vector中。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; intersection(vector&lt;int&gt;&amp; nums1, vector&lt;int&gt;&amp; nums2) &#123;</span><br><span class="line">        set&lt;int&gt; st;</span><br><span class="line">        if(!nums1.size() || !nums2.size()) </span><br><span class="line">            return vector&lt;int&gt;();</span><br><span class="line">        vector&lt;int&gt; res;</span><br><span class="line">        int lo, ho, mid;</span><br><span class="line">        sort(nums2.begin(), nums2.end());</span><br><span class="line">        for(auto x: nums1) </span><br><span class="line">            st.insert(x);</span><br><span class="line">        for(auto x: st) &#123;</span><br><span class="line">            lo = 0;</span><br><span class="line">            ho = nums2.size() - 1;</span><br><span class="line">            while(lo &lt; ho) &#123;</span><br><span class="line">                mid = lo + (ho - lo) / 2;</span><br><span class="line">                if(nums2[mid] &lt; x) &#123;</span><br><span class="line">                    lo = mid + 1;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    ho = mid;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if(nums2[lo] == x) &#123;</span><br><span class="line">                res.push_back(x);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>136.只出现一次的数字</title>
+      <link href="/2020/01/23/leetcode136/"/>
+      <url>/2020/01/23/leetcode136/</url>
+      
+        <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int singleNumber(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        set&lt;int&gt; st;</span><br><span class="line">        for(auto x : nums) &#123;</span><br><span class="line">            if(st.count(x) == 0)</span><br><span class="line">                st.insert(x);</span><br><span class="line">            else </span><br><span class="line">                st.erase(x);</span><br><span class="line">        &#125;</span><br><span class="line">        return *st.begin();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>16/16 cases passed (36 ms) <br><br>Your runtime beats 8.92 % of cpp submissions <br><br>Your memory usage beats 5.02 % of cpp submissions (12.1 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>217.存在重复元素</title>
+      <link href="/2020/01/23/leetcode217/"/>
+      <url>/2020/01/23/leetcode217/</url>
+      
+        <content type="html"><![CDATA[<p>因为不需要有序，所以可以用unordered_set而不是set</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool containsDuplicate(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        unordered_set&lt;int&gt; st;</span><br><span class="line">        for(auto x : nums) &#123;</span><br><span class="line">            if(st.count(x) &gt; 0)</span><br><span class="line">                return true;</span><br><span class="line">            st.insert(x);</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>706.设计哈希映射</title>
       <link href="/2020/01/23/leetcode706/"/>
       <url>/2020/01/23/leetcode706/</url>

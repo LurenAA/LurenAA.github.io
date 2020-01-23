@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>所有标签 | lurenaaのblog</title>
+  <title>652.寻找重复的子树 | lurenaaのblog</title>
   
   
 
@@ -44,7 +44,7 @@
   
   
   <div class="cover-wrapper">
-    <cover class='cover tag half'>
+    <cover class='cover post half'>
       
         
   <h1 class='title'>lurenaa的博客</h1>
@@ -276,85 +276,239 @@
 
   <div class="l_body">
     <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+    
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
       
-<div class='l_main'>
+        
   
+    <h1 class="title">
+      <a href="/2020/01/23/leetcode652/">
+        652.寻找重复的子树
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
     
-      <section class="post-list">
-        <div class='post-wrapper'>
-          <article id="archive-page" class="post article white-box">
-            <section class="archive">
-              <div class="archive-item archive-year mark">
-                <h2>所有标签</h2>
-                <hr>
-              </div>
-              <div class="archive-item archive-post mark">
-                
-                  
-                    
-                      <a class="" href="/tags/LeetCode/">
-                        <time><i class='fas fa-tag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;LeetCode</time>
-                        <span class="title">
-                          (29)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/libuv/">
-                        <time><i class='fas fa-tag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;libuv</time>
-                        <span class="title">
-                          (6)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/rax%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
-                        <time><i class='fas fa-tag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;rax源码阅读</time>
-                        <span class="title">
-                          (3)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/%E3%80%8ATCP-IP%E8%AF%A6%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
-                        <time><i class='fas fa-tag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;《TCP/IP详解》读书笔记</time>
-                        <span class="title">
-                          (4)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/%E7%AE%97%E6%B3%95/">
-                        <time><i class='fas fa-tag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;算法</time>
-                        <span class="title">
-                          (6)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/">
-                        <time><i class='fas fa-tag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;遇见的问题</time>
-                        <span class="title">
-                          (4)
-                        </span>
-                      </a>
-                    
-                  
-                
-              </div>
-              <br>
+      <a href="http://yoursite.com" rel="nofollow">
+        
+          <i class="fas fa-user" aria-hidden="true"></i>
+        
+        <p>两天宇宙人</p>
+      </a>
+    
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2020-01-23</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+    <section class="article typo">
+      <div class="article-entry" itemprop="articleBody">
+        <h4 id="😔失败1"><a href="#😔失败1" class="headerlink" title="😔失败1"></a>😔失败1</h4><p>&emsp;&emsp;<strong>不可以重载map的比较函数</strong>，因为map的实现是红黑树，用于红黑树排序比较。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;memory&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;map&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line"> struct TreeNode &#123;</span><br><span class="line">     int val;</span><br><span class="line">     TreeNode *left;</span><br><span class="line">     TreeNode *right;</span><br><span class="line">     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    struct Cmp &#123;</span><br><span class="line">        bool compr(const TreeNode* lhs, const TreeNode* rhs) const &#123;</span><br><span class="line">            if (!lhs &amp;&amp; !rhs)</span><br><span class="line">                return true;</span><br><span class="line">            if ((!lhs &amp;&amp; rhs) || (lhs &amp;&amp; !rhs))</span><br><span class="line">                return false;</span><br><span class="line">            bool v = lhs-&gt;val == rhs-&gt;val;</span><br><span class="line">            if (!v)</span><br><span class="line">                return false;</span><br><span class="line">            bool v1 = compr(lhs-&gt;left, rhs-&gt;left);</span><br><span class="line">            if (!v1)</span><br><span class="line">                return false;</span><br><span class="line">            bool v2 = compr(lhs-&gt;right, rhs-&gt;right);</span><br><span class="line">            if (!v2)</span><br><span class="line">                return false;</span><br><span class="line">        &#125;</span><br><span class="line">        bool operator()(const TreeNode* lhs, const TreeNode* rhs) const &#123;</span><br><span class="line">            return compr(lhs, rhs);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    vector&lt;TreeNode*&gt; findDuplicateSubtrees(TreeNode* root) &#123;</span><br><span class="line">        map&lt;TreeNode*, int, Cmp&gt; st;</span><br><span class="line">        vector&lt;TreeNode*&gt; vec;</span><br><span class="line">        dg(root, st, vec);</span><br><span class="line">        return vec;</span><br><span class="line">    &#125;</span><br><span class="line">    void dg(TreeNode* h, map&lt;TreeNode*, int, Cmp&gt;&amp; st, vector&lt;TreeNode*&gt;&amp; vec)</span><br><span class="line">    &#123;</span><br><span class="line">        if (!h)</span><br><span class="line">            return;</span><br><span class="line">        dg(h-&gt;left, st, vec);</span><br><span class="line">        dg(h-&gt;right, st, vec);</span><br><span class="line">        size_t ct = st.count(h);</span><br><span class="line">        if (ct &gt; 0) &#123;</span><br><span class="line">            if (st.at(h) == 1) &#123;</span><br><span class="line">                cout &lt;&lt; &quot;i&quot; &lt;&lt; endl;</span><br><span class="line">                vec.push_back(h);</span><br><span class="line">            &#125;</span><br><span class="line">            st.at(h) += 1;</span><br><span class="line">            cout &lt;&lt; &quot;t&quot; &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            st.insert(&#123; h, 1 &#125;);</span><br><span class="line">            cout &lt;&lt; &quot;f&quot; &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    TreeNode* root = new TreeNode(1);</span><br><span class="line">    root-&gt;left = new TreeNode(2);</span><br><span class="line">    root-&gt;right = new TreeNode(3);</span><br><span class="line">    root-&gt;left-&gt;left = new TreeNode(4);</span><br><span class="line">    root-&gt;right-&gt;left = new TreeNode(2);</span><br><span class="line">    root-&gt;right-&gt;right = new TreeNode(4);</span><br><span class="line">    root-&gt;right-&gt;left-&gt;left = new TreeNode(4);</span><br><span class="line">    Solution().findDuplicateSubtrees(root);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="😍序列化"><a href="#😍序列化" class="headerlink" title="😍序列化"></a>😍序列化</h4><p>&emsp;&emsp;序列化成字符串之后再来比较。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;TreeNode*&gt; findDuplicateSubtrees(TreeNode* root) &#123;</span><br><span class="line">        map&lt;string, int&gt; st;</span><br><span class="line">        vector&lt;TreeNode*&gt; vec;</span><br><span class="line">        string s;</span><br><span class="line">        dg(root, st, vec, s);</span><br><span class="line">        return vec;</span><br><span class="line">    &#125;</span><br><span class="line">    void dg(TreeNode* h, map&lt;string, int&gt;&amp; st, vector&lt;TreeNode*&gt;&amp; vec, string&amp; s) </span><br><span class="line">    &#123;</span><br><span class="line">        if(!h)</span><br><span class="line">            return ;</span><br><span class="line">        dg(h-&gt;left, st, vec, s);</span><br><span class="line">        dg(h-&gt;right, st, vec, s);</span><br><span class="line">        s.clear();</span><br><span class="line">        seril(h, s);</span><br><span class="line">        if(st.count(s)) &#123;</span><br><span class="line">            if(st.at(s) == 1) &#123;</span><br><span class="line">                // cout &lt;&lt; &quot;i&quot; &lt;&lt; endl;</span><br><span class="line">                vec.push_back(h);</span><br><span class="line">            &#125;</span><br><span class="line">            st.at(s) += 1;</span><br><span class="line">            // cout &lt;&lt; &quot;t&quot; &lt;&lt; endl;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            st.insert(&#123;s, 1&#125;);</span><br><span class="line">            // cout &lt;&lt; &quot;f&quot; &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    void seril(TreeNode* h,string&amp; s) </span><br><span class="line">    &#123;   </span><br><span class="line">        if(!h) &#123;</span><br><span class="line">            s += &quot;@#&quot;;</span><br><span class="line">            return ;</span><br><span class="line">        &#125;</span><br><span class="line">        s += to_string(h-&gt;val) + &apos;#&apos;;</span><br><span class="line">        seril(h-&gt;left, s);</span><br><span class="line">        seril(h-&gt;right, s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Accepted <br><br>168/168 cases passed (684 ms) <br><br>Your runtime beats 5.25 % of cpp submissions <br><br>Your memory usage beats 15.17 % of cpp submissions (54.5 MB) <br></p>
+</blockquote>
+
+      </div>
+      
+        <br>
+        
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-23T23:50:03+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>更新于 2020年1月23日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/LeetCode/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>LeetCode</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/23/leetcode652/&title=652.寻找重复的子树 | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/23/leetcode652/&title=652.寻找重复的子树 | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/23/leetcode652/&title=652.寻找重复的子树 | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+      
+      
+          <div class="prev-next">
               
-            </section>
-          </article>
-        </div>
-      </section>
-    
+              
+                  <section class="next">
+                      <span class="art-item-right" aria-hidden="true">
+                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                          <h4>
+                              <a href="/2020/01/23/leetcode36/" rel="prev" title="36.有效的数独">
+                                  
+                                      36.有效的数独
+                                  
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/LeetCode/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> LeetCode</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
+              
+          </div>
+      
+    </section>
+  </article>
+
+
+
+  <!-- 显示推荐文章和评论 -->
+
+
+
   
+
+
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: '652.寻找重复的子树',
+      tools: true
+    }
+  </script>
+
+
 </div>
 <aside class='l_side'>
   
@@ -428,6 +582,20 @@
           
             
               
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer noopener" href="javascript:void(0)" target="_blank"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#😔失败1"><span class="toc-text">😔失败1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#😍序列化"><span class="toc-text">😍序列化</span></a></li></ol>
+    </div>
+  </section>
+
 
             
           

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>所有标签 | lurenaaのblog</title>
+  <title>599.两个列表的最小索引总和 | lurenaaのblog</title>
   
   
 
@@ -44,7 +44,7 @@
   
   
   <div class="cover-wrapper">
-    <cover class='cover tag half'>
+    <cover class='cover post half'>
       
         
   <h1 class='title'>lurenaa的博客</h1>
@@ -276,85 +276,254 @@
 
   <div class="l_body">
     <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+    
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
       
-<div class='l_main'>
+        
   
+    <h1 class="title">
+      <a href="/2020/01/23/leetcode599/">
+        599.两个列表的最小索引总和
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
     
-      <section class="post-list">
-        <div class='post-wrapper'>
-          <article id="archive-page" class="post article white-box">
-            <section class="archive">
-              <div class="archive-item archive-year mark">
-                <h2>所有标签</h2>
-                <hr>
-              </div>
-              <div class="archive-item archive-post mark">
-                
-                  
-                    
-                      <a class="" href="/tags/LeetCode/">
-                        <time><i class='fas fa-tag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;LeetCode</time>
-                        <span class="title">
-                          (29)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/libuv/">
-                        <time><i class='fas fa-tag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;libuv</time>
-                        <span class="title">
-                          (6)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/rax%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
-                        <time><i class='fas fa-tag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;rax源码阅读</time>
-                        <span class="title">
-                          (3)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/%E3%80%8ATCP-IP%E8%AF%A6%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
-                        <time><i class='fas fa-tag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;《TCP/IP详解》读书笔记</time>
-                        <span class="title">
-                          (4)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/%E7%AE%97%E6%B3%95/">
-                        <time><i class='fas fa-tag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;算法</time>
-                        <span class="title">
-                          (6)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/">
-                        <time><i class='fas fa-tag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;遇见的问题</time>
-                        <span class="title">
-                          (4)
-                        </span>
-                      </a>
-                    
-                  
-                
-              </div>
-              <br>
+      <a href="http://yoursite.com" rel="nofollow">
+        
+          <i class="fas fa-user" aria-hidden="true"></i>
+        
+        <p>两天宇宙人</p>
+      </a>
+    
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2020-01-23</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+    <section class="article typo">
+      <div class="article-entry" itemprop="articleBody">
+        <h4 id="😂代码实现"><a href="#😂代码实现" class="headerlink" title="😂代码实现"></a>😂代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;string&gt; findRestaurant(vector&lt;string&gt;&amp; list1, vector&lt;string&gt;&amp; list2) &#123;</span><br><span class="line">        vector&lt;string&gt; vec;</span><br><span class="line">        if(!list1.size())</span><br><span class="line">            return vec;</span><br><span class="line">        map&lt;string, int&gt; st1, st2;</span><br><span class="line">        for(int i = 0; i &lt; list1.size(); ++i) </span><br><span class="line">            st1.insert(&#123;list1[i], i&#125;);</span><br><span class="line">        for(int i = 0; i &lt; list2.size(); ++i) &#123;</span><br><span class="line">            if(st1.count(list2[i]) != 0) &#123;</span><br><span class="line">                auto x = st1.at(list2[i]);</span><br><span class="line">                st2.insert(&#123;list2[i], x + i&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        int mi = INT_MAX;</span><br><span class="line">        for(auto x :st2) &#123;</span><br><span class="line">            if(mi &gt; x.second) &#123;</span><br><span class="line">                mi = x.second;</span><br><span class="line">                // ms = x.first;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        for(auto x : st2) &#123;</span><br><span class="line">            if(mi == x.second) </span><br><span class="line">                vec.push_back(x.first);</span><br><span class="line">        &#125;</span><br><span class="line">        return vec;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Accepted <br><br>133/133 cases passed (152 ms) <br><br>Your runtime beats 33.28 % of cpp submissions <br><br>Your memory usage beats 21.41 % of cpp submissions (31.6 MB) <br></p>
+</blockquote>
+
+      </div>
+      
+        <br>
+        
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-23T19:11:18+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>更新于 2020年1月23日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/LeetCode/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>LeetCode</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/23/leetcode599/&title=599.两个列表的最小索引总和 | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/23/leetcode599/&title=599.两个列表的最小索引总和 | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/23/leetcode599/&title=599.两个列表的最小索引总和 | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+      
+      
+          <div class="prev-next">
               
-            </section>
-          </article>
-        </div>
-      </section>
-    
+                  <section class="prev">
+                      <span class="art-item-left">
+                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                          <h4>
+                              <a href="/2020/01/23/leetcode387/" rel="prev" title="387.字符串中的第一个唯一字符">
+                                
+                                    387.字符串中的第一个唯一字符
+                                
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/LeetCode/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> LeetCode</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
+              
+              
+                  <section class="next">
+                      <span class="art-item-right" aria-hidden="true">
+                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                          <h4>
+                              <a href="/2020/01/23/leetcode205/" rel="prev" title="205.同构字符串">
+                                  
+                                      205.同构字符串
+                                  
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/LeetCode/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> LeetCode</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
+              
+          </div>
+      
+    </section>
+  </article>
+
+
+
+  <!-- 显示推荐文章和评论 -->
+
+
+
   
+
+
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: '599.两个列表的最小索引总和',
+      tools: true
+    }
+  </script>
+
+
 </div>
 <aside class='l_side'>
   
@@ -428,6 +597,20 @@
           
             
               
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer noopener" href="javascript:void(0)" target="_blank"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#😂代码实现"><span class="toc-text">😂代码实现</span></a></li></ol>
+    </div>
+  </section>
+
 
             
           
