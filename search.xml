@@ -4,6 +4,63 @@
   
     
     <entry>
+      <title>第五章 Internet协议</title>
+      <link href="/2020/01/23/TIV5/"/>
+      <url>/2020/01/23/TIV5/</url>
+      
+        <content type="html"><![CDATA[<p>IPv4头部长度包含20个字节（没有选项），IPv6头部长度固定（40字节）。<br><br><strong>网络字节序</strong>：高位优先字节序。<br><br>Internet头部被限制为60个字节，因为IHL字段长度为4位，保存IPv4头部中32位字的数量。<br></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 《TCP/IP详解》读书笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>第三章 链路层</title>
+      <link href="/2020/01/23/TIV3/"/>
+      <url>/2020/01/23/TIV3/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🐘关键词汇"><a href="#🐘关键词汇" class="headerlink" title="🐘关键词汇"></a>🐘关键词汇</h4><p><strong>最大传输单元</strong>： MTU<br><br><strong>以太网</strong>：通常指一套标准。10Mbit/s以太网，又称802.3标准。<br></p><h4 id="🐳关键概念"><a href="#🐳关键概念" class="headerlink" title="🐳关键概念"></a>🐳关键概念</h4><p>&emsp;交换机以双工方式运行，并且不需要使用CSMA/CD算法.<br><br>&emsp;传统以太网最小的帧是64字节，要求数据区长度最小为48字节，最大帧长度为1518字节，MTU大小限制为1500字节。<br></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 《TCP/IP详解》读书笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>第二章 Internet地址结构</title>
+      <link href="/2020/01/23/TIV2/"/>
+      <url>/2020/01/23/TIV2/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🐘关键词汇"><a href="#🐘关键词汇" class="headerlink" title="🐘关键词汇"></a>🐘关键词汇</h4><p><strong>子网寻址</strong>：一个站点被分配一个A类、B类和C类的网络号，保留一些剩余主机号进一步用站点分配。该站点可能将基础地址中的主机部分进一步划分为一个子网号和一个主机号。<br><br><strong>A类网络地址</strong>：网络号8位，0 + 7位自由;主机号24位 <br><br><strong>B类网络地址</strong>：网络号16位，10 + 14位自由；主机16位 <br><br><strong>C类网络地址</strong>：网络号24位，110 + 21位自由 ；主机8位<br><br><strong>D类网络地址</strong>：网络号32位，1110 + 28位自由 <br><br><strong>E类网络地址</strong>：网络号32位，1111 + 28位自由 <br><br><strong>子网掩码</strong>：由主机或路由器使用的分配位，以确定如何从一台主机对应IP地址中获得网络和子网信息。子网掩码纯粹是站点内部的局部问题。<br><br><strong>定向广播</strong>： 使用<strong>子网广播地址</strong>作为目的地的数据报。<br><br><strong>有限广播</strong>：255.255.255.255被保留为<strong>本地网络广播</strong>，它根本不会被路由器转发。<br><br><strong>任意源组播</strong>：ASM,任何发送方可以发送给任何组。<br><br><strong>特点组播</strong>：SSM，在每个组中只使用一个发送方。<br></p><h4 id="🐳关键概念"><a href="#🐳关键概念" class="headerlink" title="🐳关键概念"></a>🐳关键概念</h4><p>&emsp;IPv6地址长度128位（16* 8），IPv4地址长度32位（8* 4） <br><br>&emsp;IPv6块的前导的零不必书写。全零的块可以省略，并用符号::代替，为了避免歧义，一个IPv6地址中的符号::只能使用一次。在IPv6格式中嵌入IPv4地址可以使用混合符号形式，紧接着IPv4部分的地址块的值为ffff，地址的其他部分使用点分四组格式（::ffff:10.0.0.1） <br><br>&emsp;只有划分子网的网络中的主机和路由器知道子网结构，Internet其他部分仍然将它作为站点相关的地址来看待.<br><br>&emsp;128.32.1.255/24这个地址称为<strong>子网广播地址</strong>。<br><br>&emsp;CIDR缓解IPv4地址的压力，处理大于255小于65536的主机数。<br></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 《TCP/IP详解》读书笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>第一章 概述</title>
       <link href="/2020/01/22/TIV1/"/>
       <url>/2020/01/22/TIV1/</url>

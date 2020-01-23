@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>redis基数树rax源码分析(2.5) | lurenaaのblog</title>
+  <title>第五章 Internet协议 | lurenaaのblog</title>
   
   
 
@@ -291,8 +291,8 @@
         
   
     <h1 class="title">
-      <a href="/2019/08/14/rax3/">
-        redis基数树rax源码分析(2.5)
+      <a href="/2020/01/23/TIV5/">
+        第五章 Internet协议
       </a>
     </h1>
   
@@ -323,7 +323,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2019-08-14</p>
+    <p>2020-01-23</p>
   </a>
 </div>
 
@@ -367,46 +367,7 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <h5 id="点点废话"><a href="#点点废话" class="headerlink" title="点点废话"></a>点点废话</h5><p>&emsp;&emsp;最近没有再将rax的源码往下看，rax对于一个新手来说还是体量过大，在尝试自己写写，在写的时候遇到了一些坑，也体会到了rax的一些写法的精妙之处，记录一下。</p>
-<hr>
-<h5 id="宏定义函数的注意点："><a href="#宏定义函数的注意点：" class="headerlink" title="宏定义函数的注意点："></a>宏定义函数的注意点：</h5><p>&emsp;&emsp;我定义了这样一个宏定义函数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#define radixNthChild(h, n) \</span><br><span class="line">  (radix_node**)((char*)&amp;h-&gt;data + h-&gt;size + padding(h-&gt;size) + n * sizeof(void*))</span><br></pre></td></tr></table></figure>
-<p>我这样调用这个函数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">radixNthChild(new_cur, new_cur-&gt;size - 1)</span><br></pre></td></tr></table></figure>
-<p>这样一个调用大家觉得有问题吗？嗯，肯定是有问题的，不然我说啥?。</p>
-<p>这里，按照我们一般的调用函数的思路，这样一个调用的运行过程是这样的：</p>
-<ol>
-<li>计算出new_cur-&gt;size - 1</li>
-<li>带入radixNthChild函数</li>
-</ol>
-<p>实际上恰恰相反，<strong>宏定义的处理在预编译时（g++ -E）</strong>，宏定义是将对于的定义替换掉，所以在<br>预编译后的结果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 363 &quot;radix_tree.c&quot;</span><br><span class="line">    memcpy((radix_node**)((char*)&amp;new_cur-&gt;data + new_cur-&gt;size + ((sizeof(void*) - (sizeof(radix_node) + new_cur-&gt;size) % sizeof(void*)) &amp; (sizeof(void*) - 1)) + new_cur-&gt;size - 1 * sizeof(void*)), &amp;keyOne, sizeof(void*));</span><br></pre></td></tr></table></figure>
-<p>可以看到是 ： + new_cur-&gt;size - 1 * sizeof(void<em>)<br>而不是我所想的： + （new_cur-&gt;size - 1） * sizeof(void</em>)</p>
-<p><strong>可以得出其过程其实是：</strong></p>
-<ol>
-<li>函数宏定义替换</li>
-<li>运行时计算</li>
-</ol>
-<p> <strong>结论： 在宏定义函数调用时注意括号的问题</strong>，不加括号可能会<del>由于运算符优先级而</del> 导致表达式意义与我们想的有出入?</p>
-<hr>
-<h5 id="地址运算注意点"><a href="#地址运算注意点" class="headerlink" title="地址运算注意点"></a>地址运算注意点</h5><p>先给出这样一个结构体：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">struct test &#123;</span><br><span class="line">	void* a, *b, *c;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<pre><code>int main(void) {
-cout &lt;&lt; sizeof(test) &lt;&lt; endl;
-test* p = new test;
-fprintf(stdout, &quot;%p:%p:%p:%p\n&quot;, p, p + 1, (char*)p + 1, (int*)p+1);
-
-return 0;
-}</code></pre><p>&emsp;&emsp;在这样一个测试代码中，大家觉得p + 1, (char<em>)p + 1, (int</em>)p+1这三个结果，相对于p的数值相差多少呢？<br><img src="https://img-blog.csdnimg.cn/20190814211800282.png" alt="在这里插入图片描述"><br>&emsp;&emsp;运行结果是这样的。类型与地址的运算是有着密切关系的。</p>
-<ul>
-<li>p + 1是一个默认情况， 这时1的意义是一个p的地址宽度</li>
-<li>(char*)p + 1，p被解释为char类型指针，指向的地址被解释为char，于是1就是一个char的地址宽度。</li>
-</ul>
-<p><strong>总结：</strong> 在计算地址时，要注意运算符左边值的类型。你加上的1可能并不是一个字节的大小。</p>
-<blockquote>
-<p>这是我边看rax边实现的一个小练习，欢迎大家指教：<a href="https://github.com/LurenAA/radix_tree" target="_blank" rel="noopener">https://github.com/LurenAA/radix_tree</a> ，好想要个star，求求了，兄弟萌:kissing_heart:</p>
-</blockquote>
+        <p>IPv4头部长度包含20个字节（没有选项），IPv6头部长度固定（40字节）。<br><br><strong>网络字节序</strong>：高位优先字节序。<br><br>Internet头部被限制为60个字节，因为IHL字段长度为4位，保存IPv4头部中32位字的数量。<br></p>
 
       </div>
       
@@ -418,10 +379,10 @@ return 0;
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-11-26T03:51:03+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-23T13:53:08+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2019年11月26日</p>
+    <p>更新于 2020年1月23日</p>
   </a>
 </div>
 
@@ -430,7 +391,7 @@ return 0;
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/rax%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>rax源码阅读</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E3%80%8ATCP-IP%E8%AF%A6%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>《TCP/IP详解》读书笔记</p></a></div>
 
 
         
@@ -443,7 +404,7 @@ return 0;
       
         <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2019/08/14/rax3/&title=redis基数树rax源码分析(2.5) | lurenaaのblog&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/23/TIV5/&title=第五章 Internet协议 | lurenaaのblog&summary="
           
           >
           
@@ -455,7 +416,7 @@ return 0;
       
         <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2019/08/14/rax3/&title=redis基数树rax源码分析(2.5) | lurenaaのblog&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/01/23/TIV5/&title=第五章 Internet协议 | lurenaaのblog&summary="
           
           >
           
@@ -467,7 +428,7 @@ return 0;
       
         <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2019/08/14/rax3/&title=redis基数树rax源码分析(2.5) | lurenaaのblog&summary="
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/23/TIV5/&title=第五章 Internet协议 | lurenaaのblog&summary="
           
           >
           
@@ -491,40 +452,21 @@ return 0;
       
           <div class="prev-next">
               
-                  <section class="prev">
-                      <span class="art-item-left">
-                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
-                          <h4>
-                              <a href="/2019/11/16/libuv1/" rel="prev" title="libuv源码分析（1）事件循环分析">
-                                
-                                    libuv源码分析（1）事件循环分析
-                                
-                              </a>
-                          </h4>
-                          
-                              
-                              <h6 class="tags">
-                                  <a class="tag" href="/tags/libuv/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> libuv</a>
-                              </h6>
-                          
-                      </span>
-                  </section>
-              
               
                   <section class="next">
                       <span class="art-item-right" aria-hidden="true">
                           <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                           <h4>
-                              <a href="/2019/08/12/rax2/" rel="prev" title="redis基数树rax源码分析(2)">
+                              <a href="/2020/01/23/TIV3/" rel="prev" title="第三章 链路层">
                                   
-                                      redis基数树rax源码分析(2)
+                                      第三章 链路层
                                   
                               </a>
                           </h4>
                           
                               
                               <h6 class="tags">
-                                  <a class="tag" href="/tags/rax%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> rax源码阅读</a>
+                                  <a class="tag" href="/tags/%E3%80%8ATCP-IP%E8%AF%A6%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 《TCP/IP详解》读书笔记</a>
                               </h6>
                           
                       </span>
@@ -554,7 +496,7 @@ return 0;
 
   <script>
     window.subData = {
-      title: 'redis基数树rax源码分析(2.5)',
+      title: '第五章 Internet协议',
       tools: true
     }
   </script>
@@ -633,20 +575,6 @@ return 0;
           
             
               
-  <section class='widget toc-wrapper'>
-    
-<header class='pure'>
-  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
-  
-    <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer noopener" href="javascript:void(0)" target="_blank"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
-  
-</header>
-
-    <div class='content pure'>
-      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#点点废话"><span class="toc-text">点点废话</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#宏定义函数的注意点："><span class="toc-text">宏定义函数的注意点：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#地址运算注意点"><span class="toc-text">地址运算注意点</span></a></li></ol>
-    </div>
-  </section>
-
 
             
           
