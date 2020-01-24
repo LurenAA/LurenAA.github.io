@@ -4,6 +4,44 @@
   
     
     <entry>
+      <title>3.无重复字符的最长子串</title>
+      <link href="/2020/01/24/leetcode3/"/>
+      <url>/2020/01/24/leetcode3/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🥛set-emsp"><a href="#🥛set-emsp" class="headerlink" title="🥛set &emsp;"></a>🥛set &emsp;</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int lengthOfLongestSubstring(string s) &#123;</span><br><span class="line">        set&lt;char&gt; st;</span><br><span class="line">        int mx = 0;</span><br><span class="line">        for(int i = 0; i &lt; s.size();) &#123;</span><br><span class="line">            if(st.count(s[i]) &gt; 0) &#123;</span><br><span class="line">                if(st.size()) &#123;</span><br><span class="line">                    st.erase(s[i - st.size()]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                st.insert(s[i]);</span><br><span class="line">                ++i;</span><br><span class="line">            &#125;</span><br><span class="line">            mx = max(mx, (int)st.size());</span><br><span class="line">        &#125;</span><br><span class="line">        return mx;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>987/987 cases passed (48 ms) <br><br>Your runtime beats 25.3 % of cpp submissions <br><br>Your memory usage beats 14.41 % of cpp submissions (16 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>leetcode771</title>
+      <link href="/2020/01/24/leetcode771/"/>
+      <url>/2020/01/24/leetcode771/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😂代码实现"><a href="#😂代码实现" class="headerlink" title="😂代码实现"></a>😂代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int numJewelsInStones(string J, string S) &#123;</span><br><span class="line">        set&lt;char&gt; mp;</span><br><span class="line">        for(auto x : J) &#123;</span><br><span class="line">            mp.insert(x);</span><br><span class="line">        &#125;</span><br><span class="line">        int tl = 0;</span><br><span class="line">        for(auto a: S) &#123;</span><br><span class="line">            if(mp.count(a) &gt; 0) &#123;</span><br><span class="line">                tl += 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return tl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>254/254 cases passed (8 ms) <br><br>Your runtime beats 25.05 % of cpp submissions <br><br>Your memory usage beats 5.26 % of cpp submissions (8.8 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>652.寻找重复的子树</title>
       <link href="/2020/01/23/leetcode652/"/>
       <url>/2020/01/23/leetcode652/</url>
