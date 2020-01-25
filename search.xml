@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>454.四数相加 II</title>
+      <link href="/2020/01/25/leetcode454/"/>
+      <url>/2020/01/25/leetcode454/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😂失败1-超出时间"><a href="#😂失败1-超出时间" class="headerlink" title="😂失败1.超出时间"></a>😂失败1.超出时间</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int fourSumCount(vector&lt;int&gt;&amp; A, vector&lt;int&gt;&amp; B, vector&lt;int&gt;&amp; C, vector&lt;int&gt;&amp; D) &#123;</span><br><span class="line">        set&lt;vector&lt;int&gt;&gt; st;</span><br><span class="line">        for(int a = 0; a &lt; A.size(); ++a)</span><br><span class="line">            for(int b = 0; b &lt;B.size(); ++b)</span><br><span class="line">                for(int c = 0; c &lt; C.size(); ++c)</span><br><span class="line">                    for(int d = 0; d &lt; D.size(); ++d)</span><br><span class="line">                    &#123;</span><br><span class="line">                        if(A[a] + B[b] + C[c] + D[d] == 0) &#123;</span><br><span class="line">                            st.insert(&#123;a,b,c,d&#125;);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">        return st.size();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><h4 id="😜分为两组"><a href="#😜分为两组" class="headerlink" title="😜分为两组"></a>😜分为两组</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int fourSumCount(vector&lt;int&gt;&amp; A, vector&lt;int&gt;&amp; B, vector&lt;int&gt;&amp; C, vector&lt;int&gt;&amp; D) &#123;</span><br><span class="line">        map&lt;int,int&gt; st;</span><br><span class="line">        int count = 0;</span><br><span class="line">        int x;</span><br><span class="line">        for(int a = 0; a &lt; A.size(); ++a)</span><br><span class="line">            for(int b = 0; b &lt;B.size(); ++b)</span><br><span class="line">            &#123;</span><br><span class="line">                x = A[a] + B[b];</span><br><span class="line">                if(!st.count(x))</span><br><span class="line">                    st.insert(&#123;x, 1&#125;);</span><br><span class="line">                else </span><br><span class="line">                    st[x] += 1;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        for(int c = 0; c &lt; C.size(); ++c)</span><br><span class="line">            for(int d = 0; d &lt; D.size(); ++d)</span><br><span class="line">            &#123;</span><br><span class="line">                x = C[c] + D[d];</span><br><span class="line">                if(st.count(-x)) &#123;</span><br><span class="line">                    count += st[-x];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        return count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>3.无重复字符的最长子串</title>
       <link href="/2020/01/24/leetcode3/"/>
       <url>/2020/01/24/leetcode3/</url>
@@ -23,7 +42,7 @@
     
     
     <entry>
-      <title>leetcode771</title>
+      <title>771.宝石与石头</title>
       <link href="/2020/01/24/leetcode771/"/>
       <url>/2020/01/24/leetcode771/</url>
       
