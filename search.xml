@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>347.前 K 个高频元素</title>
+      <link href="/2020/01/25/leetcode347/"/>
+      <url>/2020/01/25/leetcode347/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🉐查找-and-哈希表"><a href="#🉐查找-and-哈希表" class="headerlink" title="🉐查找 and 哈希表"></a>🉐查找 and 哈希表</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; topKFrequent(vector&lt;int&gt;&amp; nums, int k) &#123;</span><br><span class="line">        map&lt;int, int&gt; count;</span><br><span class="line">        for(auto x :nums) &#123;</span><br><span class="line">            count[x] += 1;</span><br><span class="line">        &#125;</span><br><span class="line">        using value_t = pair&lt;int, int&gt;;</span><br><span class="line">        vector&lt;value_t&gt; container(count.begin(), count.end());</span><br><span class="line">         auto comp = [](const value_t &amp;v1, const value_t &amp;v2) &#123;return v1.second &lt; v2.second;&#125;;</span><br><span class="line">        make_heap(container.begin(), container.end(), comp);</span><br><span class="line">        vector&lt;int&gt; result;</span><br><span class="line">        for (int i = 0; i &lt; k; ++i) &#123;</span><br><span class="line">            result.push_back(container.begin()-&gt;first);</span><br><span class="line">            pop_heap(container.begin(), container.end() - i, comp);</span><br><span class="line">        &#125;</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>21/21 cases passed (24 ms) <br><br>Your runtime beats 62.88 % of cpp submissions <br><br>Your memory usage beats 9.89 % of cpp submissions (11.7 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>454.四数相加 II</title>
       <link href="/2020/01/25/leetcode454/"/>
       <url>/2020/01/25/leetcode454/</url>
