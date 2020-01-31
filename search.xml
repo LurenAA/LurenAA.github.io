@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>24.两两交换链表中的节点</title>
+      <link href="/2020/01/31/leetcode24/"/>
+      <url>/2020/01/31/leetcode24/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🚌"><a href="#🚌" class="headerlink" title="🚌"></a>🚌</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* swapPairs(ListNode* head) &#123;</span><br><span class="line">        if(!head)</span><br><span class="line">            return nullptr;</span><br><span class="line">        return helper(head, head-&gt;next);</span><br><span class="line">    &#125;</span><br><span class="line">    ListNode* helper(ListNode* head, ListNode* head2) &#123;</span><br><span class="line">        if(!head || !head2)</span><br><span class="line">            return head;</span><br><span class="line">        head-&gt;next = head2-&gt;next;</span><br><span class="line">        head2-&gt;next = head;</span><br><span class="line">        head-&gt;next = helper(head-&gt;next, head-&gt;next ? head-&gt;next-&gt;next : nullptr);</span><br><span class="line">        return head2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>55/55 cases passed (4 ms) <br><br>Your runtime beats 83.69 % of cpp submissions <br><br>Your memory usage beats 19.24 % of cpp submissions (8.7 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>344.反转字符串</title>
       <link href="/2020/01/28/leetcode344/"/>
       <url>/2020/01/28/leetcode344/</url>
