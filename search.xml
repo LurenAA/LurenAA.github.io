@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>206.反转链表</title>
+      <link href="/2020/02/02/leetcode206/"/>
+      <url>/2020/02/02/leetcode206/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😝迭代"><a href="#😝迭代" class="headerlink" title="😝迭代"></a>😝迭代</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* reverseList(ListNode* head) &#123;</span><br><span class="line">        ListNode* pre = nullptr,</span><br><span class="line">         *curr = head;</span><br><span class="line">        while(curr) &#123;</span><br><span class="line">            ListNode* nextTemp = curr-&gt;next;</span><br><span class="line">            curr-&gt;next = pre;</span><br><span class="line">            pre = curr;</span><br><span class="line">            curr = nextTemp;</span><br><span class="line">        &#125;</span><br><span class="line">        return pre;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>27/27 cases passed (4 ms) <br><br>Your runtime beats 99.08 % of cpp submissions <br><br>Your memory usage beats 76.29 % of cpp submissions (9.1 MB) <br></p></blockquote><h4 id="🙃递归"><a href="#🙃递归" class="headerlink" title="🙃递归"></a>🙃递归</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* reverseList(ListNode* head) &#123;</span><br><span class="line">        if(!head || !head-&gt;next)</span><br><span class="line">            return head;</span><br><span class="line">        auto p = reverseList(head-&gt;next);</span><br><span class="line">        head-&gt;next-&gt;next = head;</span><br><span class="line">        head-&gt;next = nullptr;</span><br><span class="line">        return p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>27/27 cases passed (4 ms) <br><br>Your runtime beats 99.08 % of cpp submissions <br><br>Your memory usage beats 5.08 % of cpp submissions (9.4 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>119.杨辉三角 II</title>
       <link href="/2020/02/02/leetcode119/"/>
       <url>/2020/02/02/leetcode119/</url>
