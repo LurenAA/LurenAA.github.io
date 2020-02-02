@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>119.杨辉三角 II</title>
+      <link href="/2020/02/02/leetcode119/"/>
+      <url>/2020/02/02/leetcode119/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🚌递归实现"><a href="#🚌递归实现" class="headerlink" title="🚌递归实现"></a>🚌递归实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; getRow(int rowIndex) &#123;</span><br><span class="line">        vector&lt;vector&lt;int&gt; &gt; vec;</span><br><span class="line">        for(int i = 0; i &lt;= rowIndex; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            vec.push_back(&#123;&#125;);</span><br><span class="line">            for(int j = 0; j &lt;= i; ++j)</span><br><span class="line">            &#123;</span><br><span class="line">                vec[i].push_back(helper(i, j, vec));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return vec[rowIndex];</span><br><span class="line">    &#125;</span><br><span class="line">    int helper(int i, int j, vector&lt;vector&lt;int &gt;&gt;&amp; vec)</span><br><span class="line">    &#123;</span><br><span class="line">        if(j == 0 || i == j)</span><br><span class="line">            return 1;</span><br><span class="line">        return vec[i - 1][j - 1] + vec[i - 1][j];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>34/34 cases passed (0 ms) <br><br>Your runtime beats 100 % of cpp submissions <br><br>Your memory usage beats 5.16 % of cpp submissions (9 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>118.杨辉三角</title>
       <link href="/2020/02/01/leetcode118/"/>
       <url>/2020/02/01/leetcode118/</url>
