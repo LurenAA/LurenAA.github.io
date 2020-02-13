@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>如果解决“corrupted size vs. prev_size”问题？</title>
+      <link href="/2020/02/13/problems5/"/>
+      <url>/2020/02/13/problems5/</url>
+      
+        <content type="html"><![CDATA[<p>📣</p><p>在C++中我们时常会遇见“corrupted size vs. prev_size”的报错，它的原因在于<strong>内存越界</strong>，其实解决这个问题的办法在于使用<strong>vector</strong>来代替自己申请内存，并且使用以下两种方法来访问元素：</p><ul><li>使用迭代器</li><li>使用at</li></ul><p>尽量要避免使用[]来访问vector，越界的时候很难找到错误的地方，使用at带有越界的检查，更为安全。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 遇见的问题 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>206.反转链表</title>
       <link href="/2020/02/02/leetcode206/"/>
       <url>/2020/02/02/leetcode206/</url>
