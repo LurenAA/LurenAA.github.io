@@ -4,6 +4,82 @@
   
     
     <entry>
+      <title>779.第K个语法符号</title>
+      <link href="/2020/02/15/leetcode779/"/>
+      <url>/2020/02/15/leetcode779/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😂失败1：超出时间限制"><a href="#😂失败1：超出时间限制" class="headerlink" title="😂失败1：超出时间限制"></a>😂失败1：超出时间限制</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int kthGrammar(int N, int K) &#123;</span><br><span class="line">        vector&lt;vector&lt;int&gt; &gt; v(30, vector&lt;int&gt;());</span><br><span class="line">        helper(N , v);</span><br><span class="line">        return v[N - 1][K - 1];</span><br><span class="line">    &#125;</span><br><span class="line">    void helper(int n, vector&lt;vector&lt;int&gt;&gt; &amp; v)&#123;</span><br><span class="line">        if(n == 0)</span><br><span class="line">            return ;</span><br><span class="line">        if(n == 1) &#123;</span><br><span class="line">            v[0].push_back(0);</span><br><span class="line">            return ;</span><br><span class="line">        &#125;</span><br><span class="line">        helper(n - 1, v);</span><br><span class="line">        for(auto x : v[n - 2]) &#123;</span><br><span class="line">            if(x) &#123;</span><br><span class="line">                v[n - 1].push_back(1);</span><br><span class="line">                v[n - 1].push_back(0);</span><br><span class="line">            &#125;else &#123;</span><br><span class="line">                v[n - 1].push_back(0);</span><br><span class="line">                v[n - 1].push_back(1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Time Limit Exceeded <br><br>15/55 <br>cases passed (N/A) <br><br>Testcase <br><br>30 <br><br>434991989 <br></p></blockquote><h4 id="😂递归实现"><a href="#😂递归实现" class="headerlink" title="😂递归实现"></a>😂递归实现</h4><p>重点在于<strong>找规律</strong></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int kthGrammar(int N, int K) &#123;</span><br><span class="line">        if(N == 1) &#123;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line">        if(K % 2) return kthGrammar(N - 1, (K + 1) / 2);</span><br><span class="line">        else return !kthGrammar(N - 1, K / 2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>55/55 cases passed (0 ms) <br><br>Your runtime beats 100 % of cpp submissions <br><br>Your memory usage beats 5.25 % of cpp submissions (8.5 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>50.Pow(x,n)</title>
+      <link href="/2020/02/15/leetcode50/"/>
+      <url>/2020/02/15/leetcode50/</url>
+      
+        <content type="html"><![CDATA[<p>注意边界情况：当n==INT_MIN时，-INT_MIN超出范围了，要改为INT_MAX，<br>又因为存在（-1，-INT_MIN）这个特殊情况存在，考虑到正负修正为INT_MAX-1</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    double myPow(double x, int n) &#123;</span><br><span class="line">        if(n &lt; 0)</span><br><span class="line">            return myPow(1 / x, n == INT_MIN ? INT_MAX - 1: -n);</span><br><span class="line">        return fast(x, n);</span><br><span class="line">    &#125;</span><br><span class="line">    double fast(double x, int n) &#123;</span><br><span class="line">        if(n == 0)</span><br><span class="line">            return 1;</span><br><span class="line">        double half = fast(x, n /2);</span><br><span class="line">        if(n % 2) &#123;</span><br><span class="line">            return half*half*x;</span><br><span class="line">        &#125;</span><br><span class="line">        return half*half;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>304/304 cases passed (4 ms) <br><br>Your runtime beats 71.28 % of cpp submissions <br><br>Your memory usage beats 57.93 % of cpp submissions (8.3 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>70.爬楼梯</title>
+      <link href="/2020/02/15/leetcode70/"/>
+      <url>/2020/02/15/leetcode70/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😂自顶向下"><a href="#😂自顶向下" class="headerlink" title="😂自顶向下"></a>😂自顶向下</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int climbStairs(int n) &#123;</span><br><span class="line">        f.resize(1000);</span><br><span class="line">        f[1] = 1;</span><br><span class="line">        f[2] = 2;</span><br><span class="line">        return helper(n);</span><br><span class="line">    &#125;</span><br><span class="line">    int helper(int n) &#123;</span><br><span class="line">        if(f[n] || n &lt;= 2)</span><br><span class="line">            return f[n];</span><br><span class="line">        f[n] = helper(n - 1) + helper(n-2);</span><br><span class="line">        return f[n]; </span><br><span class="line">    &#125;</span><br><span class="line">private:</span><br><span class="line">    vector&lt;int&gt; f;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>45/45 cases passed (0 ms) <br><br>Your runtime beats 100 % of cpp submissions <br><br>Your memory usage beats 5.03 % of cpp submissions (8.7 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>509.斐波那契数</title>
+      <link href="/2020/02/15/leetcode509/"/>
+      <url>/2020/02/15/leetcode509/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😂自顶向下"><a href="#😂自顶向下" class="headerlink" title="😂自顶向下"></a>😂自顶向下</h4><p>通常情况下，递归是一种直观而有效的实现算法的方法。 但是，如果我们不明智地使用它，可能会给性能带来一些不希望的损失，例如重复计算。<br><strong>记忆化（memoization）</strong>，可以用来避免这个问题。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int fib(int N) &#123;</span><br><span class="line">        f.resize(1000); </span><br><span class="line">        fill(f.begin(), f.end(), -1);  </span><br><span class="line">        f[0] = 0;</span><br><span class="line">        f[1] = 1;</span><br><span class="line">        return helper(N);</span><br><span class="line">    &#125;</span><br><span class="line">    int helper(int N) </span><br><span class="line">    &#123;</span><br><span class="line">        if(f.at(N) != -1)</span><br><span class="line">            return f.at(N);</span><br><span class="line">        int val = helper(N - 1) + helper(N -2);</span><br><span class="line">        f[N] = val;</span><br><span class="line">        return val;</span><br><span class="line">    &#125;</span><br><span class="line">private:</span><br><span class="line">    vector&lt;int&gt; f;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>31/31 cases passed (4 ms) <br><br>Your runtime beats 74.12 % of cpp submissions <br><br>Your memory usage beats 5.01 % of cpp submissions (8.7 MB) <br></p></blockquote><h4 id="😂自底向上迭代"><a href="#😂自底向上迭代" class="headerlink" title="😂自底向上迭代"></a>😂自底向上迭代</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int fib(int N) &#123;</span><br><span class="line">        f.resize(1000); </span><br><span class="line">        fill(f.begin(), f.end(), -1);  </span><br><span class="line">        f[0] = 0;</span><br><span class="line">        f[1] = 1;</span><br><span class="line">        return helper(N);</span><br><span class="line">    &#125;</span><br><span class="line">    int helper(int N) </span><br><span class="line">    &#123;</span><br><span class="line">        for(int i = 2; i &lt;= N; ++i) </span><br><span class="line">            f[i] = f[i - 1] + f[i - 2];</span><br><span class="line">        return f[N];</span><br><span class="line">    &#125;</span><br><span class="line">private:</span><br><span class="line">    vector&lt;int&gt; f;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>31/31 cases passed (4 ms) <br><br>Your runtime beats 74.12 % of cpp submissions <br><br>Your memory usage beats 8.19 % of cpp submissions (8.5 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>如果解决“corrupted size vs. prev_size”问题？</title>
       <link href="/2020/02/13/problems5/"/>
       <url>/2020/02/13/problems5/</url>
