@@ -350,6 +350,10 @@
 <blockquote>
 <p>Accepted <br><br>74/74 cases passed (48 ms) <br><br>Your runtime beats 20.02 % of cpp submissions <br><br>Your memory usage beats 5.02 % of cpp submissions (30.6 MB) <br></p>
 </blockquote>
+<h4 id="😜km"><a href="#😜km" class="headerlink" title="😜km"></a>😜km</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int strStr(string haystack, string needle) &#123;</span><br><span class="line">        vector&lt;int&gt; right(256, -1);</span><br><span class="line">        for(int i  = 0; i &lt; needle.size(); ++i)</span><br><span class="line">        &#123;   </span><br><span class="line">            right[needle.at(i)] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        int skip = 0;</span><br><span class="line">        int M = haystack.size();</span><br><span class="line">        int N = needle.size();</span><br><span class="line">        int j;</span><br><span class="line">        for(int i = 0; i &lt;= M -N; i += skip) &#123;</span><br><span class="line">            for( j = N - 1; j &gt;= 0; --j) &#123;</span><br><span class="line">                if(needle[j] != haystack[i + j]) &#123;</span><br><span class="line">                    skip = j - right[needle[j]];</span><br><span class="line">                    if(skip &lt; 1) skip = 1;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if(j == -1) return i;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Accepted <br><br>74/74 cases passed (0 ms) <br><br>Your runtime beats 100 % of cpp submissions <br><br>Your memory usage beats 11.13 % of cpp submissions (9.4 MB) <br></p>
+</blockquote>
 
       </div>
       
@@ -361,10 +365,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-02-17T23:24:36+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-02-18T14:33:57+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2020年2月17日</p>
+    <p>更新于 2020年2月18日</p>
   </a>
 </div>
 
@@ -433,6 +437,25 @@
       
       
           <div class="prev-next">
+              
+                  <section class="prev">
+                      <span class="art-item-left">
+                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                          <h4>
+                              <a href="/2020/02/18/leetcode14/" rel="prev" title="14.最长公共前缀">
+                                
+                                    14.最长公共前缀
+                                
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/LeetCode/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> LeetCode</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
               
               
                   <section class="next">
@@ -564,7 +587,7 @@
 </header>
 
     <div class='content material'>
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#😜kmp"><span class="toc-text">😜kmp</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#😜kmp"><span class="toc-text">😜kmp</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#😜km"><span class="toc-text">😜km</span></a></li></ol>
     </div>
   </section>
 
@@ -743,7 +766,7 @@
 </header>
 
     <div class='content material'>
-      <a href="/tags/LeetCode/" style="font-size: 24px; color: #555">LeetCode</a> <a href="/tags/libuv/" style="font-size: 21.5px; color: #666">libuv</a> <a href="/tags/rax%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" style="font-size: 14px; color: #999">rax源码阅读</a> <a href="/tags/%E3%80%8ATCP-IP%E8%AF%A6%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 16.5px; color: #888">《TCP/IP详解》读书笔记</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 21.5px; color: #666">算法</a> <a href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/" style="font-size: 19px; color: #777">遇见的问题</a>
+      <a href="/tags/LeetCode/" style="font-size: 24px; color: #555">LeetCode</a> <a href="/tags/libuv/" style="font-size: 20px; color: #707070">libuv</a> <a href="/tags/rax%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" style="font-size: 14px; color: #999">rax源码阅读</a> <a href="/tags/%E3%80%8ATCP-IP%E8%AF%A6%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 16px; color: #8b8b8b">《TCP/IP详解》读书笔记</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 22px; color: #636363">算法</a> <a href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/" style="font-size: 18px; color: #7e7e7e">遇见的问题</a>
     </div>
   </section>
 
