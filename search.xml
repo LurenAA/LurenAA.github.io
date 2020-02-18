@@ -4,6 +4,158 @@
   
     
     <entry>
+      <title>283.移动零</title>
+      <link href="/2020/02/18/leetcode283/"/>
+      <url>/2020/02/18/leetcode283/</url>
+      
+        <content type="html"><![CDATA[<p>&emsp;&emsp;</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    void moveZeroes(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        int k = 0;</span><br><span class="line">        for(int i = 0; i &lt; nums.size(); ++i) &#123;</span><br><span class="line">            if(nums[i] == 0) &#123;</span><br><span class="line">                k = i + 1;</span><br><span class="line">                for(;k &lt; nums.size(); ++k) &#123;</span><br><span class="line">                    if(nums[k]) &#123;</span><br><span class="line">                        swap(nums[k], nums[i]);</span><br><span class="line">                        break;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>21/21 cases passed (28 ms) <br><br>Your runtime beats 14.99 % of cpp submissions <br><br>Your memory usage beats 5.35 % of cpp submissions (10.1 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>26.删除排序数组中的重复项</title>
+      <link href="/2020/02/18/leetcode26/"/>
+      <url>/2020/02/18/leetcode26/</url>
+      
+        <content type="html"><![CDATA[<p>&emsp;&emsp;</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int removeDuplicates(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        set&lt;int&gt; st;</span><br><span class="line">        int k = 0;</span><br><span class="line">        for(int i = 0; i &lt; nums.size(); ++i) &#123;</span><br><span class="line">            if(!st.count(nums[i])) &#123;</span><br><span class="line">                nums[k++] = nums[i];</span><br><span class="line">                st.insert(nums[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return st.size();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>161/161 cases passed (20 ms)<br><br>Your runtime beats 72.01 % of cpp submissions<br><br>Your memory usage beats 5.09 % of cpp submissions (11.9 MB)<br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>557.反转字符串中的单词 III</title>
+      <link href="/2020/02/18/leetcode557/"/>
+      <url>/2020/02/18/leetcode557/</url>
+      
+        <content type="html"><![CDATA[<p>&emsp;&emsp;</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    string reverseWords(string s) &#123;</span><br><span class="line">        int bg = 0;</span><br><span class="line">        for(int i = 0; i &lt; s.size(); ++i) &#123;</span><br><span class="line">            if(s[i] == &apos; &apos; || i + 1 == s.size())&#123;</span><br><span class="line">                int l = bg, r = i + 1 == s.size() ? i : i - 1;</span><br><span class="line">                while(l &lt;= r) &#123;</span><br><span class="line">                    swap(s[l], s[r]);</span><br><span class="line">                    ++l;</span><br><span class="line">                    --r;</span><br><span class="line">                &#125;</span><br><span class="line">                bg = i + 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>30/30 cases passed (20 ms)<br><br>Your runtime beats 76.47 % of cpp submissions<br><br>Your memory usage beats 49.04 % of cpp submissions (12 MB)<br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>151.翻转字符串里的单词</title>
+      <link href="/2020/02/18/leetcode151/"/>
+      <url>/2020/02/18/leetcode151/</url>
+      
+        <content type="html"><![CDATA[<p>&emsp;&emsp;</p><h4 id="😅双指针"><a href="#😅双指针" class="headerlink" title="😅双指针"></a>😅双指针</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    string reverseWords(string s) &#123;</span><br><span class="line">        int bg = 0;</span><br><span class="line">        stack&lt;string&gt; stk;</span><br><span class="line">        string ms, res = &quot;&quot;;</span><br><span class="line">        for(int i  = 0; i &lt; s.size(); ++i) &#123;</span><br><span class="line">            if(s[i] == &apos; &apos; &amp;&amp; s[bg] != &apos; &apos;) &#123;</span><br><span class="line">                string ns = s.substr(bg, i - bg);</span><br><span class="line">                // cout &lt;&lt; ns &lt;&lt; ns.size() &lt;&lt; endl;</span><br><span class="line">                stk.push(ns);</span><br><span class="line">                bg = 1 + i;</span><br><span class="line">            &#125; else if(s[i] == &apos; &apos;)&#123;</span><br><span class="line">                bg += 1;</span><br><span class="line">            &#125; </span><br><span class="line">        &#125;</span><br><span class="line">        if(bg &lt; s.size() &amp;&amp; s[bg] != &apos; &apos;) &#123;</span><br><span class="line">            string ns = s.substr(bg, s.size() - bg);</span><br><span class="line">            stk.push(ns);</span><br><span class="line">        &#125;</span><br><span class="line">        while(stk.size()) &#123;</span><br><span class="line">            ms = stk.top();</span><br><span class="line">            stk.pop();</span><br><span class="line">            res += ms + &apos; &apos;;</span><br><span class="line">        &#125;</span><br><span class="line">        res.erase(res.end() - 1);</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>25/25 cases passed (12  ms)<br><br>Your runtime beats 54.85 % of cpp submissions<br><br>Your memory usage beats 26.22 % of cpp submissions (11.8 MB)<br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>189.旋转数组</title>
+      <link href="/2020/02/18/leetcode189/"/>
+      <url>/2020/02/18/leetcode189/</url>
+      
+        <content type="html"><![CDATA[<p>&emsp;&emsp;</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    void rotate(vector&lt;int&gt;&amp; nums, int k) &#123;</span><br><span class="line">        int last_one;</span><br><span class="line">        while(--k &gt;= 0) &#123;</span><br><span class="line">            last_one = nums.back();</span><br><span class="line">            nums.pop_back();</span><br><span class="line">            nums.insert(nums.begin(), last_one);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>34/34 cases passed (336 ms)<br><br>Your runtime beats 6.57 % of cpp submissions<br><br>Your memory usage beats 5.01 % of cpp submissions (10.1 MB)<br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>209.长度最小的子数组</title>
+      <link href="/2020/02/18/leetcode209/"/>
+      <url>/2020/02/18/leetcode209/</url>
+      
+        <content type="html"><![CDATA[<p>&emsp;&emsp;</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int minSubArrayLen(int s, vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        if(nums.empty())</span><br><span class="line">            return 0;</span><br><span class="line">        int count = 0,</span><br><span class="line">        tl = 0,</span><br><span class="line">        bg = 0,</span><br><span class="line">        mi = 10000;</span><br><span class="line">        for(int i = 0; i &lt; nums.size(); ++i) &#123;</span><br><span class="line">            tl += nums[i];</span><br><span class="line">            ++count;</span><br><span class="line">            while(tl &gt;= s) &#123;</span><br><span class="line">                mi = min(mi, count);</span><br><span class="line">                tl -= nums[bg];</span><br><span class="line">                ++bg;</span><br><span class="line">                --count;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return mi == 10000 ? 0 : mi;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>15/15 cases passed (4 ms) <br><br>Your runtime beats 99.85 % of cpp submissions <br><br>Your memory usage beats 5.09 % of cpp submissions (10.2 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>485.最大连续1的个数</title>
+      <link href="/2020/02/18/leetcode485/"/>
+      <url>/2020/02/18/leetcode485/</url>
+      
+        <content type="html"><![CDATA[<p>&emsp;&emsp;</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int findMaxConsecutiveOnes(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        int max1 = 0;</span><br><span class="line">        int k = 0;</span><br><span class="line">        for(auto x: nums) &#123;</span><br><span class="line">            if(x == 1) &#123;</span><br><span class="line">                ++k;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                </span><br><span class="line">                k = 0;</span><br><span class="line">            &#125;</span><br><span class="line">            max1 = max(max1, k);</span><br><span class="line">        &#125;</span><br><span class="line">        return max1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>41/41 cases passed (40 ms)<br><br>Your runtime beats 41.04 % of cpp submissions<br><br>Your memory usage beats 54.84 % of cpp submissions (11.7 MB)<br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>27.移除元素</title>
+      <link href="/2020/02/18/leetcode27/"/>
+      <url>/2020/02/18/leetcode27/</url>
+      
+        <content type="html"><![CDATA[<p>&emsp;&emsp;双指针策略</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int removeElement(vector&lt;int&gt;&amp; nums, int val) &#123;</span><br><span class="line">        int k = 0;</span><br><span class="line">        for(int i = 0; i &lt; nums.size(); ++i) &#123;</span><br><span class="line">            if(nums[i] != val) &#123;</span><br><span class="line">                nums[k] = nums[i];</span><br><span class="line">                ++k;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return k;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>113/113 cases passed (8 ms)<br><br>Your runtime beats 31.44 % of cpp submissions<br><br>Your memory usage beats 5.01 % of cpp submissions (8.8 MB)<br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>二分查找的细节总结</title>
       <link href="/2020/02/18/alg7/"/>
       <url>/2020/02/18/alg7/</url>
