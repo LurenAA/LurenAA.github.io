@@ -345,9 +345,13 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <h4 id="😂代码实现"><a href="#😂代码实现" class="headerlink" title="😂代码实现"></a>😂代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isIsomorphic(string s, string t) &#123;</span><br><span class="line">        unordered_map&lt;char, int&gt; st, tt;</span><br><span class="line">        for(int i = 0; i &lt; s.size(); ++i) &#123;</span><br><span class="line">            if(st.count(s[i]) == 1 || tt.count(t[i]) == 1) &#123;</span><br><span class="line">                if(tt.count(t[i]) != 1 || st.count(s[i]) != 1 || tt.at(t[i]) != st.at(s[i])) </span><br><span class="line">                    return false;</span><br><span class="line">            &#125; </span><br><span class="line">            st.insert(&#123;s[i], i&#125;);</span><br><span class="line">            tt.insert(&#123;t[i], i&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+        <h4 id="😂实现一"><a href="#😂实现一" class="headerlink" title="😂实现一"></a>😂实现一</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isIsomorphic(string s, string t) &#123;</span><br><span class="line">        unordered_map&lt;char, int&gt; st, tt;</span><br><span class="line">        for(int i = 0; i &lt; s.size(); ++i) &#123;</span><br><span class="line">            if(st.count(s[i]) == 1 || tt.count(t[i]) == 1) &#123;</span><br><span class="line">                if(tt.count(t[i]) != 1 || st.count(s[i]) != 1 || tt.at(t[i]) != st.at(s[i])) </span><br><span class="line">                    return false;</span><br><span class="line">            &#125; </span><br><span class="line">            st.insert(&#123;s[i], i&#125;);</span><br><span class="line">            tt.insert(&#123;t[i], i&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>Accepted <br><br>30/30 cases passed (40 ms) <br><br>Your runtime beats 5.2 % of cpp submissions <br><br>Your memory usage beats 5.04 % of cpp submissions (15 MB) <br></p>
+</blockquote>
+<h4 id="🤫实现二"><a href="#🤫实现二" class="headerlink" title="🤫实现二"></a>🤫实现二</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isIsomorphic(string s, string t) &#123;</span><br><span class="line">        map&lt;char, char&gt; mp1, mp2;</span><br><span class="line">        for(int i = 0; i &lt; s.size(); ++i) &#123;</span><br><span class="line">            if(mp1.find(s[i]) == mp1.end()) &#123;</span><br><span class="line">                mp1.insert(&#123;s[i], t[i]&#125;);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                if(mp1[s[i]] != t[i]) </span><br><span class="line">                    return false;</span><br><span class="line">            &#125;</span><br><span class="line">            if(mp2.find(t[i]) == mp2.end()) &#123;</span><br><span class="line">                mp2.insert(&#123;t[i], s[i]&#125;);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                if(mp2[t[i]] != s[i]) </span><br><span class="line">                    return false;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Accepted<br><br>30/30 cases passed (24 ms)<br><br>Your runtime beats 13.07 % of cpp submissions<br><br>Your memory usage beats 6.98 % of cpp submissions (9.5 MB) <br></p>
 </blockquote>
 
       </div>
@@ -360,10 +364,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-23T17:53:33+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-02-19T23:55:19+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2020年1月23日</p>
+    <p>更新于 2020年2月19日</p>
   </a>
 </div>
 
@@ -582,7 +586,7 @@
 </header>
 
     <div class='content material'>
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#😂代码实现"><span class="toc-text">😂代码实现</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#😂实现一"><span class="toc-text">😂实现一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🤫实现二"><span class="toc-text">🤫实现二</span></a></li></ol>
     </div>
   </section>
 
