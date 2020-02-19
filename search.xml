@@ -4,6 +4,139 @@
   
     
     <entry>
+      <title>2.两数相加</title>
+      <link href="/2020/02/19/leetcode2/"/>
+      <url>/2020/02/19/leetcode2/</url>
+      
+        <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) &#123;</span><br><span class="line">        ListNode* h = new ListNode(0),</span><br><span class="line">            *nh = h;</span><br><span class="line">        int add = 0;</span><br><span class="line">        while(l1 &amp;&amp; l2) &#123;</span><br><span class="line">            int val = l1-&gt;val + l2-&gt;val + add;</span><br><span class="line">            nh-&gt;next = new ListNode(val % 10);</span><br><span class="line">            add = val / 10;</span><br><span class="line">            l1 = l1-&gt;next;</span><br><span class="line">            l2 = l2-&gt;next;</span><br><span class="line">            nh = nh-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        if(!l1)</span><br><span class="line">            l1 = l2;</span><br><span class="line">        while(l1) &#123;</span><br><span class="line">            int val = l1-&gt;val + add;</span><br><span class="line">            nh-&gt;next = new ListNode(val % 10);</span><br><span class="line">            add = val / 10;</span><br><span class="line">            l1 = l1-&gt;next;</span><br><span class="line">            nh = nh-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        if(add) </span><br><span class="line">            nh-&gt;next = new ListNode(add);</span><br><span class="line">        return h-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>1563/1563 cases passed (24 ms) <br><br>Your runtime beats 72.27 % of cpp submissions <br><br>Your memory usage beats 5.26 % of cpp submissions (10.5 MB) <br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>234.回文链表</title>
+      <link href="/2020/02/19/leetcode234/"/>
+      <url>/2020/02/19/leetcode234/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😴双指针-反转"><a href="#😴双指针-反转" class="headerlink" title="😴双指针+反转"></a>😴双指针+反转</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isPalindrome(ListNode* head) &#123;</span><br><span class="line">        if(!head || !head-&gt;next) return true;</span><br><span class="line">        ListNode* slow = head, </span><br><span class="line">            *fast = head,</span><br><span class="line">            *pre = nullptr,</span><br><span class="line">            *n;</span><br><span class="line">        while(fast &amp;&amp; fast-&gt;next)</span><br><span class="line">        &#123;</span><br><span class="line">            n = slow;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">            fast = fast-&gt;next-&gt;next;</span><br><span class="line"></span><br><span class="line">            n-&gt;next = pre;</span><br><span class="line">            pre = n;</span><br><span class="line">        &#125;</span><br><span class="line">        if(fast) </span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">        </span><br><span class="line">        while(slow &amp;&amp; pre) &#123;</span><br><span class="line">            if(slow-&gt;val != pre-&gt;val) &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">            pre = pre-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>26/26 cases passed (28 ms)<br><br>Your runtime beats 42.35 % of cpp submissions<br><br>Your memory usage beats 88.19 % of cpp submissions (12.4 MB)<br></p></blockquote><h4 id="😍stack"><a href="#😍stack" class="headerlink" title="😍stack"></a>😍stack</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isPalindrome(ListNode* head) &#123;</span><br><span class="line">        stack&lt;int&gt; stk;</span><br><span class="line">        int count = 0;</span><br><span class="line">        auto h = head;</span><br><span class="line">        while(h) &#123;</span><br><span class="line">            h = h-&gt;next;</span><br><span class="line">            ++count;</span><br><span class="line">        &#125;</span><br><span class="line">        bool f = false;</span><br><span class="line">        while(head) &#123;</span><br><span class="line">            if((stk.size() == count / 2) &amp;&amp; (count % 2) &amp;&amp; !f) &#123;</span><br><span class="line">                // cout &lt;&lt; head-&gt;val &lt;&lt; endl;</span><br><span class="line">                head = head-&gt;next;</span><br><span class="line">                f = true;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            int val = head-&gt;val;</span><br><span class="line">            if(stk.size() &amp;&amp; val == stk.top()) </span><br><span class="line">                stk.pop();</span><br><span class="line">            else </span><br><span class="line">                stk.push(val);</span><br><span class="line">            head = head-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        // cout &lt;&lt; stk.size() &lt;&lt; endl;</span><br><span class="line">        return !stk.size();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>26/26 cases passed (24 ms)<br><br>Your runtime beats 72.11 % of cpp submissions<br><br>Your memory usage beats 13.39 % of cpp submissions (13.4 MB)<br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>328.奇偶链表</title>
+      <link href="/2020/02/19/leetcode328/"/>
+      <url>/2020/02/19/leetcode328/</url>
+      
+        <content type="html"><![CDATA[<h4 id="😍双指针"><a href="#😍双指针" class="headerlink" title="😍双指针"></a>😍双指针</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* oddEvenList(ListNode* head) &#123;</span><br><span class="line">        if(!head || !head-&gt;next)</span><br><span class="line">            return head;</span><br><span class="line">        ListNode* head2 = head-&gt;next, *h2 = head2;</span><br><span class="line">        ListNode* iter = head2-&gt;next, *h1 = head;</span><br><span class="line">        bool isEven = true;</span><br><span class="line">        while(iter) &#123;</span><br><span class="line">            if(isEven) &#123;</span><br><span class="line">                h1-&gt;next = iter;</span><br><span class="line">                h1 = h1-&gt;next;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                h2-&gt;next = iter;</span><br><span class="line">                h2 = h2-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            isEven = !isEven;</span><br><span class="line">            iter = iter-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        h1-&gt;next = head2;</span><br><span class="line">        h2-&gt;next = nullptr;</span><br><span class="line">        return head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>71/71 cases passed (8 ms)<br><br>Your runtime beats 98.43 % of cpp submissions<br><br>Your memory usage beats 17.56 % of cpp submissions (9.7 MB)<br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>19.删除链表的倒数第N个节点</title>
+      <link href="/2020/02/19/leetcode19/"/>
+      <url>/2020/02/19/leetcode19/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🐹双指针"><a href="#🐹双指针" class="headerlink" title="🐹双指针"></a>🐹双指针</h4><p>&emsp;&emsp;前面添加一个<strong>哑节点</strong>，可以避免头节点的特殊处理。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* removeNthFromEnd(ListNode* head, int n) &#123;</span><br><span class="line">        ListNode* nou = new ListNode(0);</span><br><span class="line">        nou-&gt;next = head;</span><br><span class="line">        auto slow = nou;</span><br><span class="line">        auto quick = nou;</span><br><span class="line">        ++n;</span><br><span class="line">        while(n--) </span><br><span class="line">            quick = quick-&gt;next;</span><br><span class="line">        while(quick) &#123;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">            quick = quick-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        auto nx = slow-&gt;next-&gt;next;</span><br><span class="line">        slow-&gt;next = nx;</span><br><span class="line">        return nou-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted<br><br>208/208 cases passed (4 ms)<br><br>Your runtime beats 92.07 % of cpp submissions<br><br>Your memory usage beats 11.12 % of cpp submissions (8.6 MB) <br></p></blockquote><h4 id="🐶格外空间"><a href="#🐶格外空间" class="headerlink" title="🐶格外空间"></a>🐶格外空间</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* removeNthFromEnd(ListNode* head, int n) &#123;</span><br><span class="line">        vector&lt;ListNode*&gt; nodes;</span><br><span class="line">        auto h = head;</span><br><span class="line">        while(h) &#123;</span><br><span class="line">            nodes.push_back(h);</span><br><span class="line">            h = h-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        int pos = nodes.size() - n;</span><br><span class="line">        if(pos - 1 &lt; 0)</span><br><span class="line">            return head-&gt;next;</span><br><span class="line">        nodes[pos - 1]-&gt;next = pos + 1 &gt;= nodes.size() ? nullptr : nodes[pos + 1];</span><br><span class="line">        return head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>208/208 cases passed (4 ms)<br><br>Your runtime beats 92.07 % of cpp submissions<br><br>Your memory usage beats 5.22 % of cpp submissions (8.8 MB)<br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>160.相交链表</title>
+      <link href="/2020/02/19/leetcode160/"/>
+      <url>/2020/02/19/leetcode160/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🚌set实现"><a href="#🚌set实现" class="headerlink" title="🚌set实现"></a>🚌set实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) &#123;</span><br><span class="line">        set&lt;ListNode*&gt; st;</span><br><span class="line">        while(headA) &#123;</span><br><span class="line">            st.insert(headA);</span><br><span class="line">            headA = headA-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        while(headB) &#123;</span><br><span class="line">            if(st.count(headB))</span><br><span class="line">                return headB;</span><br><span class="line">            headB = headB-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        return nullptr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>142.环形链表 II</title>
+      <link href="/2020/02/19/leetcode142/"/>
+      <url>/2020/02/19/leetcode142/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🐶双指针"><a href="#🐶双指针" class="headerlink" title="🐶双指针"></a>🐶双指针</h4><p>相当于将两个链表连在一起，一条是A + B, 一条是B + A，走过同样的长度。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) &#123;</span><br><span class="line">        ListNode* a = headA, *b = headB;</span><br><span class="line">        while(a != b) &#123;</span><br><span class="line">            a = a == nullptr ? headB : a-&gt;next;</span><br><span class="line">            b = b == nullptr ? headA : b-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        return a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><h4 id="🚌set实现"><a href="#🚌set实现" class="headerlink" title="🚌set实现"></a>🚌set实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode *detectCycle(ListNode *head) &#123;</span><br><span class="line">        if(!head)</span><br><span class="line">            return nullptr;</span><br><span class="line">        set&lt;ListNode*&gt; st;</span><br><span class="line">        st.insert(head);</span><br><span class="line">        while(head) &#123;</span><br><span class="line">            head = head-&gt;next;</span><br><span class="line">            if(!head) </span><br><span class="line">                return nullptr;</span><br><span class="line">            if(st.count(head)) &#123;</span><br><span class="line">                return head;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                st.insert(head);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return nullptr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>16/16 cases passed (36 ms)<br><br>Your runtime beats 6.15 % of cpp submissions<br><br>Your memory usage beats 5.56 % of cpp submissions (12.1 MB)<br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>141.环形链表</title>
+      <link href="/2020/02/19/leetcode141/"/>
+      <url>/2020/02/19/leetcode141/</url>
+      
+        <content type="html"><![CDATA[<h4 id="🚌双指针实现"><a href="#🚌双指针实现" class="headerlink" title="🚌双指针实现"></a>🚌双指针实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool hasCycle(ListNode *head) &#123;</span><br><span class="line">        ListNode* slow_ptr = head, </span><br><span class="line">            *quick_ptr = head;</span><br><span class="line">        if(!head)</span><br><span class="line">            return false;</span><br><span class="line">        while(1) &#123;</span><br><span class="line">            quick_ptr = quick_ptr-&gt;next;</span><br><span class="line">            if(!quick_ptr)</span><br><span class="line">                return false;</span><br><span class="line">            else if(quick_ptr == slow_ptr)</span><br><span class="line">                return true;</span><br><span class="line">            quick_ptr = quick_ptr-&gt;next;</span><br><span class="line">            if(!quick_ptr)</span><br><span class="line">                return false;</span><br><span class="line">            else if(quick_ptr == slow_ptr)</span><br><span class="line">                return true;</span><br><span class="line">            slow_ptr = slow_ptr-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><p>Accepted <br><br>17/17 cases passed (12 ms)<br><br>Your runtime beats 83.52 % of cpp submissions<br><br>Your memory usage beats 19.93 % of cpp submissions (10 MB)<br></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>283.移动零</title>
       <link href="/2020/02/18/leetcode283/"/>
       <url>/2020/02/18/leetcode283/</url>
