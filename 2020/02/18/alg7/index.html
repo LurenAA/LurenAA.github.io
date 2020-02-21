@@ -370,7 +370,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function binary_search_leftmost(A, n, T):</span><br><span class="line">    L := 0</span><br><span class="line">    R := n</span><br><span class="line">    while L &lt; R:</span><br><span class="line">        m := floor((L + R) / 2)</span><br><span class="line">        if A[m] &lt; T:</span><br><span class="line">            L := m + 1</span><br><span class="line">        else:</span><br><span class="line">            R := m</span><br><span class="line">    return L</span><br></pre></td></tr></table></figure>
 <p>在找到元素后，依旧会通过R = m向左边收缩。</p>
 <p>&emsp;&emsp;下面这样一个结构可以返回最右边的元素：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function binary_search_rightmost(A, n, T):</span><br><span class="line">    L := 0</span><br><span class="line">    R := n</span><br><span class="line">    while L &lt; R:</span><br><span class="line">        m := floor((L + R) / 2)</span><br><span class="line">        if A[m] &gt; T:</span><br><span class="line">            R := m</span><br><span class="line">        else:</span><br><span class="line">            L := m + 1</span><br><span class="line">    return R - 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function binary_search_rightmost(A, n, T):</span><br><span class="line">    L := 0</span><br><span class="line">    R := n</span><br><span class="line">    while L &lt; R:</span><br><span class="line">        m := floor((L + R) / 2)</span><br><span class="line">        if A[m] &lt;= T:</span><br><span class="line">            L := m + 1</span><br><span class="line">        else:</span><br><span class="line">            R := m</span><br><span class="line">    return R - 1</span><br></pre></td></tr></table></figure>
+<p>在找到元素后，依旧会通过left = m + 1向右边收缩。</p>
+
       </div>
       
         <br>
@@ -381,10 +383,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-02-18T21:39:39+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-02-20T22:31:46+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2020年2月18日</p>
+    <p>更新于 2020年2月20日</p>
   </a>
 </div>
 
