@@ -350,6 +350,16 @@
 <blockquote>
 <p>Accepted <br><br>75/75 cases passed (20 ms)<br><br>Your runtime beats 49.34 % of cpp submissions<br><br>Your memory usage beats 5.03 % of cpp submissions (21.3 MB)<br></p>
 </blockquote>
+<h4 id="🥧递归"><a href="#🥧递归" class="headerlink" title="🥧递归"></a>🥧递归</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isValidBST(TreeNode* root) &#123;</span><br><span class="line">        return check(root,  LONG_MIN, LONG_MAX);</span><br><span class="line">    &#125;</span><br><span class="line">    bool check(TreeNode* root, long low, long high) &#123;</span><br><span class="line">        if(!root)</span><br><span class="line">            return true;</span><br><span class="line">        if(root-&gt;val &lt;= low) return false;</span><br><span class="line">        if(root-&gt;val &gt;= high) return false;</span><br><span class="line"></span><br><span class="line">        if(!check(root-&gt;left, low, root-&gt;val) ||</span><br><span class="line">        !check(root-&gt;right, root-&gt;val, high))</span><br><span class="line">            return false;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Accepted <br><br>75/75 cases passed (16 ms)<br><br>Your runtime beats 76.98 % of cpp submissions<br><br>Your memory usage beats 5.07 % of cpp submissions (24 MB)<br></p>
+</blockquote>
+<h4 id="中序遍历改良"><a href="#中序遍历改良" class="headerlink" title="中序遍历改良"></a>中序遍历改良</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isValidBST(TreeNode* root) &#123;</span><br><span class="line">        stack&lt;TreeNode*&gt; stk;</span><br><span class="line">        long prev = LONG_MIN;</span><br><span class="line">        while(stk.size() || root) &#123;</span><br><span class="line">            while(root) &#123;</span><br><span class="line">                stk.push(root);</span><br><span class="line">                root = root-&gt;left;</span><br><span class="line">            &#125;</span><br><span class="line">            auto top = stk.top();</span><br><span class="line">            stk.pop();</span><br><span class="line">            if(prev &gt;= top-&gt;val)</span><br><span class="line">                return false;</span><br><span class="line">            prev = top-&gt;val;</span><br><span class="line">            root = top-&gt;right;</span><br><span class="line">        &#125;   </span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Accepted <br><br>75/75 cases passed (8 ms)<br><br>Your runtime beats 98.79 % of cpp submissions<br><br>Your memory usage beats 5.07 % of cpp submissions (24.1 MB)<br></p>
+</blockquote>
 
       </div>
       
@@ -361,10 +371,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-22T15:17:21+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-02-21T22:47:42+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2020年1月22日</p>
+    <p>更新于 2020年2月21日</p>
   </a>
 </div>
 
@@ -583,7 +593,7 @@
 </header>
 
     <div class='content material'>
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🥧中序遍历"><span class="toc-text">🥧中序遍历</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🥧中序遍历"><span class="toc-text">🥧中序遍历</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🥧递归"><span class="toc-text">🥧递归</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#中序遍历改良"><span class="toc-text">中序遍历改良</span></a></li></ol>
     </div>
   </section>
 
