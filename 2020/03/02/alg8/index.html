@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>二分查找的细节总结 | lurenaaのblog</title>
+  <title>排序算法梳理 | lurenaaのblog</title>
   
   
-  <meta name="description" content="😱二分查找有很多细节之处，稍微不注意就会掉到坑里。">
+  <meta name="description" content="梳理以下常用的几种排序算法。">
   
 
   
@@ -271,8 +271,8 @@
         
   
     <h1 class="title">
-      <a href="/2020/02/18/alg7/">
-        二分查找的细节总结
+      <a href="/2020/03/02/alg8/">
+        排序算法梳理
       </a>
     </h1>
   
@@ -303,7 +303,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-02-18</p>
+    <p>2020-03-02</p>
   </a>
 </div>
 
@@ -347,32 +347,19 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <h4 id="🐶结构1辨析"><a href="#🐶结构1辨析" class="headerlink" title="🐶结构1辨析"></a>🐶结构1辨析</h4><p>&emsp;&emsp;这里介绍第一种结构</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function binary_search(A, n, T) is</span><br><span class="line">    L := 0</span><br><span class="line">    R := n − 1</span><br><span class="line">    while L ≤ R do</span><br><span class="line">        m := floor((L + R) / 2)</span><br><span class="line">        if A[m] &lt; T then</span><br><span class="line">            L := m + 1</span><br><span class="line">        else if A[m] &gt; T then</span><br><span class="line">            R := m - 1</span><br><span class="line">        else:</span><br><span class="line">            return m</span><br><span class="line">    return unsuccessful</span><br></pre></td></tr></table></figure>
+        <h4 id="🐶冒泡排序"><a href="#🐶冒泡排序" class="headerlink" title="🐶冒泡排序"></a>🐶冒泡排序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * &lt;冒泡排序&gt;</span><br><span class="line"> * 时间复杂度: 最好O(n) 最坏O(n^2) 平均O(n^2) 稳定</span><br><span class="line"> * 空间复杂度: O(1)</span><br><span class="line">  (5)   2   3   4   2   1   0</span><br><span class="line">   2   (5)   3   4   2   1   0</span><br><span class="line">   2   3   (5)   4   2   1   0</span><br><span class="line">   2   3   4   (5)   2   1   0</span><br><span class="line">   2   2   3   4   (5)   1   0</span><br><span class="line">   1   2   2   3   4   (5)   0</span><br><span class="line">   0   1   2   2   3   4   (5)</span><br><span class="line">  */</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; sortArray(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        for(int i = 0; i &lt; nums.size(); ++i) </span><br><span class="line">            for(int j = i + 1; j &lt; nums.size(); ++j) &#123;</span><br><span class="line">                if(nums[i] &gt; nums[j])</span><br><span class="line">                    swap(nums[i], nums[j]);</span><br><span class="line">            &#125;</span><br><span class="line">        return nums;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;这里<strong>m := floor((L + R) / 2)</strong>有时会替换成<strong>m := ceiling((L + R) / 2)</strong>，简单来说就是(L + R) / 2替换成(L + R + 1) / 2。</p>
-<p>&emsp;&emsp;在以上结构中这个语句的替换<strong>不会影响算法的正确性</strong>。不过在目标T在数组A中有多个的时候，可能会影响到底返回多个T中的哪一个。</p>
-<p>&emsp;&emsp;比如[1 2 2 2 3 4]，在floor时返回的下标是2，在ceiling时返回的下标是3.</p>
-<h4 id="🦊优化1"><a href="#🦊优化1" class="headerlink" title="🦊优化1"></a>🦊优化1</h4><p>&emsp;&emsp;这里有一个可以小优化的地方，L+R存在整形溢出的情况，可以改为L + （R - L) / 2避免溢出问题。</p>
-<h4 id="🐹结构2辨析"><a href="#🐹结构2辨析" class="headerlink" title="🐹结构2辨析"></a>🐹结构2辨析</h4><p>&emsp;&emsp;这其实也是一种优化，因为以上结构中在每个循环中比较次数太多，可以使用以下结构来代替。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function binary_search_alternative(A, n, T) is</span><br><span class="line">    L := 0</span><br><span class="line">    R := n − 1</span><br><span class="line">    while L != R do</span><br><span class="line">        m := ceil((L + R) / 2)</span><br><span class="line">        if A[m] &gt; T then</span><br><span class="line">            R := m - 1</span><br><span class="line">        else:</span><br><span class="line">            L := m</span><br><span class="line">    if A[L] = T then</span><br><span class="line">        return L</span><br><span class="line">    return unsuccessful</span><br></pre></td></tr></table></figure>
-<p>或者</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function binary_search_alternative(A, n, T) is</span><br><span class="line">    L := 0</span><br><span class="line">    R := n − 1</span><br><span class="line">    while L != R do</span><br><span class="line">        m := floor((L + R) / 2)</span><br><span class="line">        if A[m] &lt; T then</span><br><span class="line">            L := m + 1</span><br><span class="line">        else:</span><br><span class="line">            R := m</span><br><span class="line">    if A[L] = T then</span><br><span class="line">        return L</span><br><span class="line">    return unsuccessful</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;以上两种结构可以在每次循环中减少一次的比较。</p>
-<p>&emsp;&emsp;并且值的注意的是以下两种结构是错误的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">👿function binary_search_alternative(A, n, T) is</span><br><span class="line">    L := 0</span><br><span class="line">    R := n − 1</span><br><span class="line">    while L != R do</span><br><span class="line">        m := ceil((L + R) / 2)</span><br><span class="line">        if A[m] &lt; T then</span><br><span class="line">            L := m + 1</span><br><span class="line">        else:</span><br><span class="line">            R := m</span><br><span class="line">    if A[L] = T then</span><br><span class="line">        return L</span><br><span class="line">    return unsuccessful</span><br></pre></td></tr></table></figure>
-<p>假设在[2 3 4]中查找2， <br><br>第一趟： L = 0 R = 5 m = 1 A[m] &gt; T <br><br>第二趟:  L = 0 R = 1 m = 1 A[m] &gt; T <br><br>第三趟：L = 0 R = 1 m = 1 A[m] &gt; T <br><br>… <br><br>第N趟：L = 0 R = 1 m = 1 A[m] &gt; T <br><br>这里会导致无线循环，因为ceiling取上限，并且我们将m取在右边，导致区间在左边没法收敛。</p>
-<p>同理，下面结构也是错误的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">👿function binary_search_alternative(A, n, T) is</span><br><span class="line">    L := 0</span><br><span class="line">    R := n − 1</span><br><span class="line">    while L != R do</span><br><span class="line">        m := floor((L + R) / 2)</span><br><span class="line">        if A[m] &gt; T then</span><br><span class="line">            R := m - 1</span><br><span class="line">        else:</span><br><span class="line">            L := m</span><br><span class="line">    if A[L] = T then</span><br><span class="line">        return L</span><br><span class="line">    return unsuccessful</span><br></pre></td></tr></table></figure>
-<p>可以[2 3 4]中查找4来试试。</p>
-<h4 id="🙈结构3辨析"><a href="#🙈结构3辨析" class="headerlink" title="🙈结构3辨析"></a>🙈结构3辨析</h4><p>&emsp;&emsp;在存在重复元素的时候，究竟该返回哪一个呢？比如[1,2,4,4,4,5,6,7]查找4，是返回2还是3，或者4？</p>
-<p>&emsp;&emsp;下面这样一个结构可以返回最左边的元素：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function binary_search_leftmost(A, n, T):</span><br><span class="line">    L := 0</span><br><span class="line">    R := n</span><br><span class="line">    while L &lt; R:</span><br><span class="line">        m := floor((L + R) / 2)</span><br><span class="line">        if A[m] &lt; T:</span><br><span class="line">            L := m + 1</span><br><span class="line">        else:</span><br><span class="line">            R := m</span><br><span class="line">    return L</span><br></pre></td></tr></table></figure>
-<p>在找到元素后，依旧会通过R = m向左边收缩。</p>
-<p>&emsp;&emsp;下面这样一个结构可以返回最右边的元素：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function binary_search_rightmost(A, n, T):</span><br><span class="line">    L := 0</span><br><span class="line">    R := n</span><br><span class="line">    while L &lt; R:</span><br><span class="line">        m := floor((L + R) / 2)</span><br><span class="line">        if A[m] &lt;= T:</span><br><span class="line">            L := m + 1</span><br><span class="line">        else:</span><br><span class="line">            R := m</span><br><span class="line">    return R - 1</span><br></pre></td></tr></table></figure>
-<p>在找到元素后，依旧会通过left = m + 1向右边收缩。</p>
+<h4 id="🙈选择排序"><a href="#🙈选择排序" class="headerlink" title="🙈选择排序"></a>🙈选择排序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * &lt;选择排序&gt;</span><br><span class="line"> * 时间复杂度: 最好O(n^2) 最坏O(n^2) 平均O(n^2) 稳定</span><br><span class="line"> * 空间复杂度: O(1)</span><br><span class="line"> */</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; sortArray(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        for(int i = 0; i &lt; nums.size(); ++i) &#123;</span><br><span class="line">            int _min = i;</span><br><span class="line">            for(int j = i + 1; j &lt; nums.size(); ++j) </span><br><span class="line">                if(nums[j] &lt; nums[_min]) _min = j;</span><br><span class="line">            swap(nums[_min], nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        return nums;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
+
+<h4 id="👺插入排序"><a href="#👺插入排序" class="headerlink" title="👺插入排序"></a>👺插入排序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * &lt;插入排序&gt;</span><br><span class="line"> * 时间复杂度: 最好O(n) 最坏O(n^2) 平均O(n^2) 稳定</span><br><span class="line"> * 空间复杂度: O(1)</span><br><span class="line"> */</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; sortArray(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        for(int i = 1; i &lt; nums.size(); ++i)</span><br><span class="line">            for(int j = i; j &gt; 0 &amp;&amp; nums[j] &lt; nums[j-1]; --j) </span><br><span class="line">                swap(nums[j-1], nums[j]);</span><br><span class="line">        return nums;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="🎃希尔排序"><a href="#🎃希尔排序" class="headerlink" title="🎃希尔排序"></a>🎃希尔排序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * &lt;希尔排序&gt; / &lt;缩小增量排序&gt;</span><br><span class="line"> * 时间复杂度: 平均O(n^1.3) 不稳定</span><br><span class="line"> * 空间复杂度: O(1)</span><br><span class="line"> * 特点: 缩小增量的插入排序</span><br><span class="line"> */</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; sortArray(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        int h = 1;</span><br><span class="line">        while(h &lt; nums.size() / 3) h = h * 3 + 1;</span><br><span class="line">        while(h &gt;= 1) &#123;</span><br><span class="line">            for(int i = h; i &lt; nums.size(); i+= h)  &#123;</span><br><span class="line">                for(int j = i; j &gt;= h &amp;&amp; nums[j] &lt; nums[j - h]; j -= h) </span><br><span class="line">                    swap(nums[j], nums[j - h]);</span><br><span class="line">            &#125;</span><br><span class="line">            h = h / 3;</span><br><span class="line">        &#125;</span><br><span class="line">        return nums;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="👩‍🚒归并排序"><a href="#👩‍🚒归并排序" class="headerlink" title="👩‍🚒归并排序"></a>👩‍🚒归并排序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * &lt;归并排序&gt;</span><br><span class="line"> * 时间复杂度: 最好O(n*log(n)) 最坏O(n*log(n)) 平均O(n*log(n)) 稳定</span><br><span class="line"> * 空间复杂度: O(n)</span><br><span class="line"> */</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; aux;</span><br><span class="line">    vector&lt;int&gt; sortArray(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        aux.resize(nums.size());</span><br><span class="line">        _sortArray(nums, 0, nums.size() - 1);</span><br><span class="line">        return nums;</span><br><span class="line">    &#125;</span><br><span class="line">    void _sortArray(vector&lt;int&gt;&amp; nums, int lo, int hi) &#123;</span><br><span class="line">        if(hi &lt;= lo)</span><br><span class="line">            return ;</span><br><span class="line">        int mid = lo + (hi - lo) / 2;</span><br><span class="line">        _sortArray(nums,lo ,mid);</span><br><span class="line">        _sortArray(nums, mid + 1, hi);</span><br><span class="line">        merge(nums, lo, mid, hi);</span><br><span class="line">    &#125;</span><br><span class="line">    void merge(vector&lt;int&gt;&amp; nums, int lo, int mid, int hi) &#123;</span><br><span class="line">        int i = lo, j = mid + 1;</span><br><span class="line">        for(int k = lo; k &lt;= hi; ++k) </span><br><span class="line">            aux[k] = nums[k];</span><br><span class="line">        for(int k = lo; k &lt;= hi; ++k) &#123;</span><br><span class="line">            if(i &gt; mid) nums[k] = aux[j++];</span><br><span class="line">            else if (j &gt; hi) nums[k] = aux[i++];</span><br><span class="line">            else if (aux[i] &lt; aux[j]) nums[k] = aux[i++];</span><br><span class="line">            else nums[k] = aux[j++]; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">//自底向上</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; aux;</span><br><span class="line">    vector&lt;int&gt; sortArray(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        aux.resize(nums.size());</span><br><span class="line">        for(int sz = 1; sz &lt; nums.size(); sz = 2 * sz)</span><br><span class="line">            for(int lo = 0; lo &lt; nums.size(); lo += sz + sz) </span><br><span class="line">                merge(nums, lo, lo + sz - 1, min(lo + sz + sz - 1, (int)nums.size() - 1));</span><br><span class="line">        return nums;</span><br><span class="line">    &#125;</span><br><span class="line">    void merge(vector&lt;int&gt;&amp; nums, int lo, int mid, int hi) &#123;</span><br><span class="line">        int i = lo, j = mid + 1;</span><br><span class="line">        for(int k = lo; k &lt;= hi; ++k) </span><br><span class="line">            aux[k] = nums[k];</span><br><span class="line">        for(int k = lo; k &lt;= hi; ++k) &#123;</span><br><span class="line">            if(i &gt; mid) nums[k] = aux[j++];</span><br><span class="line">            else if (j &gt; hi) nums[k] = aux[i++];</span><br><span class="line">            else if (aux[i] &lt; aux[j]) nums[k] = aux[i++];</span><br><span class="line">            else nums[k] = aux[j++]; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="🧑‍快速排序"><a href="#🧑‍快速排序" class="headerlink" title="🧑‍快速排序"></a>🧑‍快速排序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * &lt;快速排序&gt;</span><br><span class="line"> * 时间复杂度: 最好O(n*log(n)) 最坏O(n^2) 平均O(n*log(n)) 不稳定</span><br><span class="line"> * 空间复杂度: O(log(n))</span><br><span class="line"> * 特点: 本质是给基准数找其正确位置的过程.</span><br><span class="line"> */</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; sortArray(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        sort(nums, 0, nums.size() - 1);</span><br><span class="line">        return nums;</span><br><span class="line">    &#125;</span><br><span class="line">    void sort(vector&lt;int&gt;&amp; nums, int lo, int hi) &#123;</span><br><span class="line">        if(lo &gt;= hi)</span><br><span class="line">            return ;</span><br><span class="line">        int k = parti(nums, lo, hi);</span><br><span class="line">        sort(nums, lo, k - 1);</span><br><span class="line">        sort(nums, k + 1, hi);</span><br><span class="line">    &#125;</span><br><span class="line">    int parti(vector&lt;int&gt;&amp; nums, int lo, int hi) &#123;</span><br><span class="line">        int lf = lo, rt = hi + 1;</span><br><span class="line">        int v = nums[lo];</span><br><span class="line">        while(true) &#123;</span><br><span class="line">            while(nums[++lf] &lt;= v) if(lf == hi) break;</span><br><span class="line">            while(nums[--rt] &gt;= v) if(rt == lo) break;</span><br><span class="line">            if(lf &gt;= rt)</span><br><span class="line">                break;</span><br><span class="line">            swap(nums[lf], nums[rt]);</span><br><span class="line">        &#125;</span><br><span class="line">        swap(nums[lo], nums[rt]);</span><br><span class="line">        return rt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
       </div>
       
         <br>
@@ -383,10 +370,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-02-20T22:31:46+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-03T00:05:00+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2020年2月20日</p>
+    <p>更新于 2020年3月3日</p>
   </a>
 </div>
 
@@ -394,9 +381,6 @@
       
         
           
-  
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E7%AE%97%E6%B3%95/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>算法</p></a></div>
-
 
         
       
@@ -408,7 +392,7 @@
       
         <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/18/alg7/&title=二分查找的细节总结 | lurenaaのblog&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/03/02/alg8/&title=排序算法梳理 | lurenaaのblog&summary="
           
           >
           
@@ -420,7 +404,7 @@
       
         <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/02/18/alg7/&title=二分查找的细节总结 | lurenaaのblog&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/03/02/alg8/&title=排序算法梳理 | lurenaaのblog&summary="
           
           >
           
@@ -432,7 +416,7 @@
       
         <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/18/alg7/&title=二分查找的细节总结 | lurenaaのblog&summary="
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/03/02/alg8/&title=排序算法梳理 | lurenaaのblog&summary="
           
           >
           
@@ -456,35 +440,21 @@
       
           <div class="prev-next">
               
-                  <section class="prev">
-                      <span class="art-item-left">
-                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
-                          <h4>
-                              <a href="/2020/03/02/alg8/" rel="prev" title="排序算法梳理">
-                                
-                                    排序算法梳理
-                                
-                              </a>
-                          </h4>
-                          
-                      </span>
-                  </section>
-              
               
                   <section class="next">
                       <span class="art-item-right" aria-hidden="true">
                           <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                           <h4>
-                              <a href="/2020/02/13/problems5/" rel="prev" title="如果解决“corrupted size vs. prev_size”问题？">
+                              <a href="/2020/02/18/alg7/" rel="prev" title="二分查找的细节总结">
                                   
-                                      如果解决“corrupted size vs. prev_size”问题？
+                                      二分查找的细节总结
                                   
                               </a>
                           </h4>
                           
                               
                               <h6 class="tags">
-                                  <a class="tag" href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 遇见的问题</a>
+                                  <a class="tag" href="/tags/%E7%AE%97%E6%B3%95/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 算法</a>
                               </h6>
                           
                       </span>
@@ -514,7 +484,7 @@
 
   <script>
     window.subData = {
-      title: '二分查找的细节总结',
+      title: '排序算法梳理',
       tools: true
     }
   </script>
@@ -600,7 +570,7 @@
 </header>
 
     <div class='content material'>
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🐶结构1辨析"><span class="toc-text">🐶结构1辨析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🦊优化1"><span class="toc-text">🦊优化1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🐹结构2辨析"><span class="toc-text">🐹结构2辨析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🙈结构3辨析"><span class="toc-text">🙈结构3辨析</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🐶冒泡排序"><span class="toc-text">🐶冒泡排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🙈选择排序"><span class="toc-text">🙈选择排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#👺插入排序"><span class="toc-text">👺插入排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🎃希尔排序"><span class="toc-text">🎃希尔排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#👩‍🚒归并排序"><span class="toc-text">👩‍🚒归并排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🧑‍快速排序"><span class="toc-text">🧑‍快速排序</span></a></li></ol>
     </div>
   </section>
 
