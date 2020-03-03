@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>friends | lurenaaのblog</title>
+  <title>如何解决basic_string::_M_create错误？ | lurenaaのblog</title>
   
   
 
@@ -44,7 +44,7 @@
   
   
   <div class="cover-wrapper">
-    <cover class='cover link half'>
+    <cover class='cover post half'>
       
         
   <h1 class='title'>lurenaa的博客</h1>
@@ -257,7 +257,7 @@
       <div class='l_main'>
   
 
-  <article id="link" class="post white-box article-type-link" itemscope itemprop="blogPost">
+  <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
     
 
 
@@ -269,8 +269,8 @@
         
   
     <h1 class="title">
-      <a href="/friends/index.html">
-        friends
+      <a href="/2020/03/03/problems7/">
+        如何解决basic_string::_M_create错误？
       </a>
     </h1>
   
@@ -301,7 +301,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2019-11-22</p>
+    <p>2020-03-03</p>
   </a>
 </div>
 
@@ -345,10 +345,117 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <p>&emsp;<a href="https://blog.csdn.net/qq_41015048" target="_blank" rel="noopener">🍅旧CSDN博客</a><br /></p>
+        <h4 id="👽原因"><a href="#👽原因" class="headerlink" title="👽原因"></a>👽原因</h4><p>&emsp;&emsp;原因在于使用string(iter1, iter2)这个构造函数时，<strong>iter1&gt;iter2</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"abc"</span>)</span></span>;</span><br><span class="line">    <span class="built_in">string</span>::const_iterator ie = s.cbegin() + <span class="number">1</span>,</span><br><span class="line">      ia = s.cbegin() ;</span><br><span class="line">    <span class="built_in">string</span> as = <span class="built_in">string</span>(ie, ia);</span><br><span class="line">  &#125;<span class="keyword">catch</span>(exception&amp; e) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; e.what() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="👺由来（废话-）"><a href="#👺由来（废话-）" class="headerlink" title="👺由来（废话 ）"></a>👺由来（<del>废话</del> ）</h4><p>&emsp;&emsp;最近在挂服务器的时候经常遇见一个莫名的崩溃原因：basic_string::<em>M</em>create。不管是百度还是google总是找不到相关的问题，在stackflow上也没能找到合理的答案，stackflow上<a href="https://stackoverflow.com/questions/38070031/c-terminate-called-after-throwing-an-instance-of-stdlength-error-what" target="_blank" rel="noopener">唯一一个相关问题</a>是与mysql相关的，因为我也使用了mysql的接口，让我不禁觉得这个问题来自于mysql的插件，最后我发现问题在于我自己写的Http解析组件。</p>
+<p><img src="https://img-blog.csdnimg.cn/20191016215520543.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMDE1MDQ4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20191016220615453.png" alt="在这里插入图片描述"></p>
 
       </div>
       
+        <br>
+        
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-03T22:11:02+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>更新于 2020年3月3日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>遇见的问题</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/03/03/problems7/&title=如何解决basic_string::_M_create错误？ | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/03/03/problems7/&title=如何解决basic_string::_M_create错误？ | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/03/03/problems7/&title=如何解决basic_string::_M_create错误？ | lurenaaのblog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+      
+      
+          <div class="prev-next">
+              
+              
+                  <section class="next">
+                      <span class="art-item-right" aria-hidden="true">
+                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                          <h4>
+                              <a href="/2020/03/03/alg9/" rel="prev" title="动态规划">
+                                  
+                                      动态规划
+                                  
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/%E7%AE%97%E6%B3%95/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 算法</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
+              
+          </div>
       
     </section>
   </article>
@@ -369,6 +476,13 @@
 <!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
 
 
+
+  <script>
+    window.subData = {
+      title: '如何解决basic_string::_M_create错误？',
+      tools: true
+    }
+  </script>
 
 
 </div>
@@ -441,6 +555,20 @@
           
             
               
+  <section class='widget toc-wrapper'>
+    
+<header class='material'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer noopener" href="javascript:void(0)" target="_blank"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
+  
+</header>
+
+    <div class='content material'>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#👽原因"><span class="toc-text">👽原因</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#👺由来（废话-）"><span class="toc-text">👺由来（废话 ）</span></a></li></ol>
+    </div>
+  </section>
+
 
             
           

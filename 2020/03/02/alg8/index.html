@@ -360,6 +360,8 @@
 
 
 <h4 id="🧑‍快速排序"><a href="#🧑‍快速排序" class="headerlink" title="🧑‍快速排序"></a>🧑‍快速排序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * &lt;快速排序&gt;</span><br><span class="line"> * 时间复杂度: 最好O(n*log(n)) 最坏O(n^2) 平均O(n*log(n)) 不稳定</span><br><span class="line"> * 空间复杂度: O(log(n))</span><br><span class="line"> * 特点: 本质是给基准数找其正确位置的过程.</span><br><span class="line"> */</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; sortArray(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        sort(nums, 0, nums.size() - 1);</span><br><span class="line">        return nums;</span><br><span class="line">    &#125;</span><br><span class="line">    void sort(vector&lt;int&gt;&amp; nums, int lo, int hi) &#123;</span><br><span class="line">        if(lo &gt;= hi)</span><br><span class="line">            return ;</span><br><span class="line">        int k = parti(nums, lo, hi);</span><br><span class="line">        sort(nums, lo, k - 1);</span><br><span class="line">        sort(nums, k + 1, hi);</span><br><span class="line">    &#125;</span><br><span class="line">    int parti(vector&lt;int&gt;&amp; nums, int lo, int hi) &#123;</span><br><span class="line">        int lf = lo, rt = hi + 1;</span><br><span class="line">        int v = nums[lo];</span><br><span class="line">        while(true) &#123;</span><br><span class="line">            while(nums[++lf] &lt;= v) if(lf == hi) break;</span><br><span class="line">            while(nums[--rt] &gt;= v) if(rt == lo) break;</span><br><span class="line">            if(lf &gt;= rt)</span><br><span class="line">                break;</span><br><span class="line">            swap(nums[lf], nums[rt]);</span><br><span class="line">        &#125;</span><br><span class="line">        swap(nums[lo], nums[rt]);</span><br><span class="line">        return rt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="🐸堆排序"><a href="#🐸堆排序" class="headerlink" title="🐸堆排序"></a>🐸堆排序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * &lt;堆排序&gt;</span><br><span class="line"> * 时间复杂度: 最好O(n*log(n)) 最坏O(n*log(n)) 平均O(n*log(n)) 不稳定</span><br><span class="line"> * 空间复杂度: O(1)</span><br><span class="line"> */</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; sortArray(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        int N = nums.size();</span><br><span class="line">        nums.insert(nums.begin(), 0);</span><br><span class="line">        // for(int i = N / 2; i &gt;= 1; --i)</span><br><span class="line">        //     sink(nums, i, N);</span><br><span class="line">        for(int i = 1; i &lt;= N; ++i) </span><br><span class="line">            swim(nums, i ,N);</span><br><span class="line">        while(N &gt; 1) &#123;</span><br><span class="line">            swap(nums[1], nums[N--]);</span><br><span class="line">            sink(nums, 1, N);</span><br><span class="line">        &#125;</span><br><span class="line">        nums.erase(nums.begin());</span><br><span class="line">        return nums;</span><br><span class="line">    &#125;</span><br><span class="line">    void sink(vector&lt;int&gt;&amp; nums, int i, int N) &#123;</span><br><span class="line">        while(i &lt;= N / 2) &#123;</span><br><span class="line">            int k = i * 2;</span><br><span class="line">            if(k + 1 &lt;= N &amp;&amp; nums[k] &lt; nums[k + 1]) k = k + 1;</span><br><span class="line">            if(nums[i] &gt;= nums[k]) break;</span><br><span class="line">            swap(nums[k], nums[i]);</span><br><span class="line">            i = k;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    void swim(vector&lt;int&gt;&amp; nums, int i, int N) &#123;</span><br><span class="line">        while(i &gt; 1 &amp;&amp; nums[i] &gt;= nums[i / 2]) &#123;</span><br><span class="line">            swap(nums[i], nums[i / 2]);</span><br><span class="line">            i /= 2;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
       </div>
       
         <br>
@@ -370,7 +372,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-03T00:05:00+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-03T10:24:29+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
     <p>更新于 2020年3月3日</p>
@@ -381,6 +383,9 @@
       
         
           
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E7%AE%97%E6%B3%95/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>算法</p></a></div>
+
 
         
       
@@ -439,6 +444,25 @@
       
       
           <div class="prev-next">
+              
+                  <section class="prev">
+                      <span class="art-item-left">
+                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                          <h4>
+                              <a href="/2020/03/03/alg9/" rel="prev" title="动态规划">
+                                
+                                    动态规划
+                                
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/%E7%AE%97%E6%B3%95/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 算法</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
               
               
                   <section class="next">
@@ -570,7 +594,7 @@
 </header>
 
     <div class='content material'>
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🐶冒泡排序"><span class="toc-text">🐶冒泡排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🙈选择排序"><span class="toc-text">🙈选择排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#👺插入排序"><span class="toc-text">👺插入排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🎃希尔排序"><span class="toc-text">🎃希尔排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#👩‍🚒归并排序"><span class="toc-text">👩‍🚒归并排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🧑‍快速排序"><span class="toc-text">🧑‍快速排序</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🐶冒泡排序"><span class="toc-text">🐶冒泡排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🙈选择排序"><span class="toc-text">🙈选择排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#👺插入排序"><span class="toc-text">👺插入排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🎃希尔排序"><span class="toc-text">🎃希尔排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#👩‍🚒归并排序"><span class="toc-text">👩‍🚒归并排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🧑‍快速排序"><span class="toc-text">🧑‍快速排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🐸堆排序"><span class="toc-text">🐸堆排序</span></a></li></ol>
     </div>
   </section>
 
@@ -749,7 +773,7 @@
 </header>
 
     <div class='content material'>
-      <a href="/tags/libuv/" style="font-size: 21.5px; color: #666">libuv</a> <a href="/tags/rax%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" style="font-size: 14px; color: #999">rax源码阅读</a> <a href="/tags/%E3%80%8ATCP-IP%E8%AF%A6%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 16.5px; color: #888">《TCP/IP详解》读书笔记</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 24px; color: #555">算法</a> <a href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/" style="font-size: 19px; color: #777">遇见的问题</a>
+      <a href="/tags/libuv/" style="font-size: 19px; color: #777">libuv</a> <a href="/tags/rax%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" style="font-size: 14px; color: #999">rax源码阅读</a> <a href="/tags/%E3%80%8ATCP-IP%E8%AF%A6%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 16.5px; color: #888">《TCP/IP详解》读书笔记</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 24px; color: #555">算法</a> <a href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/" style="font-size: 21.5px; color: #666">遇见的问题</a>
     </div>
   </section>
 
