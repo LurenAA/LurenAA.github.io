@@ -347,17 +347,26 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <blockquote>
+        <h4 id="👺动态规划定义"><a href="#👺动态规划定义" class="headerlink" title="👺动态规划定义"></a>👺动态规划定义</h4><blockquote>
 <p>动态规划在寻找有很多重叠子问题的情况的最佳解时有效。它将问题重新组合成子问题。为了避免多次解决这些子问题，它们的结果都逐渐被计算并被储存，从简单的问题直到整个问题都被解决。因此，动态规划储存递迴时的结果，因而不会在解决同样的问题时花费时间。</p>
 </blockquote>
-<p>😴总结来说，动态规划的问题一般都和递归有相关性，<strong>并且动态规划能够优化递归，减少重复的计算量</strong>。具有<strong>最优子结构</strong>和<strong>重叠子问题</strong>的特点。</p>
-<h4 id="应用动态规划——将动态规划拆分成三个子目标"><a href="#应用动态规划——将动态规划拆分成三个子目标" class="headerlink" title="应用动态规划——将动态规划拆分成三个子目标"></a>应用动态规划——将动态规划拆分成三个子目标</h4><li><b>建立状态转移方程</b> <br>这一步是最难的，大部分人都被卡在这里。这一步没太多的规律可说，只需抓住一个思维：<b>当做已经知道​</b> <img src="https://www.zhihu.com/equation?tex=f%281%29" alt="[公式]" eeimg="1" data-formula="f(1)"> <b>~​</b> <img src="https://www.zhihu.com/equation?tex=f%28n-1%29" alt="[公式]" eeimg="1" data-formula="f(n-1)"> <b>的值，然后想办法利用它们求得</b> <img src="https://www.zhihu.com/equation?tex=f%28n%29" alt="[公式]" eeimg="1" data-formula="f(n)"> <b>​。</b>在“数人腿的数量”这样的例子中，状态转移方程即为​ <img src="https://www.zhihu.com/equation?tex=f%28n%29%3Df%28n-1%29%2B2" alt="[公式]" eeimg="1" data-formula="f(n)=f(n-1)+2"> 。</li>
+<br>
 
-<li><b>缓存并复用以往结果</b><br>这一步不难，但是很重要。如果没有合适地处理，很有可能就是指数和线性时间复杂度的区别。假设在“数腿”的例子中，我们不能用显式方程，只能用状态转移方程来解。如果现在 <img src="https://www.zhihu.com/equation?tex=f%28100%29" alt="[公式]" eeimg="1" data-formula="f(100)"> ​未知，但是刚刚求解过一次 <img src="https://www.zhihu.com/equation?tex=f%2899%29" alt="[公式]" eeimg="1" data-formula="f(99)"> ​。如果不将其缓存起来，那么求 <img src="https://www.zhihu.com/equation?tex=f%28100%29" alt="[公式]" eeimg="1" data-formula="f(100)"> ​时，我们就必须花100次加法运算重新获取。但是如果刚刚缓存过，只需复用这个子结果，那么将只需一次加法运算即可。</li>
+<h4 id="🤡动态规划歪解"><a href="#🤡动态规划歪解" class="headerlink" title="🤡动态规划歪解"></a>🤡<del>动态规划歪解</del></h4><p>我们先计算1+1+1+1+1+1+1+1+1+1等于多少。通过计算，我们可以知道上面那个式子等于10，如果我们在上面那个式子的左边再加上一个1+呢？我们不用用手计算就可以直接知道等于11.因为我们知道了&emsp;&emsp;<strong>1+上面那个式子</strong>&emsp;&emsp;而这个结构中，<strong>那个式子</strong>结果等于10，我们记忆住了，避免了重复计算。这就是动态规划。</p>
+<br>
 
-<li><b>按顺序从小往大算</b><br>这里的“小”和“大”对应的是问题的规模，在这里也就是我们要从 <img src="https://www.zhihu.com/equation?tex=f%280%29" alt="[公式]" eeimg="1" data-formula="f(0)"> ​, <img src="https://www.zhihu.com/equation?tex=f%281%29" alt="[公式]" eeimg="1" data-formula="f(1)"> ​, ... 到​ <img src="https://www.zhihu.com/equation?tex=f%28n%29" alt="[公式]" eeimg="1" data-formula="f(n)"> 依次顺序计算。这一点在“数腿”的例子来看，似乎显而易见，因为状态方程基本限制了你只能从小到大一步步递推出最终的结果（假设我们仍然不能用显式方程）。然而当问题复杂起来的时候，你有可能乱了套，所以必须记住这也是目标之一。</li>
+<h4 id="🧑‍动态规划步骤"><a href="#🧑‍动态规划步骤" class="headerlink" title="🧑‍动态规划步骤"></a>🧑‍动态规划步骤</h4><ol>
+<li><p>建立状态转移方程（最难也是最重要的一步）</p>
+</li>
+<li><p>缓存并复用以往结果</p>
+</li>
+<li><p>按顺序从小往大算（自底向上）</p>
+</li>
+</ol>
+<br>
 
-
+<h4 id="🥶个人理解"><a href="#🥶个人理解" class="headerlink" title="🥶个人理解"></a>🥶个人理解</h4><p>总结来说，动态规划的问题一般都和递归有相关性，<strong>并且动态规划能够优化递归，减少重复的计算量</strong>。具有<strong>最优子结构</strong>和<strong>重叠子问题</strong>的特点。</p>
+<p>从另一个角度来看，其实可以说<strong>每一个动态规划问题都可以用递归来解决</strong>，因为动态规划是递归的一种优化，削减了对于同一个子问题的重复计算所浪费的时间。</p>
 
       </div>
       
@@ -369,7 +378,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-03T22:05:39+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-03T22:34:43+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
     <p>更新于 2020年3月3日</p>
@@ -591,7 +600,7 @@
 </header>
 
     <div class='content material'>
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#应用动态规划——将动态规划拆分成三个子目标"><span class="toc-text">应用动态规划——将动态规划拆分成三个子目标</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#👺动态规划定义"><span class="toc-text">👺动态规划定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🤡动态规划歪解"><span class="toc-text">🤡动态规划歪解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🧑‍动态规划步骤"><span class="toc-text">🧑‍动态规划步骤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🥶个人理解"><span class="toc-text">🥶个人理解</span></a></li></ol>
     </div>
   </section>
 
