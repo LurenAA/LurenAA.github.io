@@ -498,6 +498,25 @@
     
     
     <entry>
+      <title>在后台解决前端小伙伴请求json时的CORS跨域问题？</title>
+      <link href="/2019/10/04/problems9/"/>
+      <url>/2019/10/04/problems9/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>前端小伙伴在请求我后台的json时出现了跨域的报错。最后通过后端添加响应头解决了这个问题，总结一下。</p></blockquote><h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">res-&gt;addHeader(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"*"</span>);</span><br><span class="line">res-&gt;addHeader(<span class="string">"Access-Control-Allow-Methods"</span>, <span class="string">"POST, GET, PUT, OPTIONS, DELETE, PATCH"</span>);</span><br><span class="line">res-&gt;addHeader(<span class="string">"Access-Control-Max-Age"</span>, <span class="string">"3600"</span>);</span><br><span class="line">res-&gt;addHeader(<span class="string">"Access-Control-Allow-Headers"</span>,<span class="string">"Origin, X-Requested-With, Content-Type, Accept,token"</span>);</span><br></pre></td></tr></table></figure><p>cors是浏览器为了安全的规定，在实际环境中是很重要的，但在前后端调试时我们不需要这个安全保障，所以给返回的响应添加上这四个头部让浏览器接受我们的报文就可以了。</p><h4 id="每个选项的意思"><a href="#每个选项的意思" class="headerlink" title="每个选项的意思"></a>每个选项的意思</h4><ul><li><strong>Access-Control-Allow-Origin</strong>：携带了服务器端验证后的允许的跨域请求域名，可以是一个具体的域名或是一个*（表示任意域名）。</li><li><strong>Access-Control-Expose-Headers</strong>：允许返回给跨域请求的响应头列表，在列表中的响应头的内容，才可以被浏览器访问。</li><li><strong>Access-Control-Max-Age</strong>：    用于告知浏览器可以将预先检查请求返回结果缓存的时间，在缓存有效期内，浏览器会使用缓存的预先检查结果判断是否发送跨域请求。</li><li><strong>Access-Control-Allow-Methods</strong>：用于告知浏览器可以在实际发送跨域请求时，可以支持的请求方法，可以是一个具体的方法列表或是一个*（表示任意方法）。</li><li><strong>Access-Control-Allow-Credentials</strong>： 该字段可选。它的值是一个布尔值，表示是否允许发送Cookie。默认情况下，Cookie不包括在CORS请求之中。设为true，即表示服务器明确许可，Cookie可以包含在请求中，一起发给服务器。这个值也只能设为true，如果服务器不要浏览器发送Cookie，删除该字段即可。</li></ul><p><strong>PS</strong>： 如果要发送Cookie，Access-Control-Allow-Origin就不能设为星号，必须指定明确的、与请求网页一致的域名。同时，Cookie依然遵循同源政策，只有用服务器域名设置的Cookie才会上传，其他域名的Cookie并不会上传，且（跨源）原网页代码中的document.cookie也无法读取服务器域名下的Cookie。</p><h6 id="另外作为一个完整的后台服务器，我们也应该能够响应客户端的CORS-预检请求。"><a href="#另外作为一个完整的后台服务器，我们也应该能够响应客户端的CORS-预检请求。" class="headerlink" title="另外作为一个完整的后台服务器，我们也应该能够响应客户端的CORS 预检请求。"></a>另外作为一个完整的后台服务器，我们也应该能够响应客户端的CORS 预检请求。</h6><p>这个部分MDN上写的很好，<a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Preflight_request" target="_blank" rel="noopener"><strong><em>这里是链接</em></strong></a>。<br>在第一次发送post以前，浏览器会先发送一个CORS 预检请求。这是我的日志捕捉到的报文：<br><img src="https://img-blog.csdnimg.cn/20191017135028370.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMDE1MDQ4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>后台按照上面MDN链接中的方式返回报文，然后后台就能收到前台的Post报文了。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 遇见的问题 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>redis基数树rax源码分析(2.5)</title>
       <link href="/2019/08/14/rax3/"/>
       <url>/2019/08/14/rax3/</url>

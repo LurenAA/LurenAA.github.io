@@ -4,10 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>二分查找的细节总结 | lurenaaのblog</title>
+  <title>在后台解决前端小伙伴请求json时的CORS跨域问题？ | lurenaaのblog</title>
   
-  
-  <meta name="description" content="😱二分查找有很多细节之处，稍微不注意就会掉到坑里。">
   
 
   
@@ -271,8 +269,8 @@
         
   
     <h1 class="title">
-      <a href="/2020/02/18/alg7/">
-        二分查找的细节总结
+      <a href="/2019/10/04/problems9/">
+        在后台解决前端小伙伴请求json时的CORS跨域问题？
       </a>
     </h1>
   
@@ -303,7 +301,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-02-18</p>
+    <p>2019-10-04</p>
   </a>
 </div>
 
@@ -347,31 +345,21 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <h4 id="🐶结构1辨析"><a href="#🐶结构1辨析" class="headerlink" title="🐶结构1辨析"></a>🐶结构1辨析</h4><p>&emsp;&emsp;这里介绍第一种结构</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function binary_search(A, n, T) is</span><br><span class="line">    L := 0</span><br><span class="line">    R := n − 1</span><br><span class="line">    while L ≤ R do</span><br><span class="line">        m := floor((L + R) / 2)</span><br><span class="line">        if A[m] &lt; T then</span><br><span class="line">            L := m + 1</span><br><span class="line">        else if A[m] &gt; T then</span><br><span class="line">            R := m - 1</span><br><span class="line">        else:</span><br><span class="line">            return m</span><br><span class="line">    return unsuccessful</span><br></pre></td></tr></table></figure>
+        <blockquote>
+<p>前端小伙伴在请求我后台的json时出现了跨域的报错。最后通过后端添加响应头解决了这个问题，总结一下。</p>
+</blockquote>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">res-&gt;addHeader(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"*"</span>);</span><br><span class="line">res-&gt;addHeader(<span class="string">"Access-Control-Allow-Methods"</span>, <span class="string">"POST, GET, PUT, OPTIONS, DELETE, PATCH"</span>);</span><br><span class="line">res-&gt;addHeader(<span class="string">"Access-Control-Max-Age"</span>, <span class="string">"3600"</span>);</span><br><span class="line">res-&gt;addHeader(<span class="string">"Access-Control-Allow-Headers"</span>,<span class="string">"Origin, X-Requested-With, Content-Type, Accept,token"</span>);</span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;这里<strong>m := floor((L + R) / 2)</strong>有时会替换成<strong>m := ceiling((L + R) / 2)</strong>，简单来说就是(L + R) / 2替换成(L + R + 1) / 2。</p>
-<p>&emsp;&emsp;在以上结构中这个语句的替换<strong>不会影响算法的正确性</strong>。不过在目标T在数组A中有多个的时候，可能会影响到底返回多个T中的哪一个。</p>
-<p>&emsp;&emsp;比如[1 2 2 2 3 4]，在floor时返回的下标是2，在ceiling时返回的下标是3.</p>
-<h4 id="🦊优化1"><a href="#🦊优化1" class="headerlink" title="🦊优化1"></a>🦊优化1</h4><p>&emsp;&emsp;这里有一个可以小优化的地方，L+R存在整形溢出的情况，可以改为L + （R - L) / 2避免溢出问题。</p>
-<h4 id="🐹结构2辨析"><a href="#🐹结构2辨析" class="headerlink" title="🐹结构2辨析"></a>🐹结构2辨析</h4><p>&emsp;&emsp;这其实也是一种优化，因为以上结构中在每个循环中比较次数太多，可以使用以下结构来代替。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function binary_search_alternative(A, n, T) is</span><br><span class="line">    L := 0</span><br><span class="line">    R := n − 1</span><br><span class="line">    while L != R do</span><br><span class="line">        m := ceil((L + R) / 2)</span><br><span class="line">        if A[m] &gt; T then</span><br><span class="line">            R := m - 1</span><br><span class="line">        else:</span><br><span class="line">            L := m</span><br><span class="line">    if A[L] = T then</span><br><span class="line">        return L</span><br><span class="line">    return unsuccessful</span><br></pre></td></tr></table></figure>
-<p>或者</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function binary_search_alternative(A, n, T) is</span><br><span class="line">    L := 0</span><br><span class="line">    R := n − 1</span><br><span class="line">    while L != R do</span><br><span class="line">        m := floor((L + R) / 2)</span><br><span class="line">        if A[m] &lt; T then</span><br><span class="line">            L := m + 1</span><br><span class="line">        else:</span><br><span class="line">            R := m</span><br><span class="line">    if A[L] = T then</span><br><span class="line">        return L</span><br><span class="line">    return unsuccessful</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;以上两种结构可以在每次循环中减少一次的比较。</p>
-<p>&emsp;&emsp;并且值的注意的是以下两种结构是错误的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">👿function binary_search_alternative(A, n, T) is</span><br><span class="line">    L := 0</span><br><span class="line">    R := n − 1</span><br><span class="line">    while L != R do</span><br><span class="line">        m := ceil((L + R) / 2)</span><br><span class="line">        if A[m] &lt; T then</span><br><span class="line">            L := m + 1</span><br><span class="line">        else:</span><br><span class="line">            R := m</span><br><span class="line">    if A[L] = T then</span><br><span class="line">        return L</span><br><span class="line">    return unsuccessful</span><br></pre></td></tr></table></figure>
-<p>假设在[2 3 4]中查找2， <br><br>第一趟： L = 0 R = 5 m = 1 A[m] &gt; T <br><br>第二趟:  L = 0 R = 1 m = 1 A[m] &gt; T <br><br>第三趟：L = 0 R = 1 m = 1 A[m] &gt; T <br><br>… <br><br>第N趟：L = 0 R = 1 m = 1 A[m] &gt; T <br><br>这里会导致无线循环，因为ceiling取上限，并且我们将m取在右边，导致区间在左边没法收敛。</p>
-<p>同理，下面结构也是错误的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">👿function binary_search_alternative(A, n, T) is</span><br><span class="line">    L := 0</span><br><span class="line">    R := n − 1</span><br><span class="line">    while L != R do</span><br><span class="line">        m := floor((L + R) / 2)</span><br><span class="line">        if A[m] &gt; T then</span><br><span class="line">            R := m - 1</span><br><span class="line">        else:</span><br><span class="line">            L := m</span><br><span class="line">    if A[L] = T then</span><br><span class="line">        return L</span><br><span class="line">    return unsuccessful</span><br></pre></td></tr></table></figure>
-<p>可以[2 3 4]中查找4来试试。</p>
-<h4 id="🙈结构3辨析"><a href="#🙈结构3辨析" class="headerlink" title="🙈结构3辨析"></a>🙈结构3辨析</h4><p>&emsp;&emsp;在存在重复元素的时候，究竟该返回哪一个呢？比如[1,2,4,4,4,5,6,7]查找4，是返回2还是3，或者4？</p>
-<p>&emsp;&emsp;下面这样一个结构可以返回最左边的元素：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function binary_search_leftmost(A, n, T):</span><br><span class="line">    L := 0</span><br><span class="line">    R := n</span><br><span class="line">    while L &lt; R:</span><br><span class="line">        m := floor((L + R) / 2)</span><br><span class="line">        if A[m] &lt; T:</span><br><span class="line">            L := m + 1</span><br><span class="line">        else:</span><br><span class="line">            R := m</span><br><span class="line">    return L</span><br></pre></td></tr></table></figure>
-<p>在找到元素后，依旧会通过R = m向左边收缩。</p>
-<p>&emsp;&emsp;下面这样一个结构可以返回最右边的元素：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function binary_search_rightmost(A, n, T):</span><br><span class="line">    L := 0</span><br><span class="line">    R := n</span><br><span class="line">    while L &lt; R:</span><br><span class="line">        m := floor((L + R) / 2)</span><br><span class="line">        if A[m] &lt;= T:</span><br><span class="line">            L := m + 1</span><br><span class="line">        else:</span><br><span class="line">            R := m</span><br><span class="line">    return R - 1</span><br></pre></td></tr></table></figure>
-<p>在找到元素后，依旧会通过left = m + 1向右边收缩。</p>
+<p>cors是浏览器为了安全的规定，在实际环境中是很重要的，但在前后端调试时我们不需要这个安全保障，所以给返回的响应添加上这四个头部让浏览器接受我们的报文就可以了。</p>
+<h4 id="每个选项的意思"><a href="#每个选项的意思" class="headerlink" title="每个选项的意思"></a>每个选项的意思</h4><ul>
+<li><strong>Access-Control-Allow-Origin</strong>：携带了服务器端验证后的允许的跨域请求域名，可以是一个具体的域名或是一个*（表示任意域名）。</li>
+<li><strong>Access-Control-Expose-Headers</strong>：允许返回给跨域请求的响应头列表，在列表中的响应头的内容，才可以被浏览器访问。</li>
+<li><strong>Access-Control-Max-Age</strong>：    用于告知浏览器可以将预先检查请求返回结果缓存的时间，在缓存有效期内，浏览器会使用缓存的预先检查结果判断是否发送跨域请求。</li>
+<li><strong>Access-Control-Allow-Methods</strong>：用于告知浏览器可以在实际发送跨域请求时，可以支持的请求方法，可以是一个具体的方法列表或是一个*（表示任意方法）。</li>
+<li><strong>Access-Control-Allow-Credentials</strong>： 该字段可选。它的值是一个布尔值，表示是否允许发送Cookie。默认情况下，Cookie不包括在CORS请求之中。设为true，即表示服务器明确许可，Cookie可以包含在请求中，一起发给服务器。这个值也只能设为true，如果服务器不要浏览器发送Cookie，删除该字段即可。</li>
+</ul>
+<p><strong>PS</strong>： 如果要发送Cookie，Access-Control-Allow-Origin就不能设为星号，必须指定明确的、与请求网页一致的域名。同时，Cookie依然遵循同源政策，只有用服务器域名设置的Cookie才会上传，其他域名的Cookie并不会上传，且（跨源）原网页代码中的document.cookie也无法读取服务器域名下的Cookie。</p>
+<h6 id="另外作为一个完整的后台服务器，我们也应该能够响应客户端的CORS-预检请求。"><a href="#另外作为一个完整的后台服务器，我们也应该能够响应客户端的CORS-预检请求。" class="headerlink" title="另外作为一个完整的后台服务器，我们也应该能够响应客户端的CORS 预检请求。"></a>另外作为一个完整的后台服务器，我们也应该能够响应客户端的CORS 预检请求。</h6><p>这个部分MDN上写的很好，<a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Preflight_request" target="_blank" rel="noopener"><strong><em>这里是链接</em></strong></a>。<br>在第一次发送post以前，浏览器会先发送一个CORS 预检请求。这是我的日志捕捉到的报文：<br><img src="https://img-blog.csdnimg.cn/20191017135028370.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMDE1MDQ4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>后台按照上面MDN链接中的方式返回报文，然后后台就能收到前台的Post报文了。</p>
 
       </div>
       
@@ -383,10 +371,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-02-20T22:31:46+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-03-04T15:31:02+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2020年2月20日</p>
+    <p>更新于 2020年3月4日</p>
   </a>
 </div>
 
@@ -395,7 +383,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E7%AE%97%E6%B3%95/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>算法</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>遇见的问题</p></a></div>
 
 
         
@@ -408,7 +396,7 @@
       
         <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/18/alg7/&title=二分查找的细节总结 | lurenaaのblog&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2019/10/04/problems9/&title=在后台解决前端小伙伴请求json时的CORS跨域问题？ | lurenaaのblog&summary="
           
           >
           
@@ -420,7 +408,7 @@
       
         <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/02/18/alg7/&title=二分查找的细节总结 | lurenaaのblog&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2019/10/04/problems9/&title=在后台解决前端小伙伴请求json时的CORS跨域问题？ | lurenaaのblog&summary="
           
           >
           
@@ -432,7 +420,7 @@
       
         <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/18/alg7/&title=二分查找的细节总结 | lurenaaのblog&summary="
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2019/10/04/problems9/&title=在后台解决前端小伙伴请求json时的CORS跨域问题？ | lurenaaのblog&summary="
           
           >
           
@@ -460,16 +448,16 @@
                       <span class="art-item-left">
                           <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
                           <h4>
-                              <a href="/2020/02/25/alg8/" rel="prev" title="排序算法梳理">
+                              <a href="/2019/11/16/libuv1/" rel="prev" title="libuv源码分析（1）事件循环分析">
                                 
-                                    排序算法梳理
+                                    libuv源码分析（1）事件循环分析
                                 
                               </a>
                           </h4>
                           
                               
                               <h6 class="tags">
-                                  <a class="tag" href="/tags/%E7%AE%97%E6%B3%95/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 算法</a>
+                                  <a class="tag" href="/tags/libuv/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> libuv</a>
                               </h6>
                           
                       </span>
@@ -480,16 +468,16 @@
                       <span class="art-item-right" aria-hidden="true">
                           <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                           <h4>
-                              <a href="/2020/02/13/problems5/" rel="prev" title="如果解决“corrupted size vs. prev_size”问题？">
+                              <a href="/2019/08/14/rax3/" rel="prev" title="redis基数树rax源码分析(2.5)">
                                   
-                                      如果解决“corrupted size vs. prev_size”问题？
+                                      redis基数树rax源码分析(2.5)
                                   
                               </a>
                           </h4>
                           
                               
                               <h6 class="tags">
-                                  <a class="tag" href="/tags/%E9%81%87%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 遇见的问题</a>
+                                  <a class="tag" href="/tags/rax%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> rax源码阅读</a>
                               </h6>
                           
                       </span>
@@ -519,7 +507,7 @@
 
   <script>
     window.subData = {
-      title: '二分查找的细节总结',
+      title: '在后台解决前端小伙伴请求json时的CORS跨域问题？',
       tools: true
     }
   </script>
@@ -605,7 +593,7 @@
 </header>
 
     <div class='content material'>
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#🐶结构1辨析"><span class="toc-text">🐶结构1辨析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🦊优化1"><span class="toc-text">🦊优化1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🐹结构2辨析"><span class="toc-text">🐹结构2辨析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#🙈结构3辨析"><span class="toc-text">🙈结构3辨析</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决办法"><span class="toc-text">解决办法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#每个选项的意思"><span class="toc-text">每个选项的意思</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#另外作为一个完整的后台服务器，我们也应该能够响应客户端的CORS-预检请求。"><span class="toc-text">另外作为一个完整的后台服务器，我们也应该能够响应客户端的CORS 预检请求。</span></a></li></ol></li></ol></li></ol></li></ol>
     </div>
   </section>
 
