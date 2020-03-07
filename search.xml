@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>如何让云服务上的程序在用户退出后继续运行？</title>
+      <link href="/2020/03/04/problems10/"/>
+      <url>/2020/03/04/problems10/</url>
+      
+        <content type="html"><![CDATA[<h4 id="今天的主角：nohup（no-hang-up）"><a href="#今天的主角：nohup（no-hang-up）" class="headerlink" title="今天的主角：nohup（no hang up）"></a>今天的主角：nohup（no hang up）</h4><h5 id="base："><a href="#base：" class="headerlink" title="base："></a>base：</h5><p>简单的后台运行：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup <span class="built_in">command</span> &amp;</span><br></pre></td></tr></table></figure><p>就可以了。</p><h5 id="添加日志："><a href="#添加日志：" class="headerlink" title="添加日志："></a>添加日志：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup <span class="built_in">command</span> &gt; file 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure><p>首先我们要知道0、1、2是三个固定的fileno。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0 – stdin (standard input)</span><br><span class="line">1 – stdout (standard output)</span><br><span class="line">2 – stderr (standard error)</span><br></pre></td></tr></table></figure><p>首先这里把command的输出重定向到file，再把标准错误重定向到标准输出，这样标准输出和标准错误都重定向到了file中了。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 遇见的问题 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>如何解决basic_string::_M_create错误？</title>
       <link href="/2020/03/03/problems7/"/>
       <url>/2020/03/03/problems7/</url>
